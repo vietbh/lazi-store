@@ -164,7 +164,7 @@ function Header() {
                       aria-expanded="false"
                     >
                       <i className="fas fa-user me-1 text-gray fw-normal"></i>
-                      Chào mừng {userName}
+                      {userName}
                     </a>
                     <div
                       className="dropdown-menu mt-3 shadow-sm"
