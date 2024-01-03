@@ -19,6 +19,7 @@ function FormLogin() {
     error:''
   });
   const [success,setSuccess] = useState(false);
+  const [unSuccess,setUnSuccess] = useState(false);
   const [formData,setFormData] = useState({
     email:'',
     password:'',
@@ -38,9 +39,12 @@ function FormLogin() {
    const fetchLogin = async () => {
     try {
       const response = await axios.post(API_URL.concat('/login'),formData);
-      // const data = response.data;
-      console.log('ok');
-      console.log(response);
+      if(response.status == 200){
+        // const data = response.data;
+        setSuccess(true);
+      }else{
+        setUnSuccess(true);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -164,6 +168,7 @@ function FormLogin() {
         </Form.Group>
         <div className='text-center text-sm'>
           { success && (<span className={'text-success'}>Đăng nhập thành công</span>)}
+          { unSuccess && (<span className={'text-danger'}>Tài khoản chưa được đăng ký, vui lòng thử lại</span>)}
         </div>
       </Row>
         
