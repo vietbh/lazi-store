@@ -39,6 +39,7 @@ function FormLogin() {
     try {
       const response = await axios.post(API_URL.concat('/login'),formData);
       // const data = response.data;
+      console.log('ok');
       console.log(response);
     } catch (error) {
       console.log(error);
