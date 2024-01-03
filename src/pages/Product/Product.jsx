@@ -71,7 +71,7 @@ function Product() {
                 </ul>
               </div>
             </div>
-            <h6> <Link className="reset-anchor" to="lazi-store/chi-tiet-san-pham/:id">{product.book_title}</Link></h6>
+            <h6> <Link className="reset-anchor" to="lazi-store/chi-tiet-san-pham">{product.book_title}</Link></h6>
             <p className="small text-muted">{product.book_price*1000} vnd</p>
           </div>
         </div>
