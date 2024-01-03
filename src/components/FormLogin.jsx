@@ -88,7 +88,7 @@ function FormLogin() {
   useEffect(() => {
     if(success){
       localStorage.setItem('hasLogin',true);
-      setTimeout(()=> window.location.href = '/',2000);
+      setTimeout(()=> window.location.href = '/lazi-store',3000);
     }
     if(click >= 1000){
       setRandCapcha(Math.floor(10000 - Math.random() * 900000) + 1000000);
