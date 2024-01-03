@@ -47,7 +47,7 @@ function Header() {
           <nav className="navbar navbar-expand-lg navbar-light py-3 px-lg-0">
             <a className="navbar-brand" href="/lazi-store">
               <span className="fw-bold text-uppercase text-dark">
-                BookStore
+                LaziStore
               </span>
             </a>
             <button
