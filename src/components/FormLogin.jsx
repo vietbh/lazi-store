@@ -38,6 +38,7 @@ function FormLogin() {
    const fetchLogin = async () => {
     try {
       const response = await axios.post(API_URL.concat('/login'),formData);
+      // const data = response.data;
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -82,7 +83,7 @@ function FormLogin() {
       localStorage.setItem('hasLogin',true);
       setTimeout(()=> window.location.href = '/',2000);
     }
-    if(click >= 3){
+    if(click >= 1000){
       setRandCapcha(Math.floor(10000 - Math.random() * 900000) + 1000000);
       setCapcha(true);
       setClick(0);
