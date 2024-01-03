@@ -45,7 +45,7 @@ function Header() {
       <header className="header bg-white">
         <div className="container px-lg-3">
           <nav className="navbar navbar-expand-lg navbar-light py-3 px-lg-0">
-            <a className="navbar-brand" href="/">
+            <a className="navbar-brand" href="/lazi-store">
               <span className="fw-bold text-uppercase text-dark">
                 BookStore
               </span>
@@ -71,7 +71,7 @@ function Header() {
                     className={`nav-link ${
                       Param === "/" || Param === "" ? "active" : " "
                     }`}
-                    to="/"
+                    to="/lazi-store"
                   >
                     Trang chủ
                   </Link>
