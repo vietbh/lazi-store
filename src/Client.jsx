@@ -20,6 +20,7 @@ import DetailBlog from "./pages/Blog/DetailBlog";
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/lazi-store" element={<Home />} />
             <Route path="/cua-hang" element={<Product />} />
             <Route path="/bai-viet" element={<Blog />} />
             <Route path="/dang-nhap" element={<Login />} />
