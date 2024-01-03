@@ -40,7 +40,9 @@ function FormLogin() {
     try {
       const response = await axios.post(API_URL.concat('/login'),formData);
       if(response.status == 200){
-        // const data = response.data;
+        const data = response.data;
+        console.log(data);
+        localStorage.setItem('userName',data[1]);
         setSuccess(true);
       }else{
         setUnSuccess(true);
@@ -62,7 +64,7 @@ function FormLogin() {
         fetchLogin();
         setSuccess(true);
         setCapcha(false);
-        setTimeout(()=> window.location.href = '/',3000);
+        setTimeout(()=> window.location.href = '/lazi-store',3000);
       }
     }
     return true;

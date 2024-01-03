@@ -6,10 +6,12 @@ function Header() {
   const Param = useParams();
   if (localStorage.length > 0) {
     var hasLogin = localStorage.getItem("hasLogin");
+    var userName = localStorage.getItem("userName");
   }
   const handleLogout = () => {
     alert('Đăng xuất thành công');
     localStorage.removeItem('hasLogin');
+    localStorage.removeItem('userName');
   };
   // console.log(currentPath);
   // console.log(Param);
@@ -162,7 +164,7 @@ function Header() {
                       aria-expanded="false"
                     >
                       <i className="fas fa-user me-1 text-gray fw-normal"></i>
-                      Chào mừng
+                      Chào mừng {userName}
                     </a>
                     <div
                       className="dropdown-menu mt-3 shadow-sm"
