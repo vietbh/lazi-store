@@ -167,7 +167,7 @@ function Header() {
                       {userName}
                     </a>
                     <div
-                      className="dropdown-menu mt-3 shadow-sm"
+                      className="dropdown-menu mt-3 shadow-sm w-50"
                       aria-labelledby="pagesDropdown"
                     >
                       <a
@@ -192,7 +192,7 @@ function Header() {
                         className="dropdown-item border-0 transition-link"
                         href="cart.html"
                       >
-                        Trở thành đối tác
+                        Mã giảm giá
                       </a>
                       <a
                         className="dropdown-item border-0 transition-link"
@@ -203,7 +203,7 @@ function Header() {
                       </a>
                     </div>
                   </li>
-                ) : (
+                ):(
                   <li className="nav-item">
                     <Link
                       className={`nav-link ${
