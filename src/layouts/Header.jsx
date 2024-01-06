@@ -142,8 +142,8 @@ function Header() {
                     to="/gio-hang"
                   >
                     {" "}
-                    <i className="fas fa-dolly-flatbed me-1 text-gray"></i>Giỏ
-                    hàng<small className="text-gray fw-normal">(2)</small>
+                    <i className="fas fa-dolly-flatbed me-1 text-gray"></i>
+                    {!hasLogin && ('Giỏ hàng')}<small className="text-gray fw-normal">(2)</small>
                   </Link>
                 </li>
                 <li className="nav-item">
