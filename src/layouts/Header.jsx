@@ -154,7 +154,7 @@ function Header() {
                   </Link>
                 </li>
                 {hasLogin ? (
-                  <li className="nav-item dropdown">
+                  <li className="nav-item dropdown me-3">
                     <a
                       className="nav-link dropdown-toggle"
                       id="pagesDropdown"
