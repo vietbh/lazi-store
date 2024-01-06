@@ -245,7 +245,7 @@ function FormLogin() {
       )}
       
       <div className='d-flex justify-content-center mb-3'>
-        <Button type="submit"   className={`w-50 rounded-3 fw-medium ${loading && 'disabled'} `}>{loading ?(<span>Đang đăng nhập...</span>):(<span>Đăng nhập</span>)}</Button>
+        <Button type="submit" className={`w-50 rounded-3 fw-medium ${loading && 'disabled'}`} >{loading ?(<span>Đang đăng nhập...</span>):(<span>Đăng nhập</span>)}</Button>
       </div>
       <Row>
         <Col lg={4} md={3} sm={3}>
