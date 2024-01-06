@@ -254,7 +254,7 @@ function Product() {
                     {/*
                     <!-- PRODUCT-->
                     */}
-                    {loading &&  <div className="col-lg-12 col-sm-4"><h2 className="text-center my-4 ">Đang tải...</h2></div> }
+                    {loading && localStorage.getItem('products') && <div className="col-lg-12 col-sm-4"><h2 className="text-center my-4 ">Đang tải...</h2></div> }
                         {/* Show san pham */}
                         {product}
                     </div>
