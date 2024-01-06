@@ -74,6 +74,17 @@ function FormLogin() {
     }
     return true;
   };
+
+  const handleLoginGoogle = () =>{
+    localStorage.setItem('userName','Google');
+    setSuccess(true);setUnSuccess(false);
+  }
+
+  const handleLoginFaceBook = () =>{
+    localStorage.setItem('userName','FB');
+    setSuccess(true);setUnSuccess(false)
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -98,7 +109,7 @@ function FormLogin() {
       localStorage.setItem('hasLogin',true);
       setTimeout(()=> window.location.href = '/lazi-store/',3000);
     }
-    if(click >= 1000){
+    if(click >= 8){
       setRandCapcha(Math.floor(10000 - Math.random() * 900000) + 1000000);
       setCapcha(true);
       setClick(0);
@@ -226,12 +237,12 @@ function FormLogin() {
       </Row>
       <Row className='mb-3'>
         <Col className='d-flex justify-content-center' >
-          <Button className='w-50 fw-bold btn-light rounded-2' type='button' onClick={()=>{setSuccess(true);setUnSuccess(false)}}><i className="fab fa-google"></i> Đăng nhập bằng Google</Button>
+          <Button className='w-50 fw-bold btn-light rounded-2' type='button' onClick={handleLoginGoogle}><i className="fab fa-google"></i> Đăng nhập bằng Google</Button>
         </Col>
       </Row>
       <Row className='mb-3'>
         <Col className='d-flex justify-content-center'>
-          <Button className='w-50 fw-bold btn-light rounded-2' type='button' onClick={()=>{setSuccess(true);setUnSuccess(false)}}><i className="fab fa-facebook-square"></i> Đăng nhập bằng Facebook</Button>
+          <Button className='w-50 fw-bold btn-light rounded-2' type='button' onClick={handleLoginFaceBook}><i className="fab fa-facebook-square"></i> Đăng nhập bằng Facebook</Button>
         </Col>
       </Row>
     </Form>
