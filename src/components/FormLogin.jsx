@@ -85,6 +85,22 @@ function FormLogin() {
     setSuccess(true);setUnSuccess(false)
   }
 
+  // const handleReCapcha = () =>{
+  //   grecaptcha.ready(() => {
+  //     grecaptcha.render('html_element', {
+  //        'sitekey' : 'v2_site_key'
+  //     });
+  //   });
+ 
+  //   function onSubmit() {
+  //     grecaptcha.ready(() => {
+  //         grecaptcha.execute('v3_site_key', {action: 'homepage'}).then((token) => {
+  //            ...
+  //         });
+  //     });
+  //   }
+  // }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -176,6 +192,12 @@ function FormLogin() {
       </Row>
       
       <Row className='mb-4'>
+        <div className='text-start'>
+          <span className='text-secondary'>Trang web này được bảo vệ bởi reCAPTCHA và Google</span>
+          <a href="https://policies.google.com/privacy">Privacy Policy</a> và
+          <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+          {' '}
+        </div>
         <Form.Group className="mb-0 d-flex justify-content-between" noValidate>
           <Form.Check
             className="text-dark"
@@ -188,10 +210,7 @@ function FormLogin() {
           <Link className='float-end' to={'/quen-mat-khau'}>Quên mật khẩu</Link>
         </Form.Group>
         <div className='text-center text-sm'>
-          <span>Trang web này được bảo vệ bởi reCAPTCHA và Google</span>
-          <a href="https://policies.google.com/privacy">Privacy Policy</a> và
-          <a href="https://policies.google.com/terms">Terms of Service</a> apply.
-          {' '}
+          
           { success && (<span className={'text-success'}>Đăng nhập thành công</span>)}
           { unSuccess && (<span className={'text-danger'}>Tài khoản chưa được đăng ký, vui lòng thử lại</span>)}
         </div>
