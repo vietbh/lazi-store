@@ -29,10 +29,9 @@ function Product() {
         try {
             setLoading(true);
             const response = await axios.get(API_URL.concat('/books'));
-            const data = await response.data;
-            setProducts(data);            
+            const data = await response.data;           
             setLoading(false);
-            // Lưu trữ dữ liệu sản phẩm trong bộ nhớ cache của trình duyệt
+            // Lưu trữ dữ liệu sản phẩm trong bộ nhớ session của trình duyệt
             sessionStorage.setItem('products', JSON.stringify(data));
           } catch (error) {
             setLoading(true);
@@ -41,7 +40,7 @@ function Product() {
     }
     useEffect(() => {
       if (sessionStorage.getItem('products')) {
-        // Lấy dữ liệu từ bộ nhớ cache
+        // Lấy dữ liệu từ bộ nhớ session
         const cachedProducts = JSON.parse(sessionStorage.getItem('products'));
         // Hiển thị dữ liệu sản phẩm trong giao diện
         setProducts(cachedProducts);
@@ -53,13 +52,12 @@ function Product() {
     
     useEffect(() => {
       // Đặt điều kiện để chỉ gọi fetchData khi loading là true
+      if(!sessionStorage.getItem('products')){
       if (loading) {
-        if(!sessionStorage.getItem('products')){
           fetchData();
-          localStorage.removeItem('products');
         }
-        fetchDataCategory();
       }
+      fetchDataCategory();
     }, [loading]);
     const product = products.map((product) => {
       return (
