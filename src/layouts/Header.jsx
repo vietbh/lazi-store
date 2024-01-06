@@ -167,7 +167,7 @@ function Header() {
                       {userName}
                     </a>
                     <div
-                      className="dropdown-menu mt-3 shadow-sm w-50"
+                      className="dropdown-menu mt-3 shadow-sm w-25"
                       aria-labelledby="pagesDropdown"
                     >
                       <a
