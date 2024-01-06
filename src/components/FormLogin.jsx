@@ -80,7 +80,7 @@ function FormLogin() {
     }
     setClick(click+1);
     setLoading(true);
-    setUnSuccess(!loading);
+    setUnSuccess(false);
     if(!checkCapcha()) return;
     fetchLogin();
     if(!success) return ;

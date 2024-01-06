@@ -30,9 +30,10 @@ function Product() {
             setLoading(true);
             const response = await axios.get(API_URL.concat('/books'));
             const data = await response.data;
-            // console.log(data);
             setProducts(data);            
             setLoading(false);
+            // Lưu trữ dữ liệu sản phẩm trong bộ nhớ cache của trình duyệt
+            localStorage.setItem('products', JSON.stringify(data));
           } catch (error) {
             setLoading(true);
             console.log(error);
@@ -41,14 +42,12 @@ function Product() {
     useEffect(() => {
       if (localStorage.getItem('products')) {
         // Lấy dữ liệu từ bộ nhớ cache
-        const cachedProducts = localStorage.getItem('products');
+        const cachedProducts = JSON.parse(localStorage.getItem('products'));
         // Hiển thị dữ liệu sản phẩm trong giao diện
         setProducts(cachedProducts);
-        console.log(products);
       }else{
-        localStorage.setItem('products', products);
+        fetchData();
       }
-      fetchData();
       fetchDataCategory();
     }, []);
     
