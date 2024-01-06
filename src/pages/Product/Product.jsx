@@ -33,16 +33,16 @@ function Product() {
             setProducts(data);            
             setLoading(false);
             // Lưu trữ dữ liệu sản phẩm trong bộ nhớ cache của trình duyệt
-            localStorage.setItem('products', JSON.stringify(data));
+            sessionStorage.setItem('products', JSON.stringify(data));
           } catch (error) {
             setLoading(true);
             console.log(error);
         }
     }
     useEffect(() => {
-      if (localStorage.getItem('products')) {
+      if (sessionStorage.getItem('products')) {
         // Lấy dữ liệu từ bộ nhớ cache
-        const cachedProducts = JSON.parse(localStorage.getItem('products'));
+        const cachedProducts = JSON.parse(sessionStorage.getItem('products'));
         // Hiển thị dữ liệu sản phẩm trong giao diện
         setProducts(cachedProducts);
       }else{
@@ -54,8 +54,9 @@ function Product() {
     useEffect(() => {
       // Đặt điều kiện để chỉ gọi fetchData khi loading là true
       if (loading) {
-        if(!localStorage.getItem('products')){
-          fetchData()
+        if(!sessionStorage.getItem('products')){
+          fetchData();
+          localStorage.removeItem('products');
         }
         fetchDataCategory();
       }
