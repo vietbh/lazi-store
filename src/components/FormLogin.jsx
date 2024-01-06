@@ -41,13 +41,14 @@ function FormLogin() {
     try {
       const response = await axios.post(API_URL.concat('/login'),formData);
       const data = await response.data;
-      // console.log(data);
+      console.log(data);
       localStorage.setItem('userName',data[1]);
       if(response.status !== 200){
         setLoading(false);
         setUnSuccess(true);
         return;
       }
+      setSuccess(true);
     } catch (error) {
       setLoading(false);
       setUnSuccess(true);
@@ -81,6 +82,7 @@ function FormLogin() {
     }
     setClick(click+1);
     setLoading(true);
+    setUnSuccess(!loading);
     if(!checkCapcha()) return;
     fetchLogin();
     if(!success) return ;
