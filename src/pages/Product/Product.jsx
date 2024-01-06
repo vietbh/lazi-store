@@ -26,17 +26,17 @@ function Product() {
         }
     }
     const fetchData = async() => {
-        try {
-            setLoading(true);
-            const response = await axios.get(API_URL.concat('/books'));
-            const data = await response.data;           
-            setLoading(false);
-            // Lưu trữ dữ liệu sản phẩm trong bộ nhớ session của trình duyệt
-            sessionStorage.setItem('products', JSON.stringify(data));
-          } catch (error) {
-            setLoading(true);
-            console.log(error);
-        }
+      try {
+          setLoading(true);
+          const response = await axios.get(API_URL.concat('/books'));
+          const data = await response.data;           
+          setLoading(false);
+          // Lưu trữ dữ liệu sản phẩm trong bộ nhớ session của trình duyệt
+          sessionStorage.setItem('products', JSON.stringify(data));
+        } catch (error) {
+          setLoading(true);
+          console.log(error);
+      }
     }
     useEffect(() => {
       if (sessionStorage.getItem('products')) {
