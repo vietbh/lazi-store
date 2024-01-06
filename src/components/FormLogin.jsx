@@ -40,13 +40,14 @@ function FormLogin() {
    const fetchLogin = async () => {
     try {
       const response = await axios.post(API_URL.concat('/login'),formData);
+      const data = await response.data;
       if(response.status === 200){
-        const data = await response.data;
         localStorage.setItem('userName',data[1]);
         setSuccess(true);
+      }else{
+        setLoading(false);
+        setUnSuccess(true);
       }
-      setLoading(false);
-      setUnSuccess(true);
     } catch (error) {
       setLoading(false);
       setUnSuccess(true);
