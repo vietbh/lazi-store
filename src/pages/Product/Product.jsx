@@ -18,8 +18,9 @@ function Product() {
             setLoading(true);
             const response = await axios.get(API_URL.concat('/categories'));
             const data = await response.data;
-            setCategories(data);
             setLoading(false);
+            // Lưu trữ dữ liệu sản phẩm trong bộ nhớ session của trình duyệt
+            sessionStorage.setItem('categories', JSON.stringify(data));
           } catch (error) {
             setLoading(true);
             console.log(error);
@@ -47,17 +48,27 @@ function Product() {
       }else{
         fetchData();
       }
-      fetchDataCategory();
+      if (sessionStorage.getItem('products') && sessionStorage.getItem('categories')) {
+        // Lấy dữ liệu từ bộ nhớ session
+        const cachedProducts = JSON.parse(sessionStorage.getItem('products'));
+        const cachedCategories = JSON.parse(sessionStorage.getItem('categories'));
+        // Hiển thị dữ liệu sản phẩm trong giao diện
+        setProducts(cachedProducts);
+        setCategories(cachedCategories);
+      }else{
+        fetchData();
+        fetchDataCategory();
+      }
     }, []);
     
     useEffect(() => {
       // Đặt điều kiện để chỉ gọi fetchData khi loading là true
-      if(!sessionStorage.getItem('products')){
-      if (loading) {
-          fetchData();
-        }
+      if(sessionStorage.getItem('products').length <= 0){
+        if (loading) {
+            fetchData();
+            fetchDataCategory();
+          }
       }
-      fetchDataCategory();
     }, [loading]);
     const product = products.map((product) => {
       return (
