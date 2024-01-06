@@ -41,13 +41,12 @@ function FormLogin() {
     try {
       const response = await axios.post(API_URL.concat('/login'),formData);
       const data = await response.data;
-      console.log(data);
-      localStorage.setItem('userName',data[1]);
       if(response.status !== 200){
         setLoading(false);
         setUnSuccess(true);
         return;
       }
+      localStorage.setItem('userName',data[1]);
       setSuccess(true);
     } catch (error) {
       setLoading(false);

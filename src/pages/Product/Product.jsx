@@ -18,7 +18,6 @@ function Product() {
             setLoading(true);
             const response = await axios.get(API_URL.concat('/categories'));
             const data = await response.data;
-            console.log(data);
             setCategories(data);
             setLoading(false);
           } catch (error) {
@@ -32,7 +31,7 @@ function Product() {
             const response = await axios.get(API_URL.concat('/books'));
             const data = await response.data;
             // console.log(data);
-            setProducts(data);
+            setProducts(data);            
             setLoading(false);
           } catch (error) {
             setLoading(true);
@@ -40,13 +39,23 @@ function Product() {
         }
     }
     useEffect(() => {
+      if (localStorage.getItem('products')) {
+        // Lấy dữ liệu từ bộ nhớ cache
+        const cachedProducts = localStorage.getItem('products');
+        // Hiển thị dữ liệu sản phẩm trong giao diện
+        setProducts(cachedProducts);
+        console.log(products);
+      }else{
+        localStorage.setItem('products', products);
+      }
       fetchData();
       fetchDataCategory();
     }, []);
+    
     useEffect(() => {
       // Đặt điều kiện để chỉ gọi fetchData khi loading là true
       if (loading) {
-        fetchData();
+        fetchData()
         fetchDataCategory();
       }
     }, [loading]);
