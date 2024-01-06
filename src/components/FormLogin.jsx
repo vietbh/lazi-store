@@ -46,6 +46,7 @@ function FormLogin() {
         setSuccess(true);
       }else{
         setUnSuccess(true);
+        return false;
       }
     } catch (error) {
       console.log(error);
@@ -77,10 +78,9 @@ function FormLogin() {
       return setValidated(true);
     }
     setClick(click+1);
-    const check = checkCapcha();
-    if(!check) return;
+    if(!checkCapcha()) return;
     fetchLogin();
-    if(!success) return;
+    if(!success) return ;
     setSuccess(true);
     setCapcha(false);
   };
