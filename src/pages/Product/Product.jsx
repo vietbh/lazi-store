@@ -48,7 +48,9 @@ function Product() {
         // Hiển thị dữ liệu sản phẩm trong giao diện
         setProducts(cachedProducts);
         setCategories(cachedCategories);
+        setLoading(false);
       }else{
+        setLoading(true);
         fetchData();
         fetchDataCategory();
       }
@@ -56,12 +58,10 @@ function Product() {
     
     useEffect(() => {
       // Đặt điều kiện để chỉ gọi fetchData khi loading là true
-      if(sessionStorage.getItem('products').length <= 0){
         if (loading) {
             fetchData();
             fetchDataCategory();
           }
-      }
     }, [loading]);
     const product = products.map((product) => {
       return (
