@@ -19,6 +19,7 @@ function Product() {
             const response = await axios.get(API_URL.concat('/categories'));
             const data = await response.data;
             setLoading(false);
+            setCategories(data);
             // Lưu trữ dữ liệu sản phẩm trong bộ nhớ session của trình duyệt
             sessionStorage.setItem('categories', JSON.stringify(data));
           } catch (error) {
@@ -32,6 +33,7 @@ function Product() {
           const response = await axios.get(API_URL.concat('/books'));
           const data = await response.data;           
           setLoading(false);
+          setProducts(data);
           // Lưu trữ dữ liệu sản phẩm trong bộ nhớ session của trình duyệt
           sessionStorage.setItem('products', JSON.stringify(data));
         } catch (error) {
