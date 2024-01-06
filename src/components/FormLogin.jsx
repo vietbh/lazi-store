@@ -20,6 +20,7 @@ function FormLogin() {
   });
   const [success,setSuccess] = useState(false);
   const [unSuccess,setUnSuccess] = useState(false);
+  const [loading,setLoading] = useState(false);
   const [formData,setFormData] = useState({
     email:'',
     password:'',
@@ -39,20 +40,21 @@ function FormLogin() {
    const fetchLogin = async () => {
     try {
       const response = await axios.post(API_URL.concat('/login'),formData);
-      if(response.status == 200){
-        const data = response.data;
-        console.log(data);
-        localStorage.setItem('userName',data[1]);
-        setSuccess(true);
-      }else{
+      const data = await response.data;
+      // console.log(data);
+      localStorage.setItem('userName',data[1]);
+      if(response.status !== 200){
+        setLoading(false);
         setUnSuccess(true);
-        return false;
+        return;
       }
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+      setUnSuccess(true);
     }
 
   }
+
   const checkCapcha = () =>{
     if(formData.capcha !==''){
       if(randCapcha != formData.capcha){
@@ -78,17 +80,20 @@ function FormLogin() {
       return setValidated(true);
     }
     setClick(click+1);
+    setLoading(true);
     if(!checkCapcha()) return;
     fetchLogin();
     if(!success) return ;
+    setUnSuccess(false);
     setSuccess(true);
     setCapcha(false);
   };
  
   useEffect(() => {
-    if(success){
+    if(success && !unSuccess){
+      setLoading(true);
       localStorage.setItem('hasLogin',true);
-      setTimeout(()=> window.location.href = '/lazi-store',3000);
+      setTimeout(()=> window.location.href = '/lazi-store/',3000);
     }
     if(click >= 1000){
       setRandCapcha(Math.floor(10000 - Math.random() * 900000) + 1000000);
@@ -99,7 +104,7 @@ function FormLogin() {
     if(formData.rememberMe){
       localStorage.setItem('email',formData.email);
     }
-  },[click,success,formData]);
+  },[click,success,formData,unSuccess]);
 
   const handleShowPass = () => {
     setShowPass(!showPass);
@@ -115,7 +120,7 @@ function FormLogin() {
             {/* <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text> */}
             <Form.Control
               type="email"
-              placeholder="Nhập tài khoản"
+              placeholder="Nhập tài khoản email "
               aria-describedby="inputGroupPrepend"
               name='email'
               value={formData.email}
@@ -123,7 +128,7 @@ function FormLogin() {
               required
             />
             <Form.Control.Feedback type="invalid">
-              Vui lòng nhập trường này.
+              {formData.email == ''?'Vui lòng nhập trường này.':'Vui lòng nhập đúng định dạng email.'}
             </Form.Control.Feedback>
           </InputGroup>
         </Form.Group>
@@ -203,7 +208,7 @@ function FormLogin() {
       )}
       
       <div className='d-flex justify-content-center mb-3'>
-        <Button type="submit"  className='w-50 rounded-3 fw-medium'>{success?(<span>Đang đăng nhập...</span>):(<span>Đăng nhập</span>)}</Button>
+        <Button type="submit"  className='w-50 rounded-3 fw-medium'>{loading ?(<span>Đang đăng nhập...</span>):(<span>Đăng nhập</span>)}</Button>
       </div>
       <Row>
         <Col lg={4} md={3} sm={3}>
@@ -218,12 +223,12 @@ function FormLogin() {
       </Row>
       <Row className='mb-3'>
         <Col className='d-flex justify-content-center' >
-          <Button className='w-50 fw-bold btn-light rounded-2' type='button' onClick={()=>{setSuccess(true)}}><i className="fab fa-google"></i> Đăng nhập bằng Google</Button>
+          <Button className='w-50 fw-bold btn-light rounded-2' type='button' onClick={()=>{setSuccess(true);setUnSuccess(false)}}><i className="fab fa-google"></i> Đăng nhập bằng Google</Button>
         </Col>
       </Row>
       <Row className='mb-3'>
         <Col className='d-flex justify-content-center'>
-          <Button className='w-50 fw-bold btn-light rounded-2' type='button' onClick={()=>{setSuccess(true)}}><i className="fab fa-facebook-square"></i> Đăng nhập bằng Facebook</Button>
+          <Button className='w-50 fw-bold btn-light rounded-2' type='button' onClick={()=>{setSuccess(true);setUnSuccess(false)}}><i className="fab fa-facebook-square"></i> Đăng nhập bằng Facebook</Button>
         </Col>
       </Row>
     </Form>

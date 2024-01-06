@@ -196,7 +196,7 @@ function Header() {
                       </a>
                       <a
                         className="dropdown-item border-0 transition-link"
-                        href="/lazi-store"
+                        href="/lazi-store/"
                         onClick={handleLogout}
                       >
                         Đăng xuất
