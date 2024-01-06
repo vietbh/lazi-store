@@ -40,18 +40,11 @@ function Product() {
       }
     }
     useEffect(() => {
-      if (sessionStorage.getItem('products')) {
-        // Lấy dữ liệu từ bộ nhớ session
-        const cachedProducts = JSON.parse(sessionStorage.getItem('products'));
-        // Hiển thị dữ liệu sản phẩm trong giao diện
-        setProducts(cachedProducts);
-      }else{
-        fetchData();
-      }
       if (sessionStorage.getItem('products') && sessionStorage.getItem('categories')) {
         // Lấy dữ liệu từ bộ nhớ session
         const cachedProducts = JSON.parse(sessionStorage.getItem('products'));
         const cachedCategories = JSON.parse(sessionStorage.getItem('categories'));
+        console.log(cachedCategories);
         // Hiển thị dữ liệu sản phẩm trong giao diện
         setProducts(cachedProducts);
         setCategories(cachedCategories);
