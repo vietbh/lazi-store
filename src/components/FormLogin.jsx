@@ -188,6 +188,10 @@ function FormLogin() {
           <Link className='float-end' to={'/quen-mat-khau'}>Quên mật khẩu</Link>
         </Form.Group>
         <div className='text-center text-sm'>
+          <span>Trang web này được bảo vệ bởi reCAPTCHA và Google</span>
+          <a href="https://policies.google.com/privacy">Privacy Policy</a> và
+          <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+          {' '}
           { success && (<span className={'text-success'}>Đăng nhập thành công</span>)}
           { unSuccess && (<span className={'text-danger'}>Tài khoản chưa được đăng ký, vui lòng thử lại</span>)}
         </div>
