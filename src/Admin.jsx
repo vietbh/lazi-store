@@ -2,7 +2,6 @@
 function Admin() {
     return (
         <>
-         <Product />   
         </>
     );
 }
