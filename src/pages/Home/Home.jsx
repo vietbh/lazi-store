@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {bannerStyle,linkStyle,categoryBorderStyle,heightImageProduct,borderImageProduct} from './Home.js';
+// import {bannerStyle,linkStyle,categoryBorderStyle,heightImageProduct,borderImageProduct} from 'Home.js';
 
 function Home(){
     const [categories,setCategories] = useState([]);
@@ -33,16 +33,40 @@ function Home(){
         name:'Op lung'
         },
     ];
-
+    const bannerStyle = {
+        backgroundImage: 'url(img/hero-banner.jpg), linear-gradient(to bottom, #0001, #000)',
+        borderRadius: '20px',
+        WebkitBoxShadow: '0 10px 6px -6px #777',
+        MozBoxShadow: '0 10px 6px -6px #777',
+        boxShadow: '4px 10px 6px -6px #777',    
+    };
+    const linkStyle = {
+        background: 'url(img/product-5.jpg)',
+    };
+    const categoryBorderStyle = {
+        borderRadius: '20px',
+        borderLeft:'2px solid #bcbcbc',
+        borderRight:'2px solid #bcbcbc',
+        WebkitBoxShadow: '10px 10px 6px -6px #777',
+        MozBoxShadow: '10px 10px 6px -6px #777',
+        boxShadow: '0px 10px 6px -6px #777',
+    };
+    const heightImageProduct = {
+        borderRadius: '20px',
+        borderLeft:'2px solid #bcbcbc',
+        borderRight:'2px solid #bcbcbc',
+        WebkitBoxShadow: '10px 10px 6px -6px #777',
+        MozBoxShadow: '10px 10px 6px -6px #777',
+        boxShadow: '0px 10px 6px -6px #777',
+        height:'100%',
+    }
+    const borderImageProduct ={
+        borderRadius: '20px',
+    };
     useEffect(()=>{
         if(categories.length == 0 ){
             setCategories(data);
         }
-        // const interval = setInterval(()=>{
-        //     setCategories(data)
-
-        // },600000);
-        // return clearInterval(interval);
     },[data]);
 
     let category;
@@ -137,11 +161,11 @@ function Home(){
                     <h2 className="h5 text-uppercase mb-4">Tìm hiểu danh mục sau đây</h2>
                 </header>
                 <div className="row">
-                    <div className="col-md-4"><a className="category-item" href="shop.html"><img className="img-fluid" style={heightImageProduct}   src="img/banner_1.jpg" alt="" /><strong className="category-item-title rounded-3">MacBook</strong></a>
+                    <div className="col-md-4"><a className="category-item" style={heightImageProduct} href="shop.html"><img className="img-fluid" style={heightImageProduct} src="img/banner_1.jpg" alt="" /><strong className="category-item-title rounded-3">MacBook</strong></a>
                     </div>
                     <div className="col-md-4"><a className="category-item mb-4" href="shop.html"><img className="img-fluid" style={categoryBorderStyle} src="img/banner_2.jfif" alt="banner_2.jfif" /><strong className="category-item-title rounded-3">Ipad</strong></a><a className="category-item" href="shop.html"><img className="img-fluid" style={categoryBorderStyle} src="img/banner_3.jpg" alt="" /><strong className="category-item-title rounded-3">Apple Watch</strong></a>
                     </div>
-                    <div className="col-md-4"><a className="category-item" href="shop.html"><img className="img-fluid" style={heightImageProduct} src="img/banner_4.jpg" alt="" /><strong className="category-item-title rounded-3">Iphone</strong></a>
+                    <div className="col-md-4"><a className="category-item" style={heightImageProduct} href="shop.html"><img className="img-fluid" style={heightImageProduct} src="img/banner_4.jpg" alt="" /><strong className="category-item-title rounded-3">Iphone</strong></a>
                     </div>
                 </div>
                 </section>
