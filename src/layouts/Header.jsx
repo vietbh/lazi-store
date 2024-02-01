@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import FormSearch from "../components/FormSearch";
+import URL_PATH from '../config/UrlPath';
 
 function Header() {
   const currentPath = window.location.pathname;
@@ -47,7 +48,7 @@ function Header() {
       <header className="header bg-white">
         <div className="container px-lg-3">
           <nav className="navbar navbar-expand-lg navbar-light py-3 px-lg-0">
-            <a className="navbar-brand" href="/lazi-store">
+            <a className="navbar-brand" href={URL_PATH}>
               <span className="fw-bold text-uppercase text-dark">
                 LaziStore
               </span>
@@ -71,9 +72,9 @@ function Header() {
                 <li className="nav-item">
                   <Link
                     className={`nav-link ${
-                      Param === "/" || Param === "" ? "active" : " "
+                      Param === "/" || Param === "" ? "active" : ""
                     }`}
-                    to="/lazi-store"
+                    to={URL_PATH}
                   >
                     Trang chủ
                   </Link>

@@ -17,7 +17,7 @@ function Login(){
                                         <FormLogin />
                                     </div>
                                     <div className="card-footer bg-white">
-                                        <p>Bạn chưa có tài khoản.Hãy đăng ký <Link to={`/dang-ky`}>ở đây</Link></p>
+                                        <p>Bạn chưa có tài khoản.Hãy đăng ký <Link to={'/dang-ky'}>ở đây</Link></p>
                                     </div>
                                 </div>
                         </div>
