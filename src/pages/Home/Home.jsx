@@ -1,76 +1,24 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-// import {bannerStyle,linkStyle,categoryBorderStyle,heightImageProduct,borderImageProduct} from 'Home.js';
-
+import styles from './styles.module.css';
 function Home(){
     const [categories,setCategories] = useState([]);
-    const data = [{
-        id:1,
-        name:'Dien thoai'
-        },
-        {
-        id:2,
-        name:'May tinh'
-        },
-        {
-        id:3,
-        name:'Dong ho'
-        },
-        {
-        id:4,
-        name:'Tai nghe'
-        },
-        {
-        id:5,
-        name:'Op lung'
-        },
-        {
-        id:6,
-        name:'Op lung'
-        },
-        {
-        id:7,
-        name:'Op lung'
-        },
-    ];
-    const bannerStyle = {
-        backgroundImage: 'url(img/hero-banner.jpg), linear-gradient(to bottom, #0001, #000)',
-        borderRadius: '20px',
-        WebkitBoxShadow: '0 10px 6px -6px #777',
-        MozBoxShadow: '0 10px 6px -6px #777',
-        boxShadow: '4px 10px 6px -6px #777',    
-    };
-    const linkStyle = {
-        background: 'url(img/product-5.jpg)',
-    };
-    const categoryBorderStyle = {
-        borderRadius: '20px',
-        borderLeft:'2px solid #bcbcbc',
-        borderRight:'2px solid #bcbcbc',
-        WebkitBoxShadow: '10px 10px 6px -6px #777',
-        MozBoxShadow: '10px 10px 6px -6px #777',
-        boxShadow: '0px 10px 6px -6px #777',
-    };
-    const heightImageProduct = {
-        borderRadius: '20px',
-        borderLeft:'2px solid #bcbcbc',
-        borderRight:'2px solid #bcbcbc',
-        WebkitBoxShadow: '10px 10px 6px -6px #777',
-        MozBoxShadow: '10px 10px 6px -6px #777',
-        boxShadow: '0px 10px 6px -6px #777',
-        height:'100%',
-    }
-    const borderImageProduct ={
-        borderRadius: '20px',
-    };
     useEffect(()=>{
+        const data = [
+            {id:1,name:'Điện thoại'},
+            {id:2,name:'Máy tính'},
+            {id:3,name:'Đồng hồ'},
+            {id:4,name:'Tai nghe'},
+            {id:5,name:'Ốp lưng'},
+            {id:6,name:'Kính VR'},
+            {id:7,name:'Loa không dây'},
+        ];    
         if(categories.length == 0 ){
             setCategories(data);
         }
-    },[data]);
-
-    let category;
-    category = categories.map(category=>{
+        
+    },[categories]);    
+    let category = categories.map(category=>{
         return(
             <div key={category.id} className="col-sm-12 col-xl-2 mb-4 " style={{width:250,minHeight:75,maxHeight:80}}>
             <a href="##">
@@ -93,7 +41,7 @@ function Home(){
             <button className="btn-close p-4 position-absolute top-0 end-0 z-index-20 shadow-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             <div className="modal-body p-0">
                 <div className="row align-items-stretch">
-                <div className="col-lg-6 p-lg-0"><a className="glightbox product-view d-block h-100 bg-cover bg-center" style={linkStyle} href="img/product-5.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a><a className="glightbox d-none" href="img/product-5-alt-1.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a><a className="glightbox d-none" href="img/product-5-alt-2.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a></div>
+                <div className="col-lg-6 p-lg-0"><a className={`glightbox product-view d-block h-100 bg-cover bg-center ${styles.linkStyle}`} href="img/product-5.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a><a className="glightbox d-none" href="img/product-5-alt-1.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a><a className="glightbox d-none" href="img/product-5-alt-2.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a></div>
                 <div className="col-lg-6">
                     <div className="p-4 my-md-4">
                     <ul className="list-inline mb-2">
@@ -129,7 +77,7 @@ function Home(){
             <!-- HERO SECTION-->
             */}
             <div className="container">
-                <section className="hero pb-3 bg-cover bg-center d-flex align-items-center " style={bannerStyle}>
+                <section className={`hero pb-3 bg-cover bg-center d-flex align-items-center ${styles.bannerStyle}`}>
                 <div className="container py-5">
                     <div className="row px-4 px-lg-5">
                     <div className="col-lg-6">
@@ -161,11 +109,11 @@ function Home(){
                     <h2 className="h5 text-uppercase mb-4">Tìm hiểu danh mục sau đây</h2>
                 </header>
                 <div className="row">
-                    <div className="col-md-4"><a className="category-item" style={heightImageProduct} href="shop.html"><img className="img-fluid" style={heightImageProduct} src="img/banner_1.jpg" alt="" /><strong className="category-item-title rounded-3">MacBook</strong></a>
+                    <div className="col-md-4"><a className={`category-item ${styles.heightImageProduct}`} href="shop.html"><img className={`img-fluid ${styles.heightImageProduct}`}  src="img/banner_1.jpg" alt="banner_1.jpg" /><strong className="category-item-title rounded-3">MacBook</strong></a>
                     </div>
-                    <div className="col-md-4"><a className="category-item mb-4" href="shop.html"><img className="img-fluid" style={categoryBorderStyle} src="img/banner_2.jfif" alt="banner_2.jfif" /><strong className="category-item-title rounded-3">Ipad</strong></a><a className="category-item" href="shop.html"><img className="img-fluid" style={categoryBorderStyle} src="img/banner_3.jpg" alt="" /><strong className="category-item-title rounded-3">Apple Watch</strong></a>
+                    <div className="col-md-4"><a className="category-item mb-4" href="shop.html"><img className={`img-fluid ${styles.categoryBorderStyle}`} src="img/banner_2.jfif" alt="banner_2.jfif" /><strong className="category-item-title rounded-3">Ipad</strong></a><a className="category-item" href="shop.html"><img className={`img-fluid ${styles.categoryBorderStyle}`} src="img/banner_3.jpg" alt="" /><strong className="category-item-title rounded-3">Apple Watch</strong></a>
                     </div>
-                    <div className="col-md-4"><a className="category-item" style={heightImageProduct} href="shop.html"><img className="img-fluid" style={heightImageProduct} src="img/banner_4.jpg" alt="" /><strong className="category-item-title rounded-3">Iphone</strong></a>
+                    <div className="col-md-4"><a className={`category-item ${styles.heightImageProduct}`} href="shop.html"><img className={`img-fluid ${styles.heightImageProduct}`} src="img/banner_4.jpg" alt="banner_4.jpg" /><strong className="category-item-title rounded-3">Iphone</strong></a>
                     </div>
                 </div>
                 </section>
@@ -182,9 +130,9 @@ function Home(){
                 <!-- PRODUCT-->
                 */}
                     <div className="col-xl-3 col-lg-4 col-sm-6">
-                    <div className="product text-start bg-light p-3 mb-3" style={borderImageProduct}>
+                    <div className={`product text-start bg-light p-3 mb-3 ${styles.borderImageProduct}`}>
                         <div className="position-relative mb-3">
-                        <div className="badge text-white bg-" ></div><a className="d-block"  href="/chi-tiet-san-pham"><img className="img-fluid" style={borderImageProduct} src="img/product-1.jpg" alt="..." /></a>
+                        <div className="badge text-white "></div><a className="d-block"  href="/chi-tiet-san-pham"><img className={`img-fluid ${styles.borderImageProduct}`}  src="img/product-1.jpg" alt="product-1.jpg" /></a>
                         <div className="product-overlay">
                             <ul className="mb-0 list-inline">
                             <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
@@ -202,9 +150,9 @@ function Home(){
                     <!-- PRODUCT-->
                     */}
                     <div className="col-xl-3 col-lg-4 col-sm-6">
-                    <div className="product text-start bg-light p-3 mb-3" style={borderImageProduct}>
+                    <div className={`product text-start bg-light p-3 mb-3 ${styles.borderImageProduct}`}>
                         <div className="position-relative mb-3">
-                        <div className="badge text-white bg-danger">Sale</div><a className="d-block"  to="/chi-tiet-san-pham"><img className="img-fluid" style={borderImageProduct} src="img/product-2.jpg" alt="..." /></a>
+                        <div className="badge text-white bg-danger">Sale</div><a className="d-block"  to="/chi-tiet-san-pham"><img className={`img-fluid ${styles.borderImageProduct}`} src="img/product-2.jpg" alt="..." /></a>
                         <div className="product-overlay">
                             <ul className="mb-0 list-inline">
                             <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
@@ -222,9 +170,9 @@ function Home(){
                     <!-- PRODUCT-->
                     */}
                     <div className="col-xl-3 col-lg-4 col-sm-6">
-                    <div className="product text-start bg-light p-3 mb-3" style={borderImageProduct}>
+                    <div className={`product text-start bg-light p-3 mb-3 ${styles.borderImageProduct}`}>
                         <div className="position-relative mb-3">
-                        <div className="badge text-white bg- "></div><Link className="d-block"  to="/chi-tiet-san-pham"><img className="img-fluid" style={borderImageProduct} src="img/product-3.jpg" alt="..." /></Link>
+                        <div className="badge text-white bg- "></div><Link className="d-block"  to="/chi-tiet-san-pham"><img className={`img-fluid ${styles.borderImageProduct}`} src="img/product-3.jpg" alt="..." /></Link>
                         <div className="product-overlay">
                             <ul className="mb-0 list-inline">
                             <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
@@ -242,9 +190,9 @@ function Home(){
                     <!-- PRODUCT-->
                     */}
                     <div className="col-xl-3 col-lg-4 col-sm-6">
-                    <div className="product text-start bg-light p-3 mb-3" style={borderImageProduct}>
+                    <div className={`product text-start bg-light p-3 mb-3 ${styles.borderImageProduct}`}>
                         <div className="position-relative mb-3">
-                        <div className="badge text-white bg-info">New</div><Link className="d-block"  to="/chi-tiet-san-pham"><img className="img-fluid" style={borderImageProduct} src="img/product-4.jpg" alt="..."/></Link>
+                        <div className="badge text-white bg-info">New</div><Link className="d-block"  to="/chi-tiet-san-pham"><img className={`img-fluid ${styles.borderImageProduct}`} src="img/product-4.jpg" alt="..."/></Link>
                         <div className="product-overlay">
                             <ul className="mb-0 list-inline">
                             <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
@@ -262,9 +210,9 @@ function Home(){
                     <!-- PRODUCT-->
                     */}
                     <div className="col-xl-3 col-lg-4 col-sm-6">
-                    <div className="product text-start bg-light p-3 mb-3" style={borderImageProduct}>
+                    <div className={`product text-start bg-light p-3 mb-3 ${styles.borderImageProduct}`}>
                         <div className="position-relative mb-3">
-                        <div className="badge text-white bg-danger">Sold</div><Link className="d-block"  to="/chi-tiet-san-pham"><img className="img-fluid" style={borderImageProduct} src="img/product-5.jpg" alt="..."/></Link>
+                        <div className="badge text-white bg-danger">Sold</div><Link className="d-block"  to="/chi-tiet-san-pham"><img className={`img-fluid ${styles.borderImageProduct}`} src="img/product-5.jpg" alt="..."/></Link>
                         <div className="product-overlay">
                             <ul className="mb-0 list-inline">
                             <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
@@ -282,9 +230,9 @@ function Home(){
                     <!-- PRODUCT-->
                     */}
                     <div className="col-xl-3 col-lg-4 col-sm-6">
-                    <div className="product text-start bg-light p-3 mb-3" style={borderImageProduct}>
+                    <div className={`product text-start bg-light p-3 mb-3 ${styles.borderImageProduct}`}>
                         <div className="position-relative mb-3">
-                        <div className="badge text-white bg-"></div><Link className="d-block"  to="/chi-tiet-san-pham"><img className="img-fluid" style={borderImageProduct} src="img/product-6.jpg" alt="..."/></Link>
+                        <div className="badge text-white bg-"></div><Link className="d-block"  to="/chi-tiet-san-pham"><img className={`img-fluid ${styles.borderImageProduct}`} src="img/product-6.jpg" alt="..."/></Link>
                         <div className="product-overlay">
                             <ul className="mb-0 list-inline">
                             <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
@@ -302,9 +250,9 @@ function Home(){
                     <!-- PRODUCT-->
                     */}
                     <div className="col-xl-3 col-lg-4 col-sm-6">
-                    <div className="product text-start bg-light p-3 mb-3" style={borderImageProduct}>
+                    <div className={`product text-start bg-light p-3 mb-3 ${styles.borderImageProduct}`}>
                         <div className="position-relative mb-3">
-                        <div className="badge text-white bg-"></div><a className="d-block"  to="/chi-tiet-san-pham"><img className="img-fluid" style={borderImageProduct} src="img/product-7.jpg" alt="..."/></a>
+                        <div className="badge text-white bg-"></div><a className="d-block"  to="/chi-tiet-san-pham"><img className={`img-fluid ${styles.borderImageProduct}`} src="img/product-7.jpg" alt="..."/></a>
                         <div className="product-overlay">
                             <ul className="mb-0 list-inline">
                             <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
@@ -322,9 +270,9 @@ function Home(){
                     <!-- PRODUCT-->
                     */}
                     <div className="col-xl-3 col-lg-4 col-sm-6">
-                    <div className="product text-start bg-light p-3 mb-3" style={borderImageProduct}>
+                    <div className={`product text-start bg-light p-3 mb-3 ${styles.borderImageProduct}`}>
                         <div className="position-relative mb-3">
-                        <div className="badge text-white bg-"></div><a className="d-block"  to="/chi-tiet-san-pham"><img className="img-fluid" style={borderImageProduct} src="img/product-8.jpg" alt="..."/></a>
+                        <div className="badge text-white bg-"></div><a className="d-block"  to="/chi-tiet-san-pham"><img className={`img-fluid ${styles.borderImageProduct}`} src="img/product-8.jpg" alt="..."/></a>
                         <div className="product-overlay">
                             <ul className="mb-0 list-inline">
                             <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
