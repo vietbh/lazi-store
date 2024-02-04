@@ -1,31 +1,35 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-// import React from 'react';
+import styles from './styles.module.css';
 function Home(){
-    const bannerStyle = {
-        background: 'url(img/hero-banner.jpg)',
-        borderRadius: '20px',
-        backgroundImage: 'fill 1 linear-gradient(to bottom, #0001, #000)',
-        webkitBoxShadow: '0 10px 6px -6px #777',
-        mozBoxShadow: '0 10px 6px -6px #777',
-        boxShadow: '5px 10px 6px -6px #777',    
-      };
-    const linkStyle = {
-        background: 'url(/img/product-5.jpg)',
-      };
-    const categoryBorderStyle = {
-    borderRadius: '20px',
-    borderLeft:'2px solid #bcbcbc',
-    borderRight:'2px solid #bcbcbc',
-    // fontWeight: 'bold',
-    webkitBoxShadow: '10px 10px 6px -6px #777',
-    mozBoxShadow: '10px 10px 6px -6px #777',
-    boxShadow: '0px 10px 6px -6px #777',
-      };
-    const borderImageProduct ={
-        borderRadius: '20px',
-    };
-
+    const [categories,setCategories] = useState([]);
+    useEffect(()=>{
+        const data = [
+            {id:1,name:'Điện thoại'},
+            {id:2,name:'Máy tính'},
+            {id:3,name:'Đồng hồ'},
+            {id:4,name:'Tai nghe'},
+            {id:5,name:'Ốp lưng'},
+            {id:6,name:'Kính VR'},
+            {id:7,name:'Loa không dây'},
+        ];    
+        if(categories.length == 0 ){
+            setCategories(data);
+        }
+        
+    },[categories]);    
+    let category = categories.map(category=>{
+        return(
+            <div key={category.id} className="col-sm-12 col-xl-2 mb-4 " style={{width:250,minHeight:75,maxHeight:80}}>
+            <a href="##">
+                <button className="text-start rounded-3 btn btn-light w-100 h-100 " >
+                    <p className="m-1 overflow-hidden">{category.name}</p>
+                </button>
+            </a>
+            </div>   
+        )
+    }
+    );
     return(
         <>
         {/*
@@ -37,7 +41,7 @@ function Home(){
             <button className="btn-close p-4 position-absolute top-0 end-0 z-index-20 shadow-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             <div className="modal-body p-0">
                 <div className="row align-items-stretch">
-                <div className="col-lg-6 p-lg-0"><a className="glightbox product-view d-block h-100 bg-cover bg-center" style={linkStyle} href="img/product-5.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a><a className="glightbox d-none" href="img/product-5-alt-1.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a><a className="glightbox d-none" href="img/product-5-alt-2.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a></div>
+                <div className="col-lg-6 p-lg-0"><a className={`glightbox product-view d-block h-100 bg-cover bg-center ${styles.linkStyle}`} href="img/product-5.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a><a className="glightbox d-none" href="img/product-5-alt-1.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a><a className="glightbox d-none" href="img/product-5-alt-2.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a></div>
                 <div className="col-lg-6">
                     <div className="p-4 my-md-4">
                     <ul className="list-inline mb-2">
@@ -73,16 +77,29 @@ function Home(){
             <!-- HERO SECTION-->
             */}
             <div className="container">
-                <section className="hero pb-3 bg-cover bg-center d-flex align-items-center " style={bannerStyle}>
+                <section className={`hero pb-3 bg-cover bg-center d-flex align-items-center ${styles.bannerStyle}`}>
                 <div className="container py-5">
                     <div className="row px-4 px-lg-5">
                     <div className="col-lg-6">
                         <p className="text-muted small text-uppercase mb-2">New Inspiration 2020</p>
-                        <h1 className="h2 text-uppercase mb-3">20% off on new season</h1><a className="btn btn-dark" href="shop.html">Browse collections</a>
+                        <h1 className="h2 text-uppercase mb-3">20% off on new season</h1><a className="btn btn-dark rounded-3" href="shop.html">Xem ngay những sản phẩm mới</a>
                     </div>
                     </div>
                 </div>
                 </section>
+                                {/* 
+                <!-- CATEGORIES ALL SECTION-->
+                */}
+                <section className="pt-5">
+                <header className="text-start">
+                    <p className="small text-muted small text-uppercase mb-1">Dưới đây là danh mục sản phẩm của chúng tôi</p>
+                    <h2 className="h5 text-uppercase mb-4">Tìm hiểu danh mục sau đây</h2>
+                </header>
+                <div className="row">
+                    {category}
+                </div>
+                </section>
+
                 {/* 
                 <!-- CATEGORIES SECTION-->
                 */}
@@ -92,11 +109,11 @@ function Home(){
                     <h2 className="h5 text-uppercase mb-4">Tìm hiểu danh mục sau đây</h2>
                 </header>
                 <div className="row">
-                    <div className="col-md-4"><a className="category-item" href="shop.html"><img className="img-fluid" style={categoryBorderStyle} src="img/banner_1.jpg" alt="" /><strong className="category-item-title rounded-3">MacBook</strong></a>
+                    <div className="col-md-4"><a className={`category-item ${styles.heightImageProduct}`} href="shop.html"><img className={`img-fluid ${styles.categoryBorderStyle}`}  src="img/banner_1.jpg" alt="banner_1.jpg" /><strong className="category-item-title rounded-3">MacBook</strong></a>
                     </div>
-                    <div className="col-md-4"><a className="category-item mb-4" href="shop.html"><img className="img-fluid" style={categoryBorderStyle} src="img/banner_2.jfif" alt="banner_2.jfif" /><strong className="category-item-title rounded-3">Ipad</strong></a><a className="category-item" href="shop.html"><img className="img-fluid" style={categoryBorderStyle} src="img/banner_3.jpg" alt="" /><strong className="category-item-title rounded-3">Apple Watch</strong></a>
+                    <div className="col-md-4"><a className="category-item mb-4" href="shop.html"><img className={`img-fluid ${styles.categoryBorderStyle}`} src="img/banner_2.jfif" alt="banner_2.jfif" /><strong className="category-item-title rounded-3">Ipad</strong></a><a className="category-item" href="shop.html"><img className={`img-fluid ${styles.categoryBorderStyle}`} src="img/banner_3.jpg" alt="" /><strong className="category-item-title rounded-3">Apple Watch</strong></a>
                     </div>
-                    <div className="col-md-4"><a className="category-item" href="shop.html"><img className="img-fluid" style={categoryBorderStyle} src="img/banner_4.jpg" alt="" /><strong className="category-item-title rounded-3">Iphone</strong></a>
+                    <div className="col-md-4"><a className={`category-item ${styles.heightImageProduct}`} href="shop.html"><img className={`img-fluid ${styles.categoryBorderStyle}`} src="img/banner_4.jpg" alt="banner_4.jpg" /><strong className="category-item-title rounded-3">Iphone</strong></a>
                     </div>
                 </div>
                 </section>
@@ -113,33 +130,33 @@ function Home(){
                 <!-- PRODUCT-->
                 */}
                     <div className="col-xl-3 col-lg-4 col-sm-6">
-                    <div className="product text-start bg-light p-3 mb-3" style={borderImageProduct}>
+                    <div className={`product text-start bg-light p-3 mb-3 ${styles.borderImageProduct}`}>
                         <div className="position-relative mb-3">
-                        <div className="badge text-white bg-" ></div><a className="d-block"  href="/chi-tiet-san-pham"><img className="img-fluid" style={borderImageProduct} src="img/product-1.jpg" alt="..." /></a>
+                        <div className="badge text-white "></div><a className="d-block"  href="/chi-tiet-san-pham"><img className={`img-fluid ${styles.borderImageProduct}`}  src="img/product-1.jpg" alt="product-1.jpg" /></a>
                         <div className="product-overlay">
                             <ul className="mb-0 list-inline">
                             <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
-                            <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html">Thêm vào giỏ</a></li>
+                            <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html"><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li>
                             <li className="list-inline-item me-0"><a className="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i className="fas fa-expand"></i></a></li>
                             </ul>
                         </div>
                         </div>
                         <h6> <a className="reset-anchor"  href={'/chi-tiet-san-pham'} >Iphone</a></h6>
                         <h6> <a className="reset-anchor"  href={'/chi-tiet-san-pham'} >Kui Ye Chen’s AirPods</a></h6>
-                        <p className="mb-1 small text-black">$250</p>
+                        <p className=" mb-1 small text-black">$250</p>
                     </div>
                     </div>
                     {/* 
                     <!-- PRODUCT-->
                     */}
                     <div className="col-xl-3 col-lg-4 col-sm-6">
-                    <div className="product text-start bg-light p-3 mb-3" style={borderImageProduct}>
+                    <div className={`product text-start bg-light p-3 mb-3 ${styles.borderImageProduct}`}>
                         <div className="position-relative mb-3">
-                        <div className="badge text-white bg-danger">Sale</div><a className="d-block"  to="/chi-tiet-san-pham"><img className="img-fluid" style={borderImageProduct} src="img/product-2.jpg" alt="..." /></a>
+                        <div className="badge text-white bg-danger">Sale</div><a className="d-block"  to="/chi-tiet-san-pham"><img className={`img-fluid ${styles.borderImageProduct}`} src="img/product-2.jpg" alt="..." /></a>
                         <div className="product-overlay">
                             <ul className="mb-0 list-inline">
                             <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
-                            <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html">Add to cart</a></li>
+                            <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html"><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li>
                             <li className="list-inline-item me-0"><a className="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i className="fas fa-expand"></i></a></li>
                             </ul>
                         </div>
@@ -153,13 +170,13 @@ function Home(){
                     <!-- PRODUCT-->
                     */}
                     <div className="col-xl-3 col-lg-4 col-sm-6">
-                    <div className="product text-start bg-light p-3 mb-3" style={borderImageProduct}>
+                    <div className={`product text-start bg-light p-3 mb-3 ${styles.borderImageProduct}`}>
                         <div className="position-relative mb-3">
-                        <div className="badge text-white bg- "></div><Link className="d-block"  to="/chi-tiet-san-pham"><img className="img-fluid" style={borderImageProduct} src="img/product-3.jpg" alt="..." /></Link>
+                        <div className="badge text-white bg- "></div><Link className="d-block"  to="/chi-tiet-san-pham"><img className={`img-fluid ${styles.borderImageProduct}`} src="img/product-3.jpg" alt="..." /></Link>
                         <div className="product-overlay">
                             <ul className="mb-0 list-inline">
                             <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
-                            <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html">Add to cart</a></li>
+                            <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html"><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li>
                             <li className="list-inline-item me-0"><a className="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i className="fas fa-expand"></i></a></li>
                             </ul>
                         </div>
@@ -173,13 +190,13 @@ function Home(){
                     <!-- PRODUCT-->
                     */}
                     <div className="col-xl-3 col-lg-4 col-sm-6">
-                    <div className="product text-start bg-light p-3 mb-3" style={borderImageProduct}>
+                    <div className={`product text-start bg-light p-3 mb-3 ${styles.borderImageProduct}`}>
                         <div className="position-relative mb-3">
-                        <div className="badge text-white bg-info">New</div><Link className="d-block"  to="/chi-tiet-san-pham"><img className="img-fluid" style={borderImageProduct} src="img/product-4.jpg" alt="..."/></Link>
+                        <div className="badge text-white bg-info">New</div><Link className="d-block"  to="/chi-tiet-san-pham"><img className={`img-fluid ${styles.borderImageProduct}`} src="img/product-4.jpg" alt="..."/></Link>
                         <div className="product-overlay">
                             <ul className="mb-0 list-inline">
                             <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
-                            <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html">Add to cart</a></li>
+                            <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html"><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li>
                             <li className="list-inline-item me-0"><a className="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i className="fas fa-expand"></i></a></li>
                             </ul>
                         </div>
@@ -193,33 +210,33 @@ function Home(){
                     <!-- PRODUCT-->
                     */}
                     <div className="col-xl-3 col-lg-4 col-sm-6">
-                    <div className="product text-start bg-light p-3 mb-3" style={borderImageProduct}>
+                    <div className={`product text-start bg-light p-3 mb-3 ${styles.borderImageProduct}`}>
                         <div className="position-relative mb-3">
-                        <div className="badge text-white bg-danger">Sold</div><Link className="d-block"  to="/chi-tiet-san-pham"><img className="img-fluid" style={borderImageProduct} src="img/product-5.jpg" alt="..."/></Link>
+                        <div className="badge text-white bg-danger">Sold</div><Link className="d-block"  to="/chi-tiet-san-pham"><img className={`img-fluid ${styles.borderImageProduct}`} src="img/product-5.jpg" alt="..."/></Link>
                         <div className="product-overlay">
                             <ul className="mb-0 list-inline">
                             <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
-                            <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html">Add to cart</a></li>
+                            <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html"><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li>
                             <li className="list-inline-item me-0"><a className="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i className="fas fa-expand"></i></a></li>
                             </ul>
                         </div>
                         </div>
                         <h6> <Link className="reset-anchor"  to="/chi-tiet-san-pham">Iphone</Link></h6>
                         <h6> <Link className="reset-anchor"  to="/chi-tiet-san-pham">Red digital smartwatch</Link></h6>
-                        <p className="mb-1 small text-black">$250</p>
+                        <p className="mb-1 small text-black">$250 <span></span></p>
                     </div>
                     </div>
                     {/* 
                     <!-- PRODUCT-->
                     */}
                     <div className="col-xl-3 col-lg-4 col-sm-6">
-                    <div className="product text-start bg-light p-3 mb-3" style={borderImageProduct}>
+                    <div className={`product text-start bg-light p-3 mb-3 ${styles.borderImageProduct}`}>
                         <div className="position-relative mb-3">
-                        <div className="badge text-white bg-"></div><Link className="d-block"  to="/chi-tiet-san-pham"><img className="img-fluid" style={borderImageProduct} src="img/product-6.jpg" alt="..."/></Link>
+                        <div className="badge text-white bg-"></div><Link className="d-block"  to="/chi-tiet-san-pham"><img className={`img-fluid ${styles.borderImageProduct}`} src="img/product-6.jpg" alt="..."/></Link>
                         <div className="product-overlay">
                             <ul className="mb-0 list-inline">
                             <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
-                            <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html">Add to cart</a></li>
+                            <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html"><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li>
                             <li className="list-inline-item me-0"><a className="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i className="fas fa-expand"></i></a></li>
                             </ul>
                         </div>
@@ -233,13 +250,13 @@ function Home(){
                     <!-- PRODUCT-->
                     */}
                     <div className="col-xl-3 col-lg-4 col-sm-6">
-                    <div className="product text-start bg-light p-3 mb-3" style={borderImageProduct}>
+                    <div className={`product text-start bg-light p-3 mb-3 ${styles.borderImageProduct}`}>
                         <div className="position-relative mb-3">
-                        <div className="badge text-white bg-"></div><a className="d-block"  to="/chi-tiet-san-pham"><img className="img-fluid" style={borderImageProduct} src="img/product-7.jpg" alt="..."/></a>
+                        <div className="badge text-white bg-"></div><a className="d-block"  to="/chi-tiet-san-pham"><img className={`img-fluid ${styles.borderImageProduct}`} src="img/product-7.jpg" alt="..."/></a>
                         <div className="product-overlay">
                             <ul className="mb-0 list-inline">
                             <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
-                            <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html">Add to cart</a></li>
+                            <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html"><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li>
                             <li className="list-inline-item me-0"><a className="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i className="fas fa-expand"></i></a></li>
                             </ul>
                         </div>
@@ -253,13 +270,13 @@ function Home(){
                     <!-- PRODUCT-->
                     */}
                     <div className="col-xl-3 col-lg-4 col-sm-6">
-                    <div className="product text-start bg-light p-3 mb-3" style={borderImageProduct}>
+                    <div className={`product text-start bg-light p-3 mb-3 ${styles.borderImageProduct}`}>
                         <div className="position-relative mb-3">
-                        <div className="badge text-white bg-"></div><a className="d-block"  to="/chi-tiet-san-pham"><img className="img-fluid" style={borderImageProduct} src="img/product-8.jpg" alt="..."/></a>
+                        <div className="badge text-white bg-"></div><a className="d-block"  to="/chi-tiet-san-pham"><img className={`img-fluid ${styles.borderImageProduct}`} src="img/product-8.jpg" alt="..."/></a>
                         <div className="product-overlay">
                             <ul className="mb-0 list-inline">
                             <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
-                            <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html">Add to cart</a></li>
+                            <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html"><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li>
                             <li className="list-inline-item me-0"><a className="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i className="fas fa-expand"></i></a></li>
                             </ul>
                         </div>

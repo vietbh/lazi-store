@@ -260,12 +260,12 @@ function FormLogin() {
       </Row>
       <Row className='mb-3'>
         <Col className='d-flex justify-content-center' >
-          <Button className='w-50 fw-bold btn-light rounded-2' type='button' onClick={handleLoginGoogle}><i className="fab fa-google"></i> Đăng nhập bằng Google</Button>
+          <Button className='text-start w-50 fw-bold btn-light rounded-2' type='button' onClick={handleLoginGoogle}><i className="fab fa-google"></i> Đăng nhập bằng Google</Button>
         </Col>
       </Row>
       <Row className='mb-3'>
         <Col className='d-flex justify-content-center'>
-          <Button className='w-50 fw-bold btn-light rounded-2' type='button' onClick={handleLoginFaceBook}><i className="fab fa-facebook-square"></i> Đăng nhập bằng Facebook</Button>
+          <Button className='text-start w-50 fw-bold btn-light rounded-2' type='button' onClick={handleLoginFaceBook}><i className="fab fa-facebook-square"></i> Đăng nhập bằng Facebook</Button>
         </Col>
       </Row>
     </Form>
