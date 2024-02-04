@@ -15,6 +15,7 @@
     --webkit-box-shadow: 10px 10px 6px -6px #777;
     --moz-box-shadow: 10px 10px 6px -6px #777;
     box-shadow: 0px 10px 6px -6px #777;
+    height: 100%;
 }
 .heightImageProduct{
     height: 100%;
