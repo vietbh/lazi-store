@@ -16,7 +16,7 @@ function Product() {
     const fetchDataCategory = async() => {
         try {
             setLoading(true);
-            const response = await axios.get(API_URL.concat('/categories'));
+            const response = await axios.get(API_URL.concat('/danh-muc-san-pham'));
             const data = await response.data;
             setLoading(false);
             setCategories(data);
@@ -30,7 +30,7 @@ function Product() {
     const fetchData = async() => {
       try {
           setLoading(true);
-          const response = await axios.get(API_URL.concat('/books'));
+          const response = await axios.get(API_URL.concat('/san-pham'));
           const data = await response.data;           
           setLoading(false);
           setProducts(data);
