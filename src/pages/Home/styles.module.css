@@ -1,5 +1,5 @@
 .bannerStyle{
-    background: url(img/hero-banner.jpg), linear-gradient(to bottom, #0001, #000);
+    background: url(img/hero-banner.jpg) ,linear-gradient(to bottom, #0001, #000);
     border-radius: 20px;
     --webkit-box-shadow: 0 10px 6px -6px #777;
     --moz-box-shadow: 0 10px 6px -6px #777;
