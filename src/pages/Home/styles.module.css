@@ -1,12 +1,12 @@
 .bannerStyle{
-    background-image: url(img/hero-banner.jpg), linear-gradient(to bottom, #0001, #000);
+    background-image: url('img/hero-banner.jpg'), linear-gradient(to bottom, #0001, #000);
     border-radius: 20px;
     --webkit-box-shadow: 0 10px 6px -6px #777;
     --moz-box-shadow: 0 10px 6px -6px #777;
     box-shadow: 4px 10px 6px -6px #777;    
 }
 .linkStyle{
-    background: url(img/product-5.jpg);
+    background: url('img/product-5.jpg');
 }
 .categoryBorderStyle{
     border-radius: 20px;
