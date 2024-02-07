@@ -13,26 +13,28 @@ import Blog from "./pages/Blog/Blog";
 import Page403 from './pages/Admin/400/Page403';
 import DetailBlog from "./pages/Blog/DetailBlog";
 import Contact from "./pages/FAQ/Contact";
+import URL_PATH from "./config/UrlPath";
 'use client'
 
  function Client(){
+  
     return(
         <div className="page-holder">
           <Header />
           <div style={{minHeight:550}}>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/lazi-store" element={<Home />} />
-              <Route path="/lazi-store/lien-he" element={<Contact />} />
-              <Route path="/cua-hang" element={<Product />} />
-              <Route path="/bai-viet" element={<Blog />} />
-              <Route path="/dang-nhap" element={<Login />} />
-              <Route path="/dang-ky" element={<Register />} />
-              <Route path="/quen-mat-khau" element={<ForgetPassword />} />
-              <Route path="/gio-hang" element={<Cart />} />
-              <Route path="/chi-tiet-san-pham" element={<DetailProduct />} />
-              <Route path="/tien-hanh-dat-hang" element={<Checkout />} />
-              <Route path="/chi-tiet-bai-viet" element={<DetailBlog />} />
+              <Route path={URL_PATH} element={<Home />} />
+              <Route path={URL_PATH.concat("/lien-he")} element={<Contact />} />
+              <Route path={URL_PATH.concat("/cua-hang")} element={<Product />} />
+              <Route path={URL_PATH.concat("/bai-viet")} element={<Blog />} />
+              <Route path={URL_PATH.concat("/dang-nhap")} element={<Login />} />
+              <Route path={URL_PATH.concat("/dang-ky")} element={<Register />} />
+              <Route path={URL_PATH.concat("/quen-mat-khau")} element={<ForgetPassword />} />
+              <Route path={URL_PATH.concat("/gio-hang")} element={<Cart />} />
+              <Route path={URL_PATH.concat("/cua-hang/:slugSanPham")} element={<DetailProduct />} />
+              <Route path={URL_PATH.concat("/tien-hanh-dat-hang")} element={<Checkout />} />
+              <Route path={URL_PATH.concat("/chi-tiet-bai-viet")} element={<DetailBlog />} />
               <Route path="*" element={<Page403 />} />
             </Routes>
           </div>

@@ -1,5 +1,7 @@
+// import { useParams } from "react-router-dom";
 
 const DetailProduct = () => {
+    // const slugSanPham = useParams();
     return (
         <>
 

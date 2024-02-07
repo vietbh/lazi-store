@@ -3,12 +3,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import API_URL from "../../config/Api";
+import styles from "./styles.module.css";
 
 function Product() {
 
-    const linkStyle = {
-        background: 'url(/public/img/product-5.jpg)',
-      };
     const [products,setProducts] = useState([]);
     const [categories,setCategories] = useState([]);
     const [loading,setLoading] = useState(false);
@@ -46,7 +44,10 @@ function Product() {
         // Lấy dữ liệu từ bộ nhớ session
         const cachedProducts = JSON.parse(sessionStorage.getItem('products'));
         const cachedCategories = JSON.parse(sessionStorage.getItem('categories'));
-        console.log(cachedCategories);
+        if(products.length != cachedProducts.length){
+          setLoading(true);
+          fetchData()  
+        }
         // Hiển thị dữ liệu sản phẩm trong giao diện
         setProducts(cachedProducts);
         setCategories(cachedCategories);
@@ -56,21 +57,25 @@ function Product() {
         fetchData();
         fetchDataCategory();
       }
-    }, []);
+    }, [products.length]);
     
     useEffect(() => {
       // Đặt điều kiện để chỉ gọi fetchData khi loading là true
-        if (loading) {
-            fetchData();
-            fetchDataCategory();
-          }
+      if (loading) {
+          fetchData();
+          fetchDataCategory();
+        }
     }, [loading]);
     const product = products.map((product) => {
+      let price = product.variations.map((variation,index) => {
+        if(index==0)
+        return(<p key={variation.id} className="small text-muted">{variation.price_sale*1000} vnd</p>)
+        });
       return (
-        <div key={product.book_id} className={`col-lg-${grid} col-sm-6`}>
+        <div key={product.id} className={`col-lg-${grid} col-sm-6`}>
           <div className="product text-center">
             <div className="mb-3 position-relative">
-              <div className="badge text-white bg-"></div><a className="d-block" href="detail.html"><img className="img-fluid w-100" src={product.book_image} alt="..."/></a>
+              <div className="badge text-white"></div><a className="d-block" href="detail.html"><img className="img-fluid w-100" src={product.image_url} alt={product.image_url}/></a>
               <div className="product-overlay">
                 <ul className="mb-0 list-inline">
                   <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
@@ -79,21 +84,23 @@ function Product() {
                 </ul>
               </div>
             </div>
-            <h6> <Link className="reset-anchor" to="lazi-store/chi-tiet-san-pham">{product.book_title}</Link></h6>
-            <p className="small text-muted">{product.book_price*1000} vnd</p>
+            <h6> <Link className="reset-anchor" to={product.slug}>{product.name}</Link></h6>
+            {price}
           </div>
         </div>
       );
     });
 
     const category = categories.map((category) => {
-      return (
-        <div key={category.category_id}>
-          <ul className="list-unstyled small text-muted ps-lg-4 font-weight-normal">
-            <li className="mb-2"><button className="btn rounded-0 reset-anchor" href="#!">{category.category_name}</button></li>
-          </ul>
-        </div>
-      );
+      if(category.show_hide =='show'){
+        return (
+          <div key={category.id}>
+            <ul className="list-unstyled small text-muted ps-lg-4 font-weight-normal">
+              <li className="mb-2"><a className="btn rounded-0 reset-anchor" href="#!">{category.title}</a></li>
+            </ul>
+          </div>
+        );
+      }
     });
 
     return (
@@ -105,7 +112,7 @@ function Product() {
                       <button className="btn-close p-4 position-absolute top-0 end-0 z-index-20 shadow-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                       <div className="modal-body p-0">
                       <div className="row align-items-stretch">
-                          <div className="col-lg-6 p-lg-0"><a className="glightbox product-view d-block h-100 bg-cover bg-center" style={linkStyle} href="img/product-5.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a><a className="glightbox d-none" href="img/product-5-alt-1.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a><a className="glightbox d-none" href="img/product-5-alt-2.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a></div>
+                          <div className="col-lg-6 p-lg-0"><a className={`glightbox product-view d-block h-100 bg-cover bg-center ${styles.linkStyle}`} href="img/product-5.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a><a className="glightbox d-none" href="img/product-5-alt-1.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a><a className="glightbox d-none" href="img/product-5-alt-2.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a></div>
                           <div className="col-lg-6">
                           <div className="p-4 my-md-4">
                               <ul className="list-inline mb-2">
@@ -168,7 +175,7 @@ function Product() {
 
                   <div className="col-lg-3 order-2 order-lg-1">
                     <h5 className="text-uppercase mb-4">Danh mục</h5>
-                    <div className="py-2 px-4 bg-dark text-white mb-3"><strong className="small text-uppercase fw-bold">Thể loại sách &amp; Acc</strong></div>
+                    <div className="py-2 px-4 bg-dark text-white mb-3"><strong className="small text-uppercase fw-bold">Danh mục &amp; Acc</strong></div>
                     {category}
                     <div className="py-2 px-4 bg-light mb-3"><strong className="small text-uppercase fw-bold">Health &amp; Beauty</strong></div>
                     <ul className="list-unstyled small text-muted ps-lg-4 font-weight-normal">

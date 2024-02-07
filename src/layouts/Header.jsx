@@ -1,10 +1,10 @@
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import FormSearch from "../components/FormSearch";
 import URL_PATH from '../config/UrlPath';
 
 function Header() {
   const currentPath = window.location.pathname;
-  const Param = useParams();
+  console.log(currentPath.split(''));
   if (localStorage.length > 0) {
     var hasLogin = localStorage.getItem("hasLogin");
     var userName = localStorage.getItem("userName");
@@ -14,8 +14,25 @@ function Header() {
     localStorage.removeItem('hasLogin');
     localStorage.removeItem('userName');
   };
-  // console.log(currentPath);
-  // console.log(Param);
+  const menuLists = [
+    {name:'Trang chủ',link:'/'},
+    {name:'Cửa hàng',link:'/cua-hang'},
+    {name:'Tin tức',link:'/bai-viet'},
+    // {name:'Danh mục',link:''
+  ];
+  const menuList = menuLists.map((menu) => {
+    return(
+      <li className="nav-item" key={menu.name}>
+        <Link
+          className={`nav-link
+        ${currentPath.split('').includes(URL_PATH.concat(menu.link).split(''))  && "active"}`}
+          to={URL_PATH.concat(menu.link)}
+        >
+          {menu.name}
+        </Link>
+      </li>
+    );
+  });
   return (
     <>
       <header className="header bg-black">
@@ -69,40 +86,7 @@ function Header() {
               id="navbarSupportedContent"
             >
               <ul className="navbar-nav me-auto">
-                <li className="nav-item">
-                  <Link
-                    className={`nav-link ${
-                      Param === "/" || Param === "" ? "active" : ""
-                    }`}
-                    to={URL_PATH}
-                  >
-                    Trang chủ
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link
-                    className={`nav-link ${
-                      Param === "/cua-hang" || currentPath === "/cua-hang"
-                        ? "active"
-                        : " "
-                    }`}
-                    to="/cua-hang"
-                  >
-                    Cửa hàng
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link
-                    className={`nav-link ${
-                      Param === "/bai-viet" || currentPath === "/bai-viet"
-                        ? "active"
-                        : " "
-                    }`}
-                    to="/bai-viet"
-                  >
-                    Blog
-                  </Link>
-                </li>
+              {menuList}
                 <li className="nav-item dropdown">
                   <div>
                     <a
@@ -138,7 +122,7 @@ function Header() {
                 <li className="nav-item">
                   <Link
                     className={`nav-link ${
-                      Param === "/gio-hang" ? "active" : " "
+                      currentPath === "/gio-hang" ? "active" : " "
                     }`}
                     to="/gio-hang"
                   >
@@ -208,7 +192,7 @@ function Header() {
                   <li className="nav-item">
                     <Link
                       className={`nav-link ${
-                        Param === "/dang-nhap" ? "active" : " "
+                        currentPath === "/dang-nhap" ? "active" : " "
                       }`}
                       to="/dang-nhap"
                     >
