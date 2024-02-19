@@ -16,9 +16,7 @@ function FormLogin() {
   const [capcha,setCapcha] = useState(false);
   const [randCapcha,setRandCapcha] = useState(0);
   const [showPass,setShowPass] = useState(false);
-  const [message] = useState({
-    error:''
-  });
+  const [message] = useState({error:''});
   const [success,setSuccess] = useState(false);
   const [unSuccess,setUnSuccess] = useState(false);
   const [loading,setLoading] = useState(false);
@@ -28,7 +26,7 @@ function FormLogin() {
     rememberMe:false,
     capcha:''
   });
-
+  const url = '/'+URL_PATH+'/';
   const handleChange = (e) =>{
     const { name, value,checked } = e.target;
     setFormData((prevFormData) => ({
@@ -70,7 +68,7 @@ function FormLogin() {
         fetchLogin();
         setSuccess(true);
         setCapcha(false);
-        setTimeout(()=> window.location.href = '/lazi-store',3000);
+        setTimeout(()=> window.location.href = url,1500);
       }
     }
     return true;
@@ -124,7 +122,7 @@ function FormLogin() {
     if(success && !unSuccess){
       setLoading(true);
       localStorage.setItem('hasLogin',true);
-      setTimeout(()=> window.location.href = URL_PATH,1500);
+      setTimeout(()=> window.location.href = url,1500);
     }
     if(click >= 8){
       setRandCapcha(Math.floor(10000 - Math.random() * 900000) + 1000000);
@@ -174,6 +172,7 @@ function FormLogin() {
               name='password'
               value={formData.password}
               onChange={handleChange}
+              autoComplete='password'
               aria-describedby='validationPassword'
               required
               />
@@ -246,7 +245,7 @@ function FormLogin() {
       )}
       
       <div className='d-flex justify-content-center mb-3'>
-        <Button type="submit" className={`w-50 rounded-3 fw-medium ${loading && 'disabled'}`} >{loading ?(<span>Đang đăng nhập...</span>):(<span>Đăng nhập</span>)}</Button>
+        <Button type="submit" className={`w-50 rounded-3 fw-medium ${loading && 'disabled'}`} >{loading ?(<span>Đang đăng nhập <img src='img/1476.gif' /> </span>):(<span>Đăng nhập</span>)}</Button>
       </div>
       <Row>
         <Col lg={4} md={3} sm={3}>
