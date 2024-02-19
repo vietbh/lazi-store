@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import API_URL from "../../config/Api";
 import styles from "./styles.module.css";
-
+import { NumericFormat } from 'react-number-format';
 function Product() {
 
     const [products,setProducts] = useState([]);
@@ -68,25 +68,32 @@ function Product() {
     }, [loading]);
     const product = products.map((product) => {
       let price = product.variations.map((variation,index) => {
-        if(index==0)
-        return(<p key={variation.id} className="small text-muted">{variation.price_sale*1000} vnd</p>)
+        if(index == 0)
+        return(
+          <div key={variation.id} className="text-danger">
+            <NumericFormat disabled className="btn text-start p-0 fw-bold text-danger" value={variation.price_sale} thousandSeparator=',' decimalSeparator="." suffix=' đ'/>
+            <NumericFormat disabled className="btn text-sm text-start p-0 fw-normal text-secondary text-decoration-line-through" value={variation.price} thousandSeparator=',' decimalSeparator="." suffix='đ'/>
+          </div>
+      );
         });
       return (
         <div key={product.id} className={`col-lg-${grid} col-sm-6`}>
-          <div className="product text-center">
-            <div className="mb-3 position-relative">
-              <div className="badge text-white"></div><a className="d-block" href="detail.html"><img className="img-fluid w-100" src={product.image_url} alt={product.image_url}/></a>
-              <div className="product-overlay">
+          <div className={`product text-start bg-light p-3 mb-3 ${styles.borderImageProduct}`}>
+            <div className="position-relative mb-3">
+            <div className="badge text-white bg-danger">Hot</div><a className="d-block" to={product.slug}><img className={`img-fluid ${styles.borderImageProduct}`} src={product.image_url} alt={product.image_url}/></a>
+            <div className="product-overlay">
                 <ul className="mb-0 list-inline">
-                  <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
-                  <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html">Add to cart</a></li>
-                  <li className="list-inline-item mr-0"><a className="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i className="fas fa-expand"></i></a></li>
+                <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
+                <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html"><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li>
+                <li className="list-inline-item me-0"><a className="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i className="fas fa-expand"></i></a></li>
                 </ul>
-              </div>
             </div>
+            </div>
+            <h6> <Link className="reset-anchor" to="/chi-tiet-san-pham">Iphone</Link></h6>
             <h6> <Link className="reset-anchor" to={product.slug}>{product.name}</Link></h6>
-            {price}
+            <p>{price}</p>
           </div>
+
         </div>
       );
     });

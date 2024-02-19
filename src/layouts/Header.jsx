@@ -1,10 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import FormSearch from "../components/FormSearch";
 import URL_PATH from '../config/UrlPath';
 
 function Header() {
-  const currentPath = window.location.pathname;
-  console.log(currentPath.split(''));
+  const param = useParams();
   if (localStorage.length > 0) {
     var hasLogin = localStorage.getItem("hasLogin");
     var userName = localStorage.getItem("userName");
@@ -16,16 +15,17 @@ function Header() {
   };
   const menuLists = [
     {name:'Trang chủ',link:'/'},
-    {name:'Cửa hàng',link:'/cua-hang'},
+    {name:'Danh mục',link:'/cua-hang'},
+    // {name:'Cửa hàng',link:'/cua-hang/'},
     {name:'Tin tức',link:'/bai-viet'},
-    // {name:'Danh mục',link:''
   ];
   const menuList = menuLists.map((menu) => {
     return(
       <li className="nav-item" key={menu.name}>
         <Link
           className={`nav-link
-        ${currentPath.split('').includes(URL_PATH.concat(menu.link).split(''))  && "active"}`}
+        ${param['*'] === URL_PATH.concat(menu.link) ? "active" : ''}
+        `}
           to={URL_PATH.concat(menu.link)}
         >
           {menu.name}
@@ -65,7 +65,7 @@ function Header() {
       <header className="header bg-white">
         <div className="container px-lg-3">
           <nav className="navbar navbar-expand-lg navbar-light py-3 px-lg-0">
-            <a className="navbar-brand" href={URL_PATH}>
+            <a className="navbar-brand" href={'/'}>
               <span className="fw-bold text-uppercase text-dark">
                 LaziStore
               </span>
@@ -122,7 +122,7 @@ function Header() {
                 <li className="nav-item">
                   <Link
                     className={`nav-link ${
-                      currentPath === "/gio-hang" ? "active" : " "
+                      param['*'] === "/gio-hang" ? "active" : " "
                     }`}
                     to="/gio-hang"
                   >
@@ -192,7 +192,7 @@ function Header() {
                   <li className="nav-item">
                     <Link
                       className={`nav-link ${
-                        currentPath === "/dang-nhap" ? "active" : " "
+                        param['*'] === "/dang-nhap" ? "active" : " "
                       }`}
                       to="/dang-nhap"
                     >

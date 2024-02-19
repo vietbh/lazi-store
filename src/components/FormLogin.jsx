@@ -7,6 +7,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import { Link } from 'react-router-dom';
 import API_URL from "../../src/config/Api";
+import URL_PATH from '../config/UrlPath';
 
 
 function FormLogin() {
@@ -123,7 +124,7 @@ function FormLogin() {
     if(success && !unSuccess){
       setLoading(true);
       localStorage.setItem('hasLogin',true);
-      setTimeout(()=> window.location.href = '/lazi-store/',3000);
+      setTimeout(()=> window.location.href = URL_PATH,1500);
     }
     if(click >= 8){
       setRandCapcha(Math.floor(10000 - Math.random() * 900000) + 1000000);
