@@ -16,9 +16,27 @@ function Header() {
   const menuLists = [
     {name:'Trang chủ',link:'/'},
     {name:'Danh mục',link:'/cua-hang'},
-    // {name:'Cửa hàng',link:'/cua-hang/'},
     {name:'Tin tức',link:'/bai-viet'},
+    // {name:'Cửa hàng',link:'/cua-hang/'},
   ];
+  const menuListLogin = [
+    {name:'Đăng nhập',link:'/dang-nhap'},
+  ];
+  const menuLogin = menuListLogin.map((menu) => {
+    return(
+      <li className="nav-item" key={menu.name}>
+        <Link
+          className={`nav-link
+        ${param['*'] === URL_PATH.concat(menu.link) ? "active" : ''}
+        `}
+          to={URL_PATH.concat(menu.link)}
+        >
+        <i className="fas fa-user me-1 text-gray fw-normal"></i>
+          {menu.name}
+        </Link>
+      </li>
+    );
+  });
   const menuList = menuLists.map((menu) => {
     return(
       <li className="nav-item" key={menu.name}>
@@ -128,7 +146,7 @@ function Header() {
                   >
                     {" "}
                     <i className="fas fa-dolly-flatbed me-1 text-gray"></i>
-                    {!hasLogin && ('Giỏ hàng')}<small className="text-gray fw-normal">(2)</small>
+                    {!hasLogin ? <span>Giỏ hàng <small className="text-gray fw-normal">(0)</small></span> :<small className="text-gray fw-normal">(+99)</small>}
                   </Link>
                 </li>
                 <li className="nav-item">
@@ -188,19 +206,7 @@ function Header() {
                       </a>
                     </div>
                   </li>
-                ):(
-                  <li className="nav-item">
-                    <Link
-                      className={`nav-link ${
-                        param['*'] === "/dang-nhap" ? "active" : " "
-                      }`}
-                      to="/dang-nhap"
-                    >
-                      <i className="fas fa-user me-1 text-gray fw-normal"></i>
-                      Đăng nhập
-                    </Link>
-                  </li>
-                )}
+                ):(menuLogin)}
               </ul>
             </div>
           </nav>

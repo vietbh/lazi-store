@@ -14,15 +14,13 @@ function Home(){
             {id:6,name:'Kính VR'},
             {id:7,name:'Loa không dây'},
             {id:8,name:'Loa có dây'},
+            {id:10,name:'Sạc dự phòng'},
         ];    
-        if(categories.length == 0 ){
-            setCategories(data);
-        }
-        
+        if(categories.length == 0 ) setCategories(data);
     },[categories]);    
     let category = categories.map(category=>{
         return(
-            <div key={category.id} className="col-sm-12 col-xl-2 mb-4 " style={{width:250,minHeight:75,maxHeight:80}}>
+            <div key={category.id} className="col-sm-12 col-xl-2 mb-4 " style={{width:262,minHeight:75,maxHeight:80}}>
             <a href="##">
                 <button className="text-start rounded-3 btn btn-light w-100 h-100 " >
                     <p className="m-1 overflow-hidden">{category.name}</p>
