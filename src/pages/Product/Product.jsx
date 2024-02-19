@@ -172,14 +172,82 @@ function Product() {
                   </div>
                 </div>
               </div>
+              <div className="container p-0">
+                <div className="row">
+                    {/*<!-- SHOP SIDEBAR-->*/}
+                    <div className="col-lg-3 order-2 order-lg-1">
+                      <h5 className="text-uppercase mb-4">Danh mục</h5>
+                      <div className="py-2 px-4 bg-dark text-white mb-3"><strong className="small text-uppercase fw-bold">Danh mục &amp; Acc</strong></div>
+                      {category}
+                      <div className="py-2 px-4 bg-light mb-3"><strong className="small text-uppercase fw-bold">Health &amp; Beauty</strong></div>
+                      <ul className="list-unstyled small text-muted ps-lg-4 font-weight-normal">
+                        <li className="mb-2"><a className="reset-anchor" href="#!">Shavers</a></li>
+                        <li className="mb-2"><a className="reset-anchor" href="#!">bags</a></li>
+                        <li className="mb-2"><a className="reset-anchor" href="#!">Cosmetic</a></li>
+                        <li className="mb-2"><a className="reset-anchor" href="#!">Nail Art</a></li>
+                        <li className="mb-2"><a className="reset-anchor" href="#!">Skin Masks &amp; Peels</a></li>
+                        <li className="mb-2"><a className="reset-anchor" href="#!">Korean cosmetics</a></li>
+                      </ul>
+                      
+                      <h6 className="text-uppercase mb-4">Price range</h6>
+                      <div className="price-range pt-4 mb-5">
+                        <div id="range"></div>
+                        <div className="row pt-2 ">
+                          <div className="col-6"><strong className="small fw-bold text-uppercase">From</strong></div>
+                          <div className="col-6 text-end"><strong className="small fw-bold text-uppercase">To</strong></div>
+                          <input className="d-flex justify-content-center form-range" type="range" />
+                        </div>
+                      </div>
+                      <h6 className="text-uppercase mb-3">Show only</h6>
+                      <div className="form-check mb-1">
+                        <input className="form-check-input" type="checkbox" id="checkbox_1"/>
+                        <label className="form-check-label" to="checkbox_1">Returns Accepted</label>
+                      </div>
+                      <div className="form-check mb-1">
+                        <input className="form-check-input" type="checkbox" id="checkbox_2"/>
+                        <label className="form-check-label" to="checkbox_2">Returns Accepted</label>
+                      </div>
+                      <div className="form-check mb-1">
+                        <input className="form-check-input" type="checkbox" id="checkbox_3"/>
+                        <label className="form-check-label" to="checkbox_3">Completed Items</label>
+                      </div>
+                      <div className="form-check mb-1">
+                        <input className="form-check-input" type="checkbox" id="checkbox_4"/>
+                        <label className="form-check-label" to={"checkbox_4"}>Sold Items</label>
+                      </div>
+                      <div className="form-check mb-1">
+                        <input className="form-check-input" type="checkbox" id="checkbox_5"/>
+                        <label className="form-check-label" to="checkbox_5">Deals &amp; Savings</label>
+                      </div>
+                      <div className="form-check mb-4">
+                        <input className="form-check-input" type="checkbox" id="checkbox_6"/>
+                        <label className="form-check-label" to="checkbox_6">Authorized Seller</label>
+                      </div>
+                      <h6 className="text-uppercase mb-3">Buying format</h6>
+                      <div className="form-check mb-1">
+                        <input className="form-check-input" type="radio" name="customRadio" id="radio_1"/>
+                        <label className="form-check-label" to="radio_1">All Listings</label>
+                      </div>
+                      <div className="form-check mb-1">
+                        <input className="form-check-input" type="radio" name="customRadio" id="radio_2"/>
+                        <label className="form-check-label" to="radio_2">Best Offer</label>
+                      </div>
+                      <div className="form-check mb-1">
+                        <input className="form-check-input" type="radio" name="customRadio" id="radio_3"/>
+                        <label className="form-check-label" to="radio_3">Auction</label>
+                      </div>
+                      <div className="form-check mb-1">
+                        <input className="form-check-input" type="radio" name="customRadio" id="radio_4"/>
+                        <label className="form-check-label" to="radio_4">Buy It Now</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             </section>
             <section className="py-5">
               <div className="container p-0">
                 <div className="row">
-                                {/*
-                    <!-- SHOP SIDEBAR-->
-                    */}
-
+                    {/*<!-- SHOP SIDEBAR-->*/}
                   <div className="col-lg-3 order-2 order-lg-1">
                     <h5 className="text-uppercase mb-4">Danh mục</h5>
                     <div className="py-2 px-4 bg-dark text-white mb-3"><strong className="small text-uppercase fw-bold">Danh mục &amp; Acc</strong></div>
@@ -246,10 +314,7 @@ function Product() {
                       <label className="form-check-label" to="radio_4">Buy It Now</label>
                     </div>
                   </div>
-                                  {/*
-                    <!-- SHOP LISTING-->
-                    */}
-
+                    {/*<!-- SHOP LISTING-->*/}
                   <div className="col-lg-9 order-1 order-lg-2 mb-5 mb-lg-0">
                     <div className="row mb-3 align-items-center">
                       <div className="col-lg-6 mb-2 mb-lg-0">

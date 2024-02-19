@@ -8,10 +8,12 @@ function Home(){
             {id:1,name:'Điện thoại'},
             {id:2,name:'Máy tính'},
             {id:3,name:'Đồng hồ'},
-            {id:4,name:'Tai nghe'},
+            {id:4,name:'Tai nghe không dây'},
+            {id:9,name:'Tai nghe có dây'},
             {id:5,name:'Ốp lưng'},
             {id:6,name:'Kính VR'},
             {id:7,name:'Loa không dây'},
+            {id:8,name:'Loa có dây'},
         ];    
         if(categories.length == 0 ){
             setCategories(data);
