@@ -87,9 +87,7 @@ function Home(){
                     </div>
                 </div>
                 </section>
-                                {/* 
-                <!-- CATEGORIES ALL SECTION-->
-                */}
+                {/*<!-- CATEGORIES ALL SECTION-->*/}
                 <section className="pt-5">
                 <header className="text-start">
                     <p className="small text-muted small text-uppercase mb-1">Dưới đây là danh mục sản phẩm của chúng tôi</p>
@@ -99,10 +97,7 @@ function Home(){
                     {category}
                 </div>
                 </section>
-
-                {/* 
-                <!-- CATEGORIES SECTION-->
-                */}
+                {/*<!-- CATEGORIES SECTION-->*/}
                 <section className="pt-5">
                 <header className="text-center">
                     <p className="small text-muted small text-uppercase mb-1">Dưới đây là danh mục sản phẩm của chúng tôi</p>
