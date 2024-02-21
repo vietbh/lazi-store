@@ -5,134 +5,140 @@ import { Link } from "react-router-dom";
 import API_URL from "../../config/Api";
 import styles from "./styles.module.css";
 import { NumericFormat } from 'react-number-format';
+import Loading from "../../components/Loading";
 function Product() {
     const [products,setProducts] = useState([]);
     const [categories,setCategories] = useState([]);
-    const [loading,setLoading] = useState(false);
-    const [grid,setGrid] = useState(4);
+    const [loading,setLoading] = useState(false);   
     const fetchDataCategory = async() => {
-        try {
-            setLoading(true);
-            const response = await axios.get(API_URL.concat('/danh-muc-san-pham'));
-            const data = await response.data;
+      try {
+          setLoading(true);
+          const response = await axios.get(API_URL.concat('/danh-muc-san-pham'));
+          const data = await response.data;
+          if(response.status == 200){
             setLoading(false);
-            setCategories(data);
+            // setCategories(data);
             // Lưu trữ dữ liệu sản phẩm trong bộ nhớ session của trình duyệt
             sessionStorage.setItem('categories', JSON.stringify(data));
-          } catch (error) {
-            setLoading(true);
-            console.log(error);
-        }
+          }
+        }catch(error) {
+          setLoading(true);
+          console.log(error);
+      }
     }
     const fetchData = async() => {
       try {
           setLoading(true);
           const response = await axios.get(API_URL.concat('/san-pham'));
-          const data = await response.data;           
-          setLoading(false);
-          setProducts(data);
-          // Lưu trữ dữ liệu sản phẩm trong bộ nhớ session của trình duyệt
-          sessionStorage.setItem('products', JSON.stringify(data));
-        } catch (error) {
+          const data = await response.data;         
+          if(response.status == 200){
+            setLoading(false);
+            // Lưu trữ dữ liệu sản phẩm trong bộ nhớ session của trình duyệt
+            sessionStorage.setItem('products', JSON.stringify(data));
+          }
+        }catch(error) {
           setLoading(true);
           console.log(error);
       }
     }
     useEffect(() => {
-      if (sessionStorage.getItem('products') && sessionStorage.getItem('categories')) {
+      const data = [
+        {id:999,name:'Điện thoại',slug:'dien-thoai'},
+        {id:998,name:'Máy tính',slug:'may-tinh'},
+        {id:997,name:'Đồng hồ thông minh',slug:'dong-ho-thong-min'},
+        {id:996,name:'Tai nghe không dây',slug:'tai-nghe-khong-day'},
+        {id:995,name:'Tai nghe có dây',slug:'tai-nghe-co-day'},
+        {id:994,name:'Ốp lưng',slug:'op-lung'},
+        {id:993,name:'Kính VR',slug:'kinh-vr'},
+        {id:992,name:'Loa không dây',slug:'loa-khong-day'},
+        {id:991,name:'Loa có dây',slug:'loa-co-day'},
+        {id:990,name:'Sạc dự phòng',slug:'sac-du-phong'},
+      ];  
+      if(sessionStorage.getItem('categories')) {
+        const cachedCategories = JSON.parse(sessionStorage.getItem('categories'));
+        if(cachedCategories.length > 0 && categories.length == 0){
+          if(cachedCategories.length < 6){
+            const newData = [...cachedCategories,...data];
+            setCategories(newData);
+          }else{
+            setCategories(cachedCategories);
+          }
+        }
+        if(categories.length !== cachedCategories.length){
+          setLoading(true);
+          fetchDataCategory()
+        }
+        setLoading(false);
+      }else{
+        setLoading(true);
+        fetchDataCategory();
+      }
+      if(sessionStorage.getItem('products')) {
         // Lấy dữ liệu từ bộ nhớ session
         const cachedProducts = JSON.parse(sessionStorage.getItem('products'));
-        const cachedCategories = JSON.parse(sessionStorage.getItem('categories'));
-        if(products.length != cachedProducts.length){
-          setLoading(true);
-          fetchData()  
+        if(cachedProducts.length > 0 && product.length == 0){
+          setProducts(cachedProducts);
         }
-        // Hiển thị dữ liệu sản phẩm trong giao diện
-        setProducts(cachedProducts);
-        setCategories(cachedCategories);
+        if(products.length !== cachedProducts.length){
+          setLoading(true);
+          fetchData();
+        }
         setLoading(false);
       }else{
         setLoading(true);
         fetchData();
-        fetchDataCategory();
       }
-    }, [products.length]);
+    }, [products.length,categories.length]);
     useEffect(() => {
       // Đặt điều kiện để chỉ gọi fetchData khi loading là true
       if (loading) {
           fetchData();
           fetchDataCategory();
-        }
+      }
     }, [loading]);
-    const product = products.map((product) => {
-      let price = product.variations.map((variation,index) => {
-        if(index == 0)
-        return(
-          <div key={variation.id} className="text-danger">
-            <NumericFormat disabled className="btn text-start p-0 fw-bold text-danger" value={variation.price_sale} thousandSeparator=',' decimalSeparator="." suffix=' đ'/>
-            <NumericFormat disabled className="btn text-sm text-start p-0 fw-normal text-secondary text-decoration-line-through" value={variation.price} thousandSeparator=',' decimalSeparator="." suffix='đ'/>
-          </div>
-      );
-        });
-      return (
-        <div key={product.id} className={`col-lg-${grid} col-sm-6`}>
-          <div className={`product text-start bg-light p-3 mb-3 ${styles.borderImageProduct}`}>
-            <div className="position-relative mb-3">
-            <div className="badge text-white bg-danger">Hot</div><a className="d-block" to={product.slug}><img className={`img-fluid ${styles.borderImageProduct}`} src={product.image_url} alt={product.image_url}/></a>
-            <div className="product-overlay">
-                <ul className="mb-0 list-inline">
-                <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
-                <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html"><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li>
-                <li className="list-inline-item me-0"><a className="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i className="fas fa-expand"></i></a></li>
-                </ul>
-            </div>
-            </div>
-            <h6> <Link className="reset-anchor" to="/chi-tiet-san-pham">Iphone</Link></h6>
-            <h6> <Link className="reset-anchor" to={product.slug}>{product.name}</Link></h6>
-            <p>{price}</p>
-          </div>
-
-        </div>
-      );
-    });
-    // const category = categories.map((category) => {
-    //   if(category.show_hide =='show'){
-    //     return (
-    //       <div key={category.id}>
-    //         <ul className="list-unstyled small text-muted ps-lg-4 font-weight-normal">
-    //           <li className="mb-2"><a className="btn rounded-0 reset-anchor" href="#!">{category.title}</a></li>
-    //         </ul>
-    //       </div>
-    //     );
-    //   }
-    // });
-    useEffect(()=>{
-      const data = [
-          {id:1,name:'Điện thoại'},
-          {id:2,name:'Máy tính'},
-          {id:3,name:'Đồng hồ'},
-          {id:4,name:'Tai nghe không dây'},
-          {id:9,name:'Tai nghe có dây'},
-          {id:5,name:'Ốp lưng'},
-          {id:6,name:'Kính VR'},
-          {id:7,name:'Loa không dây'},
-          {id:8,name:'Loa có dây'},
-          {id:10,name:'Sạc dự phòng'},
-      ];    
-      if(categories.length == 0 ) setCategories(data);
-  },[categories]);    
-  let category = categories.map(category=>{
+    const category = categories.map((category)=>{
       return(
           <div key={category.id} className="col-sm-12 col-xl-1 mb-2" style={{width:260,minHeight:52,maxHeight:60}}>
-          <a href="##">
+            <a href={category.slug}>
               <button className="text-start rounded-3 btn btn-light w-100 h-100" >
                   <p className="m-1 overflow-hidden">{category.name}</p>
               </button>
-          </a>
+            </a>
           </div>   
       )
-  }
-  );
+    }
+    );
+    const product = products.map((product) => {
+      const price = product.variations.map((variation,index) => {
+        if(index == 0 ){
+          return(
+            <div key={variation.id} className="text-danger">
+              <NumericFormat disabled className="btn text-start p-0 fw-bold text-danger" value={variation.price_sale} thousandSeparator=',' decimalSeparator="." suffix=' đ'/>
+              <NumericFormat disabled className="btn text-sm text-start p-0 fw-normal text-secondary text-decoration-line-through" value={variation.price} thousandSeparator=',' decimalSeparator="." suffix='đ'/>
+            </div>
+            );
+        }
+      });
+      return (
+        <div key={product.id} className={`col-lg-4 col-sm-6`}>
+          <div className={`product text-start bg-light p-3 mb-3 ${styles.borderImageProduct}`}>
+            <div className="position-relative mb-3">
+              <div className="badge text-white bg-danger">Hot</div><a className="d-block" to={product.slug}><img className={`img-fluid ${styles.borderImageProduct}`} src={product.image_url} alt={product.image_url}/></a>
+              <div className="product-overlay">
+                  <ul className="mb-0 list-inline">
+                    <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
+                    <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html"><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li>
+                    <li className="list-inline-item me-0"><a className="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i className="fas fa-expand"></i></a></li>
+                  </ul>
+              </div>
+            </div>
+            <h6> <Link className="reset-anchor" to={product.slug}>Iphone</Link></h6>
+            <h6> <Link className="reset-anchor text-center" to={product.slug}>{product.name}</Link></h6>
+            <p>{price}</p>
+          </div>
+        </div>
+      );
+    });  
     return (
         <section>
           {/*Modal */}
@@ -175,7 +181,7 @@ function Product() {
               </div>
           </div>
           <div className="container">   
-                {/* <!-- HERO SECTION-->*/}
+            {/* <!-- HERO SECTION-->*/}
             <section className="py-5 bg-light">
               <div className="container">
                 <div className="row px-4 px-lg-5 py-lg-4 align-items-center">
@@ -265,35 +271,13 @@ function Product() {
                   </div>
                     {/*<!-- SHOP LISTING-->*/}
                   <div className="col-lg-9 order-1 order-lg-2 mb-5 mb-lg-0">
-                    <div className="row mb-3 align-items-center">
-                      <div className="col-lg-6 mb-2 mb-lg-0">
-                        <p className="text-sm text-muted mb-0">Showing 1-12 of 53 results</p>
-                      </div>
-                      <div className="col-lg-6">
-                        <ul className="list-inline d-flex align-items-center justify-content-lg-end mb-0">
-                          <li className="list-inline-item text-muted me-3"><a className="reset-anchor p-0" href="#2" onClick={()=>{setGrid(6)}}><i className="fas fa-th-large"></i></a></li>
-                          <li className="list-inline-item text-muted me-3"><a className="reset-anchor p-0" href="#3" onClick={()=>{setGrid(4)}}><i className="fas fa-th"></i></a></li>
-                          <li className="list-inline-item">
-                            <select className="selectpicker form-select" data-customclass="form-control form-control-sm">
-                              <option value>Sắp xếp theo </option>
-                              <option value="default" >Sắp xếp mặc định </option>
-                              <option value="popularity">Bán chạy </option>
-                              <option value="low-high">Giá: Từ thấp tới cao </option>
-                              <option value="high-low">Giá: Từ cao tới thấp </option>
-                            </select>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
                     <div className="row">
-                    {/*
-                    <!-- PRODUCT-->
-                    */}
-                    {loading && <div className="col-lg-12 col-sm-4"><h2 className="text-center my-4 ">Đang tải...</h2></div> }
-                        {/* Show san pham */}
-                        {product}
+                      {loading && <Loading className={'col-lg-12 col-sm-12'}/> }  
+                      {/*<!-- PRODUCT-->*/}
+                      {product}
                     </div>
                     {/*<!-- PAGINATION-->*/}
+                    {/*
                     {!loading &&(
                       <nav aria-label="Page navigation example ">
                         <ul className="pagination justify-content-center justify-content-lg-end ">
@@ -305,6 +289,7 @@ function Product() {
                         </ul>
                       </nav>
                     )}
+                    */}
                   </div>
                 </div>
               </div>

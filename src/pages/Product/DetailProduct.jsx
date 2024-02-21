@@ -1,37 +1,38 @@
-// import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const DetailProduct = () => {
-    // const slugSanPham = useParams();
+    const slugSanPham = useParams();
+    console.log(slugSanPham);
+    const path = 'https://vietbh.github.io/lazi-store/';
     return (
-        <>
-
+        <div>
             <section className="py-5">
                 <div className="container" >
                 <div className="row mb-5">
                     <div className="col-lg-6">
                     {/* <!-- PRODUCT SLIDER--> */}
-                    <div className="row m-sm-0">
-                        <div className="col-sm-2 p-sm-0 order-2 order-sm-1 mt-2 mt-sm-0 px-xl-2">
-                        <div className="swiper product-slider-thumbs">
-                            <div className="swiper-wrapper">
-                            <div className="swiper-slide h-auto swiper-thumb-item mb-3"><img className="w-100" src="img/product-detail-1.jpg" alt="..." /></div>
-                            <div className="swiper-slide h-auto swiper-thumb-item mb-3"><img className="w-100" src="img/product-detail-2.jpg" alt="..." /></div>
-                            <div className="swiper-slide h-auto swiper-thumb-item mb-3"><img className="w-100" src="img/product-detail-3.jpg" alt="..." /></div>
-                            <div className="swiper-slide h-auto swiper-thumb-item mb-3"><img className="w-100" src="img/product-detail-4.jpg" alt="..." /></div>
+                        <div className="row m-sm-0">
+                            <div className="col-sm-2 p-sm-0 order-2 order-sm-1 mt-2 mt-sm-0 px-xl-2">
+                                <div className="swiper product-slider-thumbs">
+                                    <div className="swiper-wrapper d-inline">
+                                        <div className="swiper-slide h-auto swiper-thumb-item mb-3"><img className="w-100" src={`${path}img/product-detail-1.jpg`} alt="..." /></div>
+                                        <div className="swiper-slide h-auto swiper-thumb-item mb-3"><img className="w-100" src={`${path}img/product-detail-2.jpg`} alt="..." /></div>
+                                        <div className="swiper-slide h-auto swiper-thumb-item mb-3"><img className="w-100" src={`${path}img/product-detail-3.jpg`} alt="..." /></div>
+                                        <div className="swiper-slide h-auto swiper-thumb-item mb-3"><img className="w-100" src={`${path}img/product-detail-4.jpg`} alt="..." /></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-sm-10 order-1 order-sm-2">
+                                <div className="swiper product-slider">
+                                    <div className="swiper-wrapper">
+                                    <div className="swiper-slide h-auto"><a className="glightbox product-view" href={`${path}img/product-detail-1.jpg`} data-gallery="gallery2" data-glightbox="Product item 1"><img className="img-fluid" src={`${path}img/product-detail-1.jpg`} alt="..." /></a></div>
+                                    <div className="swiper-slide h-auto"><a className="glightbox product-view" href={`${path}img/product-detail-2.jpg`} data-gallery="gallery2" data-glightbox="Product item 2"><img className="img-fluid" src={`${path}img/product-detail-2.jpg`} alt="..." /></a></div>
+                                    <div className="swiper-slide h-auto"><a className="glightbox product-view" href={`${path}img/product-detail-3.jpg`} data-gallery="gallery2" data-glightbox="Product item 3"><img className="img-fluid" src={`${path}img/product-detail-3.jpg`} alt="..." /></a></div>
+                                    <div className="swiper-slide h-auto"><a className="glightbox product-view" href={`${path}img/product-detail-4.jpg`} data-gallery="gallery2" data-glightbox="Product item 4"><img className="img-fluid" src={`${path}img/product-detail-4.jpg`} alt="..." /></a></div>
+                                </div>
+                                </div>
                             </div>
                         </div>
-                        </div>
-                        <div className="col-sm-10 order-1 order-sm-2">
-                        <div className="swiper product-slider">
-                            <div className="swiper-wrapper">
-                            <div className="swiper-slide h-auto"><a className="glightbox product-view" href="img/product-detail-1.jpg" data-gallery="gallery2" data-glightbox="Product item 1"><img className="img-fluid" src="img/product-detail-1.jpg" alt="..." /></a></div>
-                            <div className="swiper-slide h-auto"><a className="glightbox product-view" href="img/product-detail-2.jpg" data-gallery="gallery2" data-glightbox="Product item 2"><img className="img-fluid" src="img/product-detail-2.jpg" alt="..." /></a></div>
-                            <div className="swiper-slide h-auto"><a className="glightbox product-view" href="img/product-detail-3.jpg" data-gallery="gallery2" data-glightbox="Product item 3"><img className="img-fluid" src="img/product-detail-3.jpg" alt="..." /></a></div>
-                            <div className="swiper-slide h-auto"><a className="glightbox product-view" href="img/product-detail-4.jpg" data-gallery="gallery2" data-glightbox="Product item 4"><img className="img-fluid" src="img/product-detail-4.jpg" alt="..." /></a></div>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
                     </div>
                     {/* <!-- PRODUCT DETAILS--> */}
                     <div className="col-lg-6" id='san-pham'>
@@ -81,7 +82,7 @@ const DetailProduct = () => {
                         <div className="row">
                         <div className="col-lg-8">
                             <div className="d-flex mb-3">
-                            <div className="flex-shrink-0"><img className="rounded-circle" src="img/customer-1.png" alt="" width="50"/></div>
+                            <div className="flex-shrink-0"><img className="rounded-circle" src={`${path}img/customer-1.png`} alt="" width="50"/></div>
                             <div className="ms-3 flex-shrink-1">
                                 <h6 className="mb-0 text-uppercase">Jason Doe</h6>
                                 <p className="small text-muted mb-0 text-uppercase">20 May 2020</p>
@@ -96,7 +97,7 @@ const DetailProduct = () => {
                             </div>
                             </div>
                             <div className="d-flex">
-                            <div className="flex-shrink-0"><img className="rounded-circle" src="img/customer-2.png" alt="" width="50"/></div>
+                            <div className="flex-shrink-0"><img className="rounded-circle" src={`${path}img/customer-2.png`} alt="" width="50"/></div>
                             <div className="ms-3 flex-shrink-1">
                                 <h6 className="mb-0 text-uppercase">Jane Doe</h6>
                                 <p className="small text-muted mb-0 text-uppercase">20 May 2020</p>
@@ -121,7 +122,7 @@ const DetailProduct = () => {
                     {/* <!-- PRODUCT--> */}
                     <div className="col-lg-3 col-sm-6">
                     <div className="product text-center skel-loader">
-                        <div className="d-block mb-3 position-relative"><a className="d-block" href="detail.html"><img className="img-fluid w-100" src="img/product-1.jpg" alt="..." /></a>
+                        <div className="d-block mb-3 position-relative"><a className="d-block" href="detail.html"><img className="img-fluid w-100" src={`${path}img/product-1.jpg`} alt="..." /></a>
                         <div className="product-overlay">
                             <ul className="mb-0 list-inline">
                             <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
@@ -137,7 +138,7 @@ const DetailProduct = () => {
                     {/* <!-- PRODUCT--> */}
                     <div className="col-lg-3 col-sm-6">
                     <div className="product text-center skel-loader">
-                        <div className="d-block mb-3 position-relative"><a className="d-block" href="detail.html"><img className="img-fluid w-100" src="img/product-2.jpg" alt="..." /></a>
+                        <div className="d-block mb-3 position-relative"><a className="d-block" href="detail.html"><img className="img-fluid w-100" src={`${path}img/product-2.jpg`} alt="..." /></a>
                         <div className="product-overlay">
                             <ul className="mb-0 list-inline">
                             <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
@@ -153,7 +154,7 @@ const DetailProduct = () => {
                     {/* <!-- PRODUCT--> */}
                     <div className="col-lg-3 col-sm-6">
                     <div className="product text-center skel-loader">
-                        <div className="d-block mb-3 position-relative"><a className="d-block" href="detail.html"><img className="img-fluid w-100" src="img/product-3.jpg" alt="..." /></a>
+                        <div className="d-block mb-3 position-relative"><a className="d-block" href="detail.html"><img className="img-fluid w-100" src={`${path}img/product-3.jpg`} alt="..." /></a>
                         <div className="product-overlay">
                             <ul className="mb-0 list-inline">
                             <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
@@ -169,7 +170,7 @@ const DetailProduct = () => {
                     {/* <!-- PRODUCT--> */}
                     <div className="col-lg-3 col-sm-6">
                     <div className="product text-center skel-loader">
-                        <div className="d-block mb-3 position-relative"><a className="d-block" href="detail.html"><img className="img-fluid w-100" src="img/product-4.jpg" alt="..." /></a>
+                        <div className="d-block mb-3 position-relative"><a className="d-block" href="detail.html"><img className="img-fluid w-100" src={`${path}img/product-4.jpg`} alt="..." /></a>
                         <div className="product-overlay">
                             <ul className="mb-0 list-inline">
                             <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
@@ -185,8 +186,7 @@ const DetailProduct = () => {
                 </div>
                 </div>
             </section>
-
-        </>
+        </div>
     );
 };
 

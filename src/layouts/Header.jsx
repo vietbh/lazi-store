@@ -17,7 +17,6 @@ function Header() {
     {name:'Trang chủ',link:'/'},
     {name:'Danh mục',link:'/cua-hang'},
     {name:'Tin tức',link:'/bai-viet'},
-    // {name:'Cửa hàng',link:'/cua-hang/'},
   ];
   const menuListLogin = [
     {name:'Đăng nhập',link:'/dang-nhap'},
@@ -52,7 +51,7 @@ function Header() {
     );
   });
   return (
-    <>
+    <section>
       <header className="header bg-black">
         <div className="container px-lg-3">
           <nav className="navbar navbar-expand-lg text-white text-sm navbar-light py-0 w-100 px-lg-0">
@@ -212,7 +211,7 @@ function Header() {
           </nav>
         </div>
       </header>
-    </>
+    </section>
   );
 }
 export default Header;
