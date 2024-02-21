@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		let pickerSevClasses = pickerCustomClass.split(' ');
 		x.parentElement.classList.add.apply(x.parentElement.classList, pickerSevClasses);
 	}
-
 	const selectPicker = document.querySelectorAll('.selectpicker');
 	if (selectPicker.length) {
 		selectPicker.forEach((el) => {
@@ -26,11 +25,10 @@ document.addEventListener('DOMContentLoaded', function () {
     	 COUNTRY SELECT BOX FILLING
   	=============================================================== */
 	const request = new XMLHttpRequest();
-	request.open('GET', 'js/countries.json');
+	request.open('GET', './js/countries.json');
 	request.onload = function () {
 		if (request.status >= 200 && request.status < 400) {
 			const response = JSON.parse(request.responseText);
-
 			var selectOption = '';
 			response.forEach((country) => {
 				selectOption += "<option value='" + country.name + "' data-dial-code='" + country.dial_code + "'>" + country.name + '</option>';
