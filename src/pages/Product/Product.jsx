@@ -63,6 +63,8 @@ function Product() {
           }else{
             setCategories(cachedCategories);
           }
+        }else{
+          setCategories(data);
         }
         if(categories.length !== cachedCategories.length){
           setLoading(true);
