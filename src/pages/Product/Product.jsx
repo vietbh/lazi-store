@@ -90,7 +90,7 @@ function Product() {
         setLoading(true);
         fetchData();
       }
-    }, [products.length,categories.length]);
+    }, [products.length, categories.length,product.length,category.length]);
     useEffect(() => {
       // Đặt điều kiện để chỉ gọi fetchData khi loading là true
       if (loading) {
