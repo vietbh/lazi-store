@@ -27,14 +27,6 @@
     <!-- Favicon-->
     <link rel="shortcut icon" href="public/img/favicon.png">
     
-    <script type="module">
-      let alertShow = false;
-      const interval = setInterval(()=>{
-        document.title = alertShow ? 'Cửa hàng công nghệ Lazi' 
-                                   : 'Chào mừng bạn đã đến với';
-        alertShow = !alertShow;
-      },3000);
-    </script>
   </head>
   <body>
     <div id="root"></div>
@@ -46,6 +38,7 @@
     <script type="module" src="public/vendor/swiper/swiper-bundle.min.js"></script>
     <script type="module" src="public/vendor/choices.js/public/assets/scripts/choices.min.js"></script>
     <script type="module" src="public/js/front.js"></script>
+    <script type="module" src="public/js/custom.js"></script>
     <!-- <script type="module" src="https://www.google.com/recaptcha/api.js?render=v3_site_key"></script> -->
     <script type="module">
       function injectSvgSprite(path) {

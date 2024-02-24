@@ -1,33 +1,58 @@
 import { Link, useParams } from "react-router-dom";
 import FormSearch from "../components/FormSearch";
 import URL_PATH from '../config/UrlPath';
-
+import { useEffect, useState } from "react";
 function Header() {
   const param = useParams();
-  if (localStorage.length > 0) {
-    var hasLogin = localStorage.getItem("hasLogin");
-    var userName = localStorage.getItem("userName");
-  }
+  const [dataUsers, setDataUsers] = useState([]);
+  const hasLogin = sessionStorage.getItem("hasLogin");
+  const title = function(value){
+    document.title = value;
+  } 
+  
   const handleLogout = () => {
     alert('Đăng xuất thành công');
-    localStorage.removeItem('hasLogin');
-    localStorage.removeItem('userName');
+    sessionStorage.removeItem('hasLogin');
+    sessionStorage.removeItem('userInfo');
+    if(localStorage.getItem('hasLogin') && localStorage.getItem('userInfo')){
+      localStorage.removeItem('hasLogin');
+      localStorage.removeItem('userInfo');
+    }
   };
-  const menuLists = [
-    {name:'Trang chủ',link:'/'},
-    {name:'Danh mục',link:'/cua-hang'},
-    {name:'Tin tức',link:'/bai-viet'},
+  const menuLefts = [
+    {id:1, name:'Trang chủ',link:'/'},
+    {id:2, name:'Danh mục',link:'/cua-hang'},
+    {id:3, name:'Tin tức',link:'/bai-viet'},
   ];
   const menuListLogin = [
-    {name:'Đăng nhập',link:'/dang-nhap'},
+    {id:1,name:'Đăng nhập',link:'/dang-nhap'},
   ];
-  const menuLogin = menuListLogin.map((menu) => {
+  const menuRights = [
+    {id:1, name:'Giỏ hàng',link:'/gio-hang',icon:'fas fa-dolly-flatbed me-1 text-gray'},
+    {id:2, name:'Thông báo',link:'/thong-bao',icon:'far fa-heart me-1 text-gray'},
+  ];
+  const loginSettings = [
+    {id:1, name:'Thông tin khách hàng', link:'/thong-tin-khach-hang'},
+    {id:2, name:'Lịch sử đặt hàng', link:'/lich-su'},
+    {id:3, name:'Quá trình giao hàng', link:'/gia-hang'},
+    {id:4, name:'Mã giảm giá', link:'/ma-giam-gia'},
+    {id:5, name:'Đăng xuất', link:'/',logout:true},
+  ];
+  const userInfos = sessionStorage.getItem("userInfo");
+  const dataParse = JSON.parse(userInfos);
+  useEffect(() => {
+    if (dataUsers.length === 0 && userInfos) {
+      setDataUsers(dataParse);
+    }
+  }, [dataParse, dataUsers,userInfos]);
+  const menuLogin = menuListLogin.map((menu) => { 
+    if(param['*'] === URL_PATH.concat(menu.link)){
+      title(menu.name);
+    }
     return(
       <li className="nav-item" key={menu.name}>
         <Link
-          className={`nav-link
-        ${param['*'] === URL_PATH.concat(menu.link) ? "active" : ''}
-        `}
+          className={`nav-link ${param['*'] === URL_PATH.concat(menu.link) ? "active" : ''}`}
           to={URL_PATH.concat(menu.link)}
         >
         <i className="fas fa-user me-1 text-gray fw-normal"></i>
@@ -36,13 +61,21 @@ function Header() {
       </li>
     );
   });
-  const menuList = menuLists.map((menu) => {
+  const setting = loginSettings.map((setting) => {
+    return(
+      <Link key={setting.id} className="dropdown-item border-0 transition-link" to={URL_PATH.concat(setting.link)} onClick={setting.logout ? handleLogout : ''}>
+        {setting.name}
+      </Link>
+    );
+  });
+  const menuLeft = menuLefts.map((menu) => {
+    if(param['*'] === URL_PATH.concat(menu.link)){
+      title(menu.name);
+    }
     return(
       <li className="nav-item" key={menu.name}>
         <Link
-          className={`nav-link
-        ${param['*'] === URL_PATH.concat(menu.link) ? "active" : ''}
-        `}
+          className={`nav-link ${param['*'] === URL_PATH.concat(menu.link) ? "active" : ''}`}
           to={URL_PATH.concat(menu.link)}
         >
           {menu.name}
@@ -50,8 +83,39 @@ function Header() {
       </li>
     );
   });
+  const menuRight = menuRights.map((menu) => {
+    if(param['*'] === URL_PATH.concat(menu.link)){
+      title(menu.name);
+    }
+    return(
+      <li key={menu.id} className="nav-item">
+        <Link className={`nav-link ${param['*'] === URL_PATH.concat(menu.link) ? "active" : ""}`}
+          to={URL_PATH.concat(menu.link)}
+        >
+          {" "}
+          <i className={menu.icon}></i>
+          {!hasLogin ? <span>{menu.name} <small className="text-gray fw-normal">(0)</small></span> : <small className="text-gray fw-normal">(+99)</small>}
+        </Link>
+      </li>
+    );
+  });
+  const userInfo = dataUsers.map((user) => (
+    <a
+      key={user.id}
+      className="nav-link dropdown-toggle"
+      id="pagesDropdown"
+      href="#"
+      data-bs-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      <i className="fas fa-user me-1 text-gray fw-normal"></i>
+      <span>{user.name}</span>
+    </a>
+  ));
+
   return (
-    <section>
+    <section id="header">
       <header className="header bg-black">
         <div className="container px-lg-3">
           <nav className="navbar navbar-expand-lg text-white text-sm navbar-light py-0 w-100 px-lg-0">
@@ -64,11 +128,8 @@ function Header() {
                   <span className="me-3 text-white"><i className="fas fa-mobile-alt"></i> +84012345678910</span>
                 </li>
                 <li className="nav-item">
-                  <span className=""><i className="far fa-envelope"></i> appleStore5@gmail.com</span>
+                  <span className=""><i className="far fa-envelope"></i> laziStore5@lazi.com</span>
                 </li>
-               
-                {/*
-                 */}
               </ul>
               <ul className="navbar-nav ms-auto">
                 <li className="nav-item"><a className='nav-link text-white' href="#"><i className="fab fa-twitter"></i></a></li>
@@ -98,12 +159,9 @@ function Header() {
             >
               <span className="navbar-toggler-icon"></span>
             </button>
-            <div
-              className="collapse navbar-collapse"
-              id="navbarSupportedContent"
-            >
+            <div className="collapse navbar-collapse" id="navbarSupportedContent" >
               <ul className="navbar-nav me-auto">
-              {menuList}
+                {menuLeft}
                 <li className="nav-item dropdown">
                   <div>
                     <a
@@ -117,16 +175,8 @@ function Header() {
                   <i className="fas fa-search"></i>
                     {' Tìm kiếm'}
                   </a>
-                    <div
-                      className="dropdown-menu mt-3 shadow-sm"
-                      aria-labelledby="pagesDropdownSearch"
-                    >
-                      <div
-                        className="dropdown-item border-0"
-                        style={{width:450}}
-                      >
-                      {/**
-                      */}
+                    <div className="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdownSearch">
+                      <div className="dropdown-item border-0 px-2" style={{width:280}}>
                         <FormSearch />
                       </div>
                     </div>
@@ -136,73 +186,12 @@ function Header() {
                  */}
               </ul>
               <ul className="navbar-nav ms-auto">
-                <li className="nav-item">
-                  <Link
-                    className={`nav-link ${
-                      param['*'] === "/gio-hang" ? "active" : " "
-                    }`}
-                    to="/gio-hang"
-                  >
-                    {" "}
-                    <i className="fas fa-dolly-flatbed me-1 text-gray"></i>
-                    {!hasLogin ? <span>Giỏ hàng <small className="text-gray fw-normal">(0)</small></span> :<small className="text-gray fw-normal">(+99)</small>}
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" href="#!">
-                    {" "}
-                    <i className="far fa-heart me-1"></i>
-                    <small className="text-gray fw-normal"> (0)</small>
-                  </Link>
-                </li>
+                {menuRight}
                 {hasLogin ? (
                   <li className="nav-item dropdown me-3">
-                    <a
-                      className="nav-link dropdown-toggle"
-                      id="pagesDropdown"
-                      href="#"
-                      data-bs-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <i className="fas fa-user me-1 text-gray fw-normal"></i>
-                      {userName}
-                    </a>
-                    <div
-                      className="dropdown-menu mt-3 shadow-sm w-25"
-                      aria-labelledby="pagesDropdown"
-                    >
-                      <a
-                        className="dropdown-item border-0 transition-link"
-                        href="index.html"
-                      >
-                        Thông tin khách hàng
-                      </a>
-                      <a
-                        className="dropdown-item border-0 transition-link"
-                        href="detail.html"
-                      >
-                        Lịch sử đặt hàng
-                      </a>
-                      <a
-                        className="dropdown-item border-0 transition-link"
-                        href="cart.html"
-                      >
-                        Quá trình giao hàng
-                      </a>
-                      <a
-                        className="dropdown-item border-0 transition-link"
-                        href="cart.html"
-                      >
-                        Mã giảm giá
-                      </a>
-                      <a
-                        className="dropdown-item border-0 transition-link"
-                        href="/lazi-store/"
-                        onClick={handleLogout}
-                      >
-                        Đăng xuất
-                      </a>
+                    {userInfo}
+                    <div className="dropdown-menu mt-3 shadow-sm w-25" aria-labelledby="pagesDropdown">
+                      {setting}
                     </div>
                   </li>
                 ):(menuLogin)}
