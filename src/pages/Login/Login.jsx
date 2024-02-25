@@ -5,7 +5,7 @@ import URL_PATH from "../../config/UrlPath";
 function Login(){
     return(
         <section >
-            <div className={`container my-4 ${styles.widthLogin}`} >
+            <div className={`container my-4 ${styles.widthForm}`} >
                 <div className={`row d-flex justify-content-center`}>
                     <div className="col-lg-6 col-md-9 col-sm-12 p-0">
                         <div className={`card border ${styles.borderCard}`}>

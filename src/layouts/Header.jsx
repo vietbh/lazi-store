@@ -25,7 +25,8 @@ function Header() {
     {id:3, name:'Tin tức',link:'/bai-viet'},
   ];
   const menuListLogin = [
-    {id:1,name:'Đăng nhập',link:'/dang-nhap'},
+    {id:1,name:'Đăng nhập',link:'/dang-nhap',show:true},
+    {id:2,name:'Đăng ký',link:'/dang-ky',show:false},
   ];
   const menuRights = [
     {id:1, name:'Giỏ hàng',link:'/gio-hang',icon:'fas fa-dolly-flatbed me-1 text-gray'},
@@ -49,6 +50,7 @@ function Header() {
     if(param['*'] === URL_PATH.concat(menu.link)){
       title(menu.name);
     }
+    if(menu.show)
     return(
       <li className="nav-item" key={menu.name}>
         <Link

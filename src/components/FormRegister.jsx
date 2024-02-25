@@ -1,9 +1,12 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
+import API_URL from '../config/Api';
+import Loading from './Loading';
 
 function FormRegister() {
   const [validated, setValidated] = useState(false);
@@ -11,12 +14,17 @@ function FormRegister() {
   const [capcha,setCapcha] = useState(false);
   const [randCapcha,setRandCapcha] = useState(0);
   const [success,setSuccess] = useState(false);
+  const [unSuccess,setUnSuccess] = useState(false);
   const [showPass,setShowPass] = useState(false);
   const [showConfirmPass,setShowConfirmPass] = useState(false);
-  // console.log(showPass.password);
+  const [dataUser,setDataUser] = useState();
+  const [loading,setLoading] = useState(false);
   const [message] = useState({
-    success:'',
-    error:''
+    error:'',
+    name:'',
+    email:'',
+    password:'',
+    confirm_password:'',
   });
   const [formData,setFormData] = useState({
     name:'',
@@ -25,6 +33,25 @@ function FormRegister() {
     confirm_password:'',
     capcha:''
   });
+
+  const handleData = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.post(API_URL.concat("/dang-ky"),formData);
+      const data = await response.data;
+      if(response.status === 200){
+        setDataUser(data);
+        setSuccess(true);
+        setUnSuccess(false);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setUnSuccess(true);
+      setLoading(false);
+
+    }
+  }
 
   const handleChange = (e) =>{
     const { name, value } = e.target;
@@ -57,6 +84,14 @@ function FormRegister() {
   }
 
   useEffect(() => {
+    if(success && !unSuccess){
+      setLoading(true);
+      if(dataUser){
+        sessionStorage.setItem('userInfo', JSON.stringify(dataUser));
+      }
+      sessionStorage.setItem('hasLogin',true);
+      setTimeout(()=> window.location.href = '/',1500);
+    }
     if(click >= 8){
       setRandCapcha(Math.floor(10000 - Math.random() * 900000) + 1000000);
       setCapcha(true);
@@ -64,7 +99,7 @@ function FormRegister() {
       return ;
     }
     
-  },[click]);
+  },[click,success,unSuccess,dataUser]);
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -73,15 +108,11 @@ function FormRegister() {
       event.stopPropagation();
       return setValidated(true);
     }
-    
     setClick(click+1);  
     if(!handleCheckPass())return;    
-    // setValidated(true);
     if(!handleCheckCapcha()) return;
     setCapcha(false);
-    setSuccess(true);
-    message.success='Đăng ký thành công';
-    setTimeout(()=> window.location.href = '/',2000);
+    handleData();
   };
 
   const handleShowPass = (id) => {
@@ -99,11 +130,13 @@ function FormRegister() {
           <Form.Label>Tên người dùng <span className='text-danger'>*</span></Form.Label>
           <InputGroup hasValidation>
             <Form.Control
+              className="rounded rounded-3"
               type="text"
               placeholder="Họ và tên"
               name='name'
               onChange={handleChange}
               aria-describedby="inputGroupNameUser"
+              autoComplete="name"
               required
             />
             <Form.Control.Feedback type="invalid" id='inputGroupNameUser'>
@@ -117,11 +150,13 @@ function FormRegister() {
           <Form.Label>Email người dùng<span className='text-danger'>*</span></Form.Label>
           <InputGroup hasValidation>
             <Form.Control
+              className="rounded rounded-3"
               type="email"
               placeholder="Nhập email của bạn"
               name='email'
               onChange={handleChange}
               aria-describedby="inputGroupEmail"
+              autoComplete="email"
               required
             />
             <Form.Control.Feedback type="invalid" id='inputGroupEmail'>
@@ -135,19 +170,20 @@ function FormRegister() {
           <Form.Label>Mật khẩu <span className='text-danger'>*</span></Form.Label>
           <InputGroup hasValidation>
             <Form.Control
+              className="rounded rounded-3"
               type={showPass ?'text':'password'}
               placeholder="Mời nhập mật khẩu"
               name='password'
               onChange={handleChange}
               aria-describedby="inputGroupPassword"
+              autoComplete="password"
               required
             />
-            <InputGroup.Text className='bg-white ' id="inputGroupPassword"><Button className='btn p-0 border-0 bg-white' type='button' onClick={()=>handleShowPass('password')}>
-              {showPass?
-              (<i className="far fa-eye"></i>
-              ):(<i className="far fa-eye-slash"></i>
-              )}
-              </Button></InputGroup.Text>
+            <InputGroup.Text className="bg-white rounded rounded-3" id="inputGroupPassword">
+              <Button className='btn p-0 border-0 bg-white' type='button' onClick={()=>handleShowPass('password')}>
+                {showPass?(<i className="far fa-eye"></i>):(<i className="far fa-eye-slash"></i>)}
+              </Button>
+            </InputGroup.Text>
             <Form.Control.Feedback type="invalid" id='inputGroupPassword'>
               Vui lòng không để trống trường này.
             </Form.Control.Feedback>
@@ -156,22 +192,23 @@ function FormRegister() {
       </Row>
       <Row className="mb-3">
         <Form.Group as={Col} md="12" controlId="validationCustomUserConfirmPassword">
-          <Form.Label>Xác nhận mật khẩu</Form.Label>
+          <Form.Label>Xác nhận mật khẩu <span className='text-danger'>*</span></Form.Label>
           <InputGroup hasValidation>
             <Form.Control 
+              className="rounded rounded-3"
               type={showConfirmPass ?'text':'password'}
               placeholder="Mời nhập lại mật khẩu"
               name='confirm_password'
               value={formData.confirm_password}
               aria-describedby='inputGroupConfirmPassword'
               onChange={handleChange}
+              autoComplete="confirm_password"
               required />
-            <InputGroup.Text className='bg-white' id="inputGroupConfirmPassword"><Button className='btn p-0 border-0 bg-white' type='button' onClick={()=>handleShowPass('confirmPass')}>
-              {showConfirmPass?
-              (<i className="far fa-eye"></i>
-              ):(<i className="far fa-eye-slash"></i>
-              )}
-              </Button></InputGroup.Text>
+            <InputGroup.Text className="bg-white rounded rounded-3" id="inputGroupConfirmPassword">
+              <Button className='btn p-0 border-0 bg-white' type='button' onClick={()=>handleShowPass('confirmPass')}>
+                {showConfirmPass?(<i className="far fa-eye"></i>):(<i className="far fa-eye-slash"></i>)}
+              </Button>
+            </InputGroup.Text>
             <Form.Control.Feedback type="invalid" id='inputGroupConfirmPassword'>
               {message.error !== ''?message.error:'Vui lòng không để trống trường này.'} 
             </Form.Control.Feedback>
@@ -181,17 +218,17 @@ function FormRegister() {
       <Row className='mb-4'>
         <Form.Group className="mb-3">
           <Form.Check
+            className='rounded'
             required
-            label="Đồng ý với chính sách và thỏa thuận"
+            label="Đồng ý với chính sách và thỏa thuận *"
             feedback="Bạn cần đồng ý thỏa thuận mới có thể đăng ký."
             feedbackType="invalid"
           />
         </Form.Group>
         <div className='text-center text-sm'>
-        { success &&(
-          <span className={'text-success'}>{message.success}</span>
-        )}
-      </div>
+          { success && (<span className={'text-success'}>Đăng ký thành công</span>)}
+          { unSuccess && (<span className={'text-danger'}>Đăng ký chưa thành công, vui lòng thử lại.</span>)}
+        </div>
       </Row>
       {capcha && (
         <Row className="mb-3">
@@ -220,9 +257,8 @@ function FormRegister() {
       </Form.Group>
     </Row>
       )}
-   
-      <div className='d-flex justify-content-center'>
-        <Button type="submit"  className='w-50 rounded-3 fw-medium'>Đăng ký</Button>
+      <div className='d-flex justify-content-center mb-4'>
+        <Button type="submit" className={`w-50 rounded-3 fw-medium ${loading && 'disabled'}`} >{loading ?(<span>Đang đăng ký <Loading width={20} height={20}/> </span>):(<span>Đăng ký</span>)}</Button>
       </div>
     </Form>
   );

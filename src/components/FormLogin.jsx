@@ -118,7 +118,6 @@ function FormLogin() {
   useEffect(() => {
     if(success && !unSuccess){
       setLoading(true);
-      console.log(dataUser);
       sessionStorage.setItem('userInfo', JSON.stringify(dataUser));
       sessionStorage.setItem('hasLogin',true);
       setTimeout(()=> history.go(-1),1500);
@@ -131,8 +130,7 @@ function FormLogin() {
     }
     if(formData.rememberMe){
       localStorage.setItem('email',formData.email);
-    }else{
-      // console.log(dataUser);
+      localStorage.setItem('user',formData);
     }
   },[click,success,formData,unSuccess,url,dataUser]);
 

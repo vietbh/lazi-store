@@ -105,14 +105,14 @@ function Product() {
     }, [loading]);
     const category = categories.map((category)=>{
       return(
-          <div key={category.id} className="col-sm-12 col-xl-1 mb-2" style={{width:260,minHeight:52,maxHeight:60}}>
-            <a href={category.slug}>
-              <button className="text-start rounded-3 btn btn-light w-100 h-100" >
-                  <p className="m-1 overflow-hidden">{category.name}</p>
-              </button>
-            </a>
-          </div>   
-      )
+        <div key={category.id} className="col-sm-12 col-xl-1 mb-2" style={{width:260,minHeight:52,maxHeight:60}}>
+          <a href={category.slug}>
+            <button className="text-start rounded-3 btn btn-light w-100 h-100" >
+                <p className="m-1 overflow-hidden">{category.name}</p>
+            </button>
+          </a>
+        </div>   
+      );
     }
     );
     const product = products.map((product) => {
@@ -128,14 +128,14 @@ function Product() {
       });
       return (
         <div key={product.id} className={`col-lg-4 col-sm-6`}>
-          <div className={`product text-start bg-light p-3 mb-3 ${styles.borderImageProduct}`}>
+          <div className={`product text-start bg-light  mb-3 ${styles.borderImageProduct}`}>
             <div className="position-relative mb-3">
               <div className="badge text-white bg-danger">Hot</div><a className="d-block" to={product.slug}><img className={`img-fluid ${styles.borderImageProduct}`} loading="lazy" src={product.image_url} data-src={product.image_url} alt={product.image_url}/></a>
               <div className="product-overlay">
                   <ul className="mb-0 list-inline">
                     <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
                     {!hasLogin ? <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href={"dang-nhap"}><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li> :<li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html"><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li>}
-                    <li className="list-inline-item me-0"><bu className="btn btn-sm btn-outline-dark" href={"#"+product.slug} data-bs-toggle="modal" onClick={()=>handleModalProduct(product.id)}><i className="fas fa-expand"></i></bu></li>
+                    <li className="list-inline-item me-0"><button className="btn btn-sm btn-outline-dark" data-bs-target={"#"+product.slug} data-bs-toggle="modal" onClick={()=>handleModalProduct(product.id)}><i className="fas fa-expand"></i></button></li>
                   </ul>
               </div>
             </div>
@@ -146,7 +146,6 @@ function Product() {
         </div>
       );
     });  
-
     const handleModalProduct = function(id){
       const modal = products.filter((value) => {if(value.id === id) return value})
       {/*Modal */}
@@ -185,6 +184,7 @@ function Product() {
               <header className="text-start">
                   <h2 className="h5 text-uppercase mb-4">Danh sách danh mục</h2>
               </header>
+              {loading && <div className="col-lg-12 col-sm-12"><Loading className={'d-flex justify-content-center'} width={50}  /></div> }  
               <div className="row gy-2">
                   {category}
               </div>
@@ -267,16 +267,18 @@ function Product() {
             <section className="py-5" style={{height:'135vh'}}>
               <div className="container p-0">
                 <div className="row">
-                    {/*<!-- SHOP LISTING-->*/}
+                  {/*<!-- SHOP LISTING-->*/}
+                  <header className="text-start">
+                      <h2 className="h5 text-uppercase mb-4">Danh sách sản phẩm</h2>
+                  </header>
+                  {loading && <div className="col-lg-12 col-sm-12"><Loading className={'d-flex justify-content-center'}/></div> }  
                   <div className="col-lg-9 order-1 order-lg-2 mb-5 mb-lg-0">
                     <div className="row">
-                      {loading && <Loading className={'col-lg-12 col-sm-12 d-flex justify-content-center'}/> }  
                       {/*<!-- PRODUCT-->*/}
                       {product}
                     </div>
                     {/*<!-- PAGINATION-->*/}
-                    {/*
-                    {!loading &&(
+                    {/*{!loading &&(
                       <nav aria-label="Page navigation example ">
                         <ul className="pagination justify-content-center justify-content-lg-end ">
                           <li className="page-item mx-1"><a className="page-link" href="#!" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
@@ -286,8 +288,7 @@ function Product() {
                           <li className="page-item ms-1"><a className="page-link" href="#!" aria-label="Next"><span aria-hidden="true">»</span></a></li>
                         </ul>
                       </nav>
-                    )}
-                    */}
+                    )}*/}
                   </div>
                 </div>
               </div>
