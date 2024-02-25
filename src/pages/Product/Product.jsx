@@ -4,28 +4,31 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import API_URL from "../../config/Api";
 import styles from "./styles.module.css";
-import { NumericFormat } from 'react-number-format';
 import Loading from "../../components/Loading";
 import ModalProduct from "../../components/modalProduct";
+import { useDispatch } from "react-redux";
+import cartSlice from "../../state/cartSlice";
+
 function Product() {
     const [products,setProducts] = useState([]);
     const [modal,setModal] = useState([]);
     const [categories,setCategories] = useState([]);
     const [loading,setLoading] = useState(false); 
     const hasLogin = sessionStorage.getItem("hasLogin");   
+    
     const fetchDataCategory = async() => {
       try {
-          setLoading(true);
-          const response = await axios.get(API_URL.concat('/danh-muc-san-pham'));
-          const data = await response.data;
-          if(response.status == 200){
-            setLoading(false);
-            // Lưu trữ dữ liệu sản phẩm trong bộ nhớ session của trình duyệt
-            sessionStorage.setItem('categories', JSON.stringify(data));
-          }
-        }catch(error) {
-          setLoading(true);
-          console.log(error);
+        setLoading(true);
+        const response = await axios.get(API_URL.concat('/danh-muc-san-pham'));
+        const data = await response.data;
+        if(response.status == 200){
+          setLoading(false);
+          // Lưu trữ dữ liệu sản phẩm trong bộ nhớ session của trình duyệt
+          sessionStorage.setItem('categories', JSON.stringify(data));
+        }
+      }catch(error) {
+        setLoading(true);
+        console.log(error);
       }
     }
     const fetchData = async() => {
@@ -115,32 +118,37 @@ function Product() {
       );
     }
     );
+
+    const dispatch = useDispatch();
+    // const globalstate = useSelector(state=>state.cartState);
+    const {add} = cartSlice.actions;
     const product = products.map((product) => {
       const price = product.variations.map((variation,index) => {
-        if(index == 0 ){
+        if(index == 0 ){  
           return(
-            <p key={variation.id} className="text-danger">
-              <NumericFormat disabled className="btn text-start p-0 fw-bold text-danger" value={variation.price_sale} thousandSeparator=',' decimalSeparator="." suffix=' đ'/>
-              <NumericFormat disabled className="btn text-sm text-start p-0 fw-normal text-secondary text-decoration-line-through" value={variation.price} thousandSeparator=',' decimalSeparator="." suffix='đ'/>
-            </p>
-            );
+            <div key={variation.id} className="text-danger text-center">
+              <p className="fw-bold m-1">{parseInt(variation.price_sale).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}<span className="text-small">đ</span></p>
+              <p className="m-1 text-secondary fw-bold text-decoration-line-through">{parseInt(variation.price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}<span className="text-small">đ</span></p>
+            </div>
+          );
         }
       });
       return (
         <div key={product.id} className={`col-lg-4 col-sm-6`}>
-          <div className={`product text-start bg-light  mb-3 ${styles.borderImageProduct}`}>
+          <div className={`product text-start bg-light  mb-3 ${styles.borderProduct} ${styles.paddingImageProduct}`}>
             <div className="position-relative mb-3">
               <div className="badge text-white bg-danger">Hot</div><a className="d-block" to={product.slug}><img className={`img-fluid ${styles.borderImageProduct}`} loading="lazy" src={product.image_url} data-src={product.image_url} alt={product.image_url}/></a>
               <div className="product-overlay">
                   <ul className="mb-0 list-inline">
                     <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
-                    {!hasLogin ? <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href={"dang-nhap"}><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li> :<li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html"><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li>}
+                    {!hasLogin ? <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href={"dang-nhap"}><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li> : <li className="list-inline-item m-0 p-0">
+                      <button className="btn btn-sm btn-dark" onClick={()=>{dispatch(add({...product,quantity:1}));}}><i className="fa fa-cart-plus"></i> Thêm vào giỏ </button></li>}
                     <li className="list-inline-item me-0"><button className="btn btn-sm btn-outline-dark" data-bs-target={"#"+product.slug} data-bs-toggle="modal" onClick={()=>handleModalProduct(product.id)}><i className="fas fa-expand"></i></button></li>
                   </ul>
               </div>
             </div>
-            <h6> <Link className="reset-anchor" to={product.slug}>Iphone</Link></h6>
-            <h6> <Link className="reset-anchor text-center" to={product.slug}>{product.name}</Link></h6>
+            <h6 className="text-center"> <Link className="reset-anchor" to={product.slug}>Iphone</Link></h6>
+            <h6 className="text-center"> <Link className="reset-anchor text-center" to={product.slug}>{product.name}</Link></h6>
             {price}
           </div>
         </div>

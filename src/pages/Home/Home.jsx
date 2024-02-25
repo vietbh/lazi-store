@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from './styles.module.css';
 import URL_PATH from "../../config/UrlPath";
+import { useDispatch } from "react-redux";
+import cartSlice from "../../state/cartSlice";
 function Home(){
     const [categories,setCategories] = useState([]);
     const [products,setProducts] = useState([]);
+    const hasLogin = sessionStorage.getItem("hasLogin");   
     useEffect(()=>{
         const data = [
             {id:1,name:'Điện thoại'},
@@ -43,6 +46,10 @@ function Home(){
         )
     }
     );
+
+    const dispatch = useDispatch();
+    // const globalstate = useSelector(state=>state.cartState);
+    const {add} = cartSlice.actions;
     const product = products.map(product=>{
         return(
             <div key={product.id} className="col-xl-3 col-lg-4 col-sm-6">
@@ -57,7 +64,8 @@ function Home(){
                     <div className="product-overlay">
                         <ul className="mb-0 list-inline">
                         <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
-                        <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html"><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li>
+                        {!hasLogin ? <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href={"dang-nhap"}><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li> : <li className="list-inline-item m-0 p-0">
+                        <button className="btn btn-sm btn-dark" onClick={()=>{dispatch(add({...product,quantity:1}));}}><i className="fa fa-cart-plus"></i> Thêm vào giỏ </button></li>}
                         <li className="list-inline-item me-0"><a className="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i className="fas fa-expand"></i></a></li>
                         </ul>
                     </div>

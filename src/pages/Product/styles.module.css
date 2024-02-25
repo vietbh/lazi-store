@@ -4,3 +4,12 @@
 .borderImageProduct{
     border-radius: 20px;
 }
+.borderProduct{
+    border-radius: 30px;
+}
+.borderImageProduct{
+    border-radius: 18px;
+}
+.paddingImageProduct{
+    padding:12px
+}

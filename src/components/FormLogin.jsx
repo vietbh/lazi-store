@@ -44,6 +44,7 @@ function FormLogin() {
       const data = await response.data;
       if(response.status === 200){
         setDataUser(data);
+        console.log(data);
         setSuccess(true);
       }
     } catch (error) {
@@ -72,8 +73,13 @@ function FormLogin() {
   };
 
   const handleLoginGoogle = () =>{
-    sessionStorage.setItem('userName','Google');
-    setSuccess(true);setUnSuccess(false);
+    sessionStorage.setItem('userInfo',JSON.stringify([{
+      'id':1,
+      'name':'Google',
+      'email':'asdlknad@gmail.com',
+    }]));
+    setSuccess(true);
+    setUnSuccess(false);
   }
 
   const handleLoginFaceBook = () =>{
