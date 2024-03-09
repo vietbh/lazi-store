@@ -5,13 +5,10 @@ import { Link } from "react-router-dom";
 import API_URL from "../../config/Api";
 import styles from "./styles.module.css";
 import Loading from "../../components/Loading";
-import ModalProduct from "../../components/modalProduct";
-import { useDispatch } from "react-redux";
-import cartSlice from "../../state/cartSlice";
 
 function Product() {
     const [products,setProducts] = useState([]);
-    const [modal,setModal] = useState([]);
+    // const [modal,setModal] = useState([]);
     const [categories,setCategories] = useState([]);
     const [loading,setLoading] = useState(false); 
     const hasLogin = sessionStorage.getItem("hasLogin");   
@@ -119,9 +116,6 @@ function Product() {
     }
     );
 
-    const dispatch = useDispatch();
-    // const globalstate = useSelector(state=>state.cartState);
-    const {add} = cartSlice.actions;
     const product = products.map((product) => {
       const price = product.variations.map((variation,index) => {
         if(index == 0 ){  
@@ -133,41 +127,35 @@ function Product() {
           );
         }
       });
+      const image = product.variations.map((variation,index) => {
+        if(index == 0 ){  
+          return(
+            <img key={variation.id} className={`img-fluid ${styles.borderImageProduct}`} loading="lazy" src={variation.image_url} data-src={variation.image_url} alt={variation.image_url}/>
+          );
+        }
+      });
       return (
         <div key={product.id} className={`col-lg-4 col-sm-6`}>
           <div className={`product text-start bg-light  mb-3 ${styles.borderProduct} ${styles.paddingImageProduct}`}>
             <div className="position-relative mb-3">
-              <div className="badge text-white bg-danger">Hot</div><a className="d-block" to={product.slug}><img className={`img-fluid ${styles.borderImageProduct}`} loading="lazy" src={product.image_url} data-src={product.image_url} alt={product.image_url}/></a>
+              <div className="badge text-white bg-danger">Hot</div>
+              <a className="d-block" to={product.slug}>{image}</a>
               <div className="product-overlay">
                   <ul className="mb-0 list-inline">
-                    <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
-                    {!hasLogin ? <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href={"dang-nhap"}><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li> : <li className="list-inline-item m-0 p-0">
-                      <button className="btn btn-sm btn-dark" onClick={()=>{dispatch(add({...product,quantity:1}));}}><i className="fa fa-cart-plus"></i> Thêm vào giỏ </button></li>}
-                    <li className="list-inline-item me-0"><button className="btn btn-sm btn-outline-dark" data-bs-target={"#"+product.slug} data-bs-toggle="modal" onClick={()=>handleModalProduct(product.id)}><i className="fas fa-expand"></i></button></li>
+                    {!hasLogin ? <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href={"dang-nhap.html"}><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li>
+                    : <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href={"cua-hang/"+product.slug+'.html'}><i className="fa fa-cart-plus"></i> Thêm vào giỏ </a></li>}
                   </ul>
               </div>
             </div>
-            <h6 className="text-center"> <Link className="reset-anchor" to={product.slug}>Iphone</Link></h6>
-            <h6 className="text-center"> <Link className="reset-anchor text-center" to={product.slug}>{product.name}</Link></h6>
+            <h6 className="text-center"> <Link className="reset-anchor" to={product.slug+'.html'}>Iphone</Link></h6>
+            <h6 className="text-center"> <Link className="reset-anchor text-center" to={product.slug+'.html'}>{product.name}</Link></h6>
             {price}
           </div>
         </div>
       );
     });  
-    const handleModalProduct = function(id){
-      const modal = products.filter((value) => {if(value.id === id) return value})
-      {/*Modal */}
-      if(modal){
-        setModal(modal);
-      }else{
-        setModal([]);
-      }
-    };
-
     return (
         <section >
-          {/* <!-- Modal SECTION-->*/}
-          <ModalProduct modal={modal.map((value) => value)}/>
           <div className="container">   
             {/* <!-- HERO SECTION-->*/}
             <section className="py-5 bg-light">

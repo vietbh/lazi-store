@@ -24,13 +24,13 @@ function FormRegister() {
     name:'',
     email:'',
     password:'',
-    confirm_password:'',
+    password_confirmation:'',
   });
   const [formData,setFormData] = useState({
     name:'',
     email:'',
     password:'',
-    confirm_password:'',
+    password_confirmation:'',
     capcha:''
   });
 
@@ -44,9 +44,14 @@ function FormRegister() {
         setSuccess(true);
         setUnSuccess(false);
         setLoading(false);
+        message.name = '';
+        message.email = '';
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error.response.data.errors.name[0]);
+      const data = error.response.data.errors;
+      message.name = data.name[0];
+      message.email = data.email[0];
       setUnSuccess(true);
       setLoading(false);
 
@@ -75,11 +80,11 @@ function FormRegister() {
   };
 
   const handleCheckPass = () =>{
-    if(formData.password === formData.confirm_password){
+    if(formData.password === formData.password_confirmation){
       return true;
     }
     message.error = 'Mật khẩu chưa trùng khớp.Vui lòng bạn nhập lại!';
-    formData.confirm_password = '';
+    formData.password_confirmation = '';
     return false;
   }
 
@@ -142,6 +147,9 @@ function FormRegister() {
             <Form.Control.Feedback type="invalid" id='inputGroupNameUser'>
               Vui lòng không để trống trường này.
             </Form.Control.Feedback>
+            {message.name && (<Form.Control.Feedback className='d-block' type="invalid" id={message.name}>
+              {message.name}
+            </Form.Control.Feedback>)}
           </InputGroup>
         </Form.Group>
       </Row>
@@ -162,6 +170,9 @@ function FormRegister() {
             <Form.Control.Feedback type="invalid" id='inputGroupEmail'>
               Vui lòng không để trống trường này.
             </Form.Control.Feedback>
+            {message.email && (<Form.Control.Feedback className='d-block' type="invalid" id={message.email}>
+              {message.email}
+            </Form.Control.Feedback>)}
           </InputGroup>
         </Form.Group>
       </Row>
@@ -198,11 +209,11 @@ function FormRegister() {
               className="rounded rounded-3"
               type={showConfirmPass ?'text':'password'}
               placeholder="Mời nhập lại mật khẩu"
-              name='confirm_password'
-              value={formData.confirm_password}
+              name='password_confirmation'
+              value={formData.password_confirmation}
               aria-describedby='inputGroupConfirmPassword'
               onChange={handleChange}
-              autoComplete="confirm_password"
+              autoComplete="password_confirmation"
               required />
             <InputGroup.Text className="bg-white rounded rounded-3" id="inputGroupConfirmPassword">
               <Button className='btn p-0 border-0 bg-white' type='button' onClick={()=>handleShowPass('confirmPass')}>
@@ -227,7 +238,7 @@ function FormRegister() {
         </Form.Group>
         <div className='text-center text-sm'>
           { success && (<span className={'text-success'}>Đăng ký thành công</span>)}
-          { unSuccess && (<span className={'text-danger'}>Đăng ký chưa thành công, vui lòng thử lại.</span>)}
+          { unSuccess && (<span className={'text-danger'}> {message.error ? message.error : 'Đăng ký chưa thành công, vui lòng thử lại.'}</span>)}
         </div>
       </Row>
       {capcha && (
@@ -258,7 +269,7 @@ function FormRegister() {
     </Row>
       )}
       <div className='d-flex justify-content-center mb-4'>
-        <Button type="submit" className={`w-50 rounded-3 fw-medium ${loading && 'disabled'}`} >{loading ?(<span>Đang đăng ký <Loading width={20} height={20}/> </span>):(<span>Đăng ký</span>)}</Button>
+        <Button type="submit" autoComplete="off" className={`w-50 rounded-3 fw-medium ${loading && 'disabled'}`} >{loading ?(<span>Đang đăng ký <Loading width={20} height={20}/> </span>):(<span>Đăng ký</span>)}</Button>
       </div>
     </Form>
   );

@@ -14,7 +14,7 @@ function Register(){
                                         <h2 className="fw-bold fs-3 text-center my-2">ĐĂNG KÝ</h2>
                                     </div>
                                     <FormRegister />
-                                    <p>Bạn đã có tài khoản.Hãy đăng nhập <a href={'/'+URL_PATH+'/dang-nhap'}>ở đây</a></p>
+                                    <p>Bạn đã có tài khoản.Hãy đăng nhập <a href={'/'+URL_PATH+'/dang-nhap.html'}>ở đây</a></p>
                                </div>
                            </div>
                    </div>

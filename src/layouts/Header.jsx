@@ -21,35 +21,35 @@ function Header() {
   };
   const menuLefts = [
     {id:1, name:'Trang chủ',link:'/'},
-    {id:2, name:'Danh mục',link:'/cua-hang'},
-    {id:3, name:'Tin tức',link:'/bai-viet'},
+    {id:2, name:'Danh mục',link:'/cua-hang.html'},
+    {id:3, name:'Tin tức',link:'/tin-tuc.html'},
   ];
   const menuListLogin = [
-    {id:1,name:'Đăng nhập',link:'/dang-nhap',show:true},
-    {id:2,name:'Đăng ký',link:'/dang-ky',show:false},
+    {id:1,name:'Đăng nhập',link:'/dang-nhap.html', show:true},
+    {id:2,name:'Đăng ký',link:'/dang-ky.html', show:false},
   ];
   const menuRights = [
-    {id:1, name:'Giỏ hàng',link:'/gio-hang',icon:'fas fa-dolly-flatbed me-1 text-gray'},
-    {id:2, name:'Thông báo',link:'/thong-bao',icon:'far fa-heart me-1 text-gray'},
+    {id:1, name:'Giỏ hàng',link:'/gio-hang.html',icon:'fas fa-dolly-flatbed me-1 text-gray'},
+    // {id:2, name:'Thông báo',link:'/thong-bao.html',icon:'far fa-heart me-1 text-gray'},
   ];
   const loginSettings = [
-    {id:1, name:'Thông tin khách hàng', link:'/thong-tin-khach-hang'},
-    {id:2, name:'Lịch sử đặt hàng', link:'/lich-su'},
-    {id:3, name:'Quá trình giao hàng', link:'/gia-hang'},
-    {id:4, name:'Mã giảm giá', link:'/ma-giam-gia'},
+    {id:1, name:'Thông tin khách hàng', link:'/thong-tin-khach-hang.html'},
+    {id:2, name:'Lịch sử đặt hàng', link:'/lich-su.html'},
+    {id:3, name:'Quá trình giao hàng', link:'/gia-hang.html'},
+    {id:4, name:'Mã giảm giá', link:'/ma-giam-gia.html'},
     {id:5, name:'Đăng xuất', link:'/',logout:true},
   ];
   const userInfos = sessionStorage.getItem("userInfo");
   const dataParse = JSON.parse(userInfos);
+
   useEffect(() => {
     if (dataUsers.length === 0 && userInfos) {
       setDataUsers(dataParse);
     }
   }, [dataParse, dataUsers,userInfos]);
+
   const menuLogin = menuListLogin.map((menu) => { 
-    if(param['*'] === URL_PATH.concat(menu.link)){
-      title(menu.name);
-    }
+    if(param['*'] === URL_PATH.concat(menu.link)) title(menu.name);
     if(menu.show)
     return(
       <li className="nav-item" key={menu.name}>
@@ -101,20 +101,17 @@ function Header() {
       </li>
     );
   });
-  const userInfo = dataUsers.map((user) => (
-    <a
-      key={user.id}
-      className="nav-link dropdown-toggle"
-      id="pagesDropdown"
-      href="#"
-      data-bs-toggle="dropdown"
-      aria-haspopup="true"
-      aria-expanded="false"
-    >
-      <i className="fas fa-user me-1 text-gray fw-normal"></i>
-      <span>{user.name}</span>
-    </a>
-  ));
+  const userInfo = dataUsers.map((user) => {
+    return (
+      <a key={user.id} className="nav-link dropdown-toggle"
+        id="pagesDropdown" href="#" data-bs-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false"
+      >
+        {user.image_url ? <img className="rounded-circle" src={user.image_url} width={50} /> : <i className="fas fa-user me-1 text-gray fw-normal"></i>} 
+        <span>{user.name}</span>
+      </a>
+    );
+  });
 
   return (
     <section id="header">

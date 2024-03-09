@@ -14,7 +14,7 @@ function Login(){
                                     <h2 className=" fw-bold fs-3 text-center my-2">ĐĂNG NHẬP</h2>
                                 </div>
                                 <FormLogin/>
-                                <p>Bạn chưa có tài khoản.Hãy đăng ký<a className="ps-1" href={'/'+URL_PATH+'/dang-ky'}>ở đây</a></p>
+                                <p>Bạn chưa có tài khoản.Hãy đăng ký<a className="ps-1" href={'/'+URL_PATH+'/dang-ky.html'}>ở đây</a></p>
                             </div>
                         </div>
                     </div>

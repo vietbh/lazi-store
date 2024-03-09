@@ -13,3 +13,31 @@
 .paddingImageProduct{
     padding:12px
 }
+.buttonColor {
+    outline: white !impotant ;
+    border: white ;
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    background-color: white;
+    color: #333;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.buttonColor:active {
+    outline: white !impotant ;
+    border: red ;
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    background-color: white;
+    color: #333;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
