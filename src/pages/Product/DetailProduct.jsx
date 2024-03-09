@@ -1,15 +1,133 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import styles from "./styles.module.css";
+import { useDispatch } from "react-redux";
+import cartSlice from "../../state/cartSlice";
 
 const DetailProduct = () => {
-    const slugSanPham = useParams();
-    console.log(slugSanPham);
+    const slug = useParams()['slug'];
+    // const type = useParams()['type'];
     const path = 'https://vietbh.github.io/lazi-store/';
+    const [products,setProducts] = useState([]);
+    const [color,setColor] = useState('');
+    const dispatch = useDispatch();
+    const {add} = cartSlice.actions
+    useEffect(()=>{
+        const cachedProducts = JSON.parse(sessionStorage.getItem('products'));
+        if(cachedProducts){
+            setProducts(cachedProducts);
+        }
+    },[]);   
+    
+    const product = products.map((product) => {
+        if(product.slug == slug)
+        return(
+            <div key={product.id} className="col-lg-5" id='san-pham'>
+                <h1 className="mb-4">{product.name}</h1>
+                <h6 className="text-secondary ">Chọn màu để xem giá</h6>
+                <div className="d-flex justify-content-start mb-4 mt-1">
+                    {product.variations.map((variation,index) => {
+                        if(index == 0 && color == '') setColor(variation.color_type);
+                        if(variation.color_type == color){
+                            return(
+                                <div key={variation.id} className="me-3">
+                                    <div className="card col-lg-12 col-sm-12 border border-4 border-danger rounded-3">
+                                        <div className="card-body col-lg-12 px-2 py-1 border border-danger rounded-3">
+                                            <button className={`btn-hover-none p-0 text-start ${styles.buttonColor}`} type="button" >
+                                                <p className="fw-bolder text-secondary p-0 m-0">{variation.color_type}</p>
+                                                <p className="fw-normal text-secondary p-0 m-0"> {parseInt(variation.price_sale).toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,')}<span className="text-small">đ</span></p>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        }else{
+                            return(
+                                <div key={variation.id} className="me-3">
+                                    <div className="card col-lg-12 col-sm-12 border border-4 border-secondary rounded-3">
+                                        <div className="card-body col-lg-12 px-2 py-1 border border-secondary rounded-3">
+                                            <button className={`btn-hover-none p-0 text-start ${styles.buttonColor}`} onClick={()=>setColor(variation.color_type)}>
+                                                <p className="fw-bolder text-secondary p-0 m-0">{variation.color_type}</p>
+                                                <p className="fw-normal text-secondary p-0 m-0"> {parseInt(variation.price_sale).toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,')}<span className="text-small">đ</span></p>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        }
+                    })}
+                </div>
+                {/**
+                <div className="text-sm mb-4" dangerouslySetInnerHTML={{ __html: product.description }} />
+                 */}
+                <div className="row align-items-stretch mb-4">
+                    <div className="col-sm-5 col-lg-5 pr-sm-0 mb-4">
+                        <div className="border d-flex align-items-center justify-content-between py-1 px-3 bg-white border-white"><span className="small text-uppercase text-gray mr-4 no-select">Số lượng</span>
+                            <div className="quantity">
+                                <button className="dec-btn p-0"><i className="fas fa-caret-left"></i></button>
+                                <input className="form-control border-0 shadow-0 p-0" type="text" value="1" onChange={()=>{}}/>
+                                <button className="inc-btn p-0"><i className="fas fa-caret-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    {product.variations.map((variation,index) => {
+                        if(index == 0 && color == '') setColor(variation.color_type);
+                        if(variation.color_type == color){
+                            return (
+                                <div key={variation.id} className="row">
+                                    <div className="col-sm-7 col-lg-9 pl-sm-0 mb-4 p-0"><button className="btn btn-danger btn-block w-100 py-3 fs-5 fw-bold rounded-3 text-uppercase" onClick={()=>{dispatch(add({...variation,quantity:1}));}}>Mua ngay</button></div>
+                                    <div className="col-sm-5 col-lg-3 pl-sm-0 mb-4 ">
+                                        <button className="btn btn-outline-danger btn-block w-100 p-1 fs-6 rounded-3 "  onClick={()=>{dispatch(add({...variation,quantity:1}));}}>
+                                            <svg width="37px" height="37px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ff0000">
+                                                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                                                <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+                                                <g id="SVGRepo_iconCarrier">
+                                                    <path d="M21 5L19 12H7.37671M20 16H8L6 3H3M11.5 7L13.5 9M13.5 9L15.5 7M13.5 9V3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="#ff0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> 
+                                                </g>
+                                            </svg>                                          
+                                            <p className="mb-0 pb-0" style={{fontSize:'10px'}}>Thêm vào giỏ</p>
+                                        </button>
+                                    </div>
+                                </div>
+                            );
+                        }
+                    })}
+                    <div className="row pe-4 mb-4">
+                        <div className="card col-lg-12">
+                            <div className="card-body">
+                                <h5 className="card-title">Special title treatment</h5>
+                                <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                <a href="#" className="btn btn-primary">Go somewhere</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row pe-4 mb-4">
+                        <div className="card col-lg-12">
+                            <div className="card-body">
+                                <h5 className="card-title">Special title treatment</h5>
+                                <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                <a href="#" className="btn btn-primary">Go somewhere</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row pe-4 mb-4">
+                        <div className="card col-lg-12">
+                            <div className="card-body">
+                                <h5 className="card-title">Special title treatment</h5>
+                                <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    });
+
     return (
-        <div>
-            <section className="py-5">
-                <div className="container" >
+        <section className="py-5">
+            <div className="container" >
                 <div className="row mb-5">
-                    <div className="col-lg-6">
+                    <div className="col-lg-7">
                     {/* <!-- PRODUCT SLIDER--> */}
                         <div className="row m-sm-0">
                             <div className="col-sm-2 p-sm-0 order-2 order-sm-1 mt-2 mt-sm-0 px-xl-2">
@@ -35,85 +153,50 @@ const DetailProduct = () => {
                         </div>
                     </div>
                     {/* <!-- PRODUCT DETAILS--> */}
-                    <div className="col-lg-6" id='san-pham'>
-                    <ul className="list-inline mb-2 text-sm">
-                        <li className="list-inline-item m-0"><i className="fas fa-star small text-warning"></i></li>
-                        <li className="list-inline-item m-0 1"><i className="fas fa-star small text-warning"></i></li>
-                        <li className="list-inline-item m-0 2"><i className="fas fa-star small text-warning"></i></li>
-                        <li className="list-inline-item m-0 3"><i className="fas fa-star small text-warning"></i></li>
-                        <li className="list-inline-item m-0 4"><i className="fas fa-star small text-warning"></i></li>
-                    </ul>
-                    <h1>Red digital smartwatch</h1>
-                    <p className="text-muted lead">$250</p>
-                    <p className="text-sm mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ut ullamcorper leo, eget euismod orci. Cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus. Vestibulum ultricies aliquam convallis.</p>
-                    <div className="row align-items-stretch mb-4">
-                        <div className="col-sm-5 pr-sm-0">
-                        <div className="border d-flex align-items-center justify-content-between py-1 px-3 bg-white border-white"><span className="small text-uppercase text-gray mr-4 no-select">Quantity</span>
-                            <div className="quantity">
-                            <button className="dec-btn p-0"><i className="fas fa-caret-left"></i></button>
-                            <input className="form-control border-0 shadow-0 p-0" type="text" value="1" onChange={()=>{}}/>
-                            <button className="inc-btn p-0"><i className="fas fa-caret-right"></i></button>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-sm-3 pl-sm-0"><a className="btn btn-dark btn-sm btn-block h-100 d-flex align-items-center justify-content-center px-0" href="cart.html">Add to cart</a></div>
-                    </div><a className="text-dark p-0 mb-4 d-inline-block" href="#!"><i className="far fa-heart me-2"></i>Add to wish list</a> <br/>
-                    <ul className="list-unstyled small d-inline-block">
-                        <li className="px-3 py-2 mb-1 bg-white"><strong className="text-uppercase">SKU:</strong><span className="ms-2 text-muted">039</span></li>
-                        <li className="px-3 py-2 mb-1 bg-white text-muted"><strong className="text-uppercase text-dark">Category:</strong><a className="reset-anchor ms-2" href="#!">Demo Products</a></li>
-                        <li className="px-3 py-2 mb-1 bg-white text-muted"><strong className="text-uppercase text-dark">Tags:</strong><a className="reset-anchor ms-2" href="#!">Innovation</a></li>
-                    </ul>
-                    </div>
+                    {product}
                 </div>
                 {/* <!-- DETAILS TABS--> */}
-                <ul className="nav nav-tabs border-0" id="myTab" role="tablist">
-                    <li className="nav-item"><a className="nav-link text-uppercase active" id="description-tab" data-bs-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Description</a></li>
-                    <li className="nav-item"><a className="nav-link text-uppercase" id="reviews-tab" data-bs-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false">Reviews</a></li>
-                </ul>
-                <div className="tab-content mb-5" id="myTabContent">
-                    <div className="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
-                    <div className="p-4 p-lg-5 bg-white">
-                        <h6 className="text-uppercase">Product description </h6>
-                        <p className="text-muted text-sm mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                    </div>
-                    </div>
-                    <div className="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
-                    <div className="p-4 p-lg-5 bg-white">
-                        <div className="row">
-                        <div className="col-lg-8">
-                            <div className="d-flex mb-3">
-                            <div className="flex-shrink-0"><img className="rounded-circle" src={`${path}img/customer-1.png`} alt="" width="50"/></div>
-                            <div className="ms-3 flex-shrink-1">
-                                <h6 className="mb-0 text-uppercase">Jason Doe</h6>
-                                <p className="small text-muted mb-0 text-uppercase">20 May 2020</p>
-                                <ul className="list-inline mb-1 text-xs">
-                                <li className="list-inline-item m-0"><i className="fas fa-star text-warning"></i></li>
-                                <li className="list-inline-item m-0"><i className="fas fa-star text-warning"></i></li>
-                                <li className="list-inline-item m-0"><i className="fas fa-star text-warning"></i></li>
-                                <li className="list-inline-item m-0"><i className="fas fa-star text-warning"></i></li>
-                                <li className="list-inline-item m-0"><i className="fas fa-star-half-alt text-warning"></i></li>
-                                </ul>
-                                <p className="text-sm mb-0 text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <div className="row mb-5">
+                    <div className="col-lg-7 col-sm-12">
+                        <ul className="nav nav-tabs border-0" id="myTab" role="tablist">
+                            <li className="nav-item"><a className="nav-link text-uppercase active" id="description-tab" data-bs-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Thông tin</a></li>
+                            <li className="nav-item"><a className="nav-link text-uppercase" id="reviews-tab" data-bs-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false">Đánh giá</a></li>
+                        </ul>
+                        <div className="tab-content mb-5" id="myTabContent">
+                            <div className="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+                                <div className="p-4 p-lg-12 bg-white">
+                                    <h6 className="fs-4 mb-4">Thông tin về sản phẩm này</h6>
+                                    <p className="text-muted text-sm mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                </div>
                             </div>
-                            </div>
-                            <div className="d-flex">
-                            <div className="flex-shrink-0"><img className="rounded-circle" src={`${path}img/customer-2.png`} alt="" width="50"/></div>
-                            <div className="ms-3 flex-shrink-1">
-                                <h6 className="mb-0 text-uppercase">Jane Doe</h6>
-                                <p className="small text-muted mb-0 text-uppercase">20 May 2020</p>
-                                <ul className="list-inline mb-1 text-xs">
-                                <li className="list-inline-item m-0"><i className="fas fa-star text-warning"></i></li>
-                                <li className="list-inline-item m-0"><i className="fas fa-star text-warning"></i></li>
-                                <li className="list-inline-item m-0"><i className="fas fa-star text-warning"></i></li>
-                                <li className="list-inline-item m-0"><i className="fas fa-star text-warning"></i></li>
-                                <li className="list-inline-item m-0"><i className="fas fa-star-half-alt text-warning"></i></li>
-                                </ul>
-                                <p className="text-sm mb-0 text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                            </div>
+                            <div className="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                                <div className="p-4 p-lg-5 bg-white">
+                                    <div className="row">
+                                    <div className="col-lg-12">
+                                        <div className="d-flex mb-5">
+                                            <div className="flex-shrink-0"><img className="rounded-circle" src={`${path}img/customer-1.png`} alt="" width="50"/></div>
+                                            <div className="ms-3 flex-shrink-1">
+                                                <h6 className="mb-0 text-uppercase">Jason Doe</h6>
+                                                <p className="small text-muted mb-0 text-uppercase">20 May 2020</p>
+                                                <p className="text-sm mb-0 text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                            </div>
+                                        </div>
+                                        <div className="d-flex">
+                                            <div className="flex-shrink-0"><img className="rounded-circle" src={`${path}img/customer-2.png`} alt="" width="50"/></div>
+                                            <div className="ms-3 flex-shrink-1">
+                                                <h6 className="mb-0 text-uppercase">Jane Doe</h6>
+                                                <p className="small text-muted mb-0 text-uppercase">20 May 2020</p>
+                                                <p className="text-sm mb-0 text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        </div>
                     </div>
+                    <div className="col-lg-5 col-sm-12">
+                        <h3>Tin tức liên quan đến sản phẩm</h3>
                     </div>
                 </div>
                 {/* <!-- RELATED PRODUCTS--> */}
@@ -184,9 +267,8 @@ const DetailProduct = () => {
                     </div>
                     </div>
                 </div>
-                </div>
-            </section>
-        </div>
+            </div>
+        </section>
     );
 };
 

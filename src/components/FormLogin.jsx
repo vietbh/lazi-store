@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row';
 import { Link } from 'react-router-dom';
 import API_URL from "../../src/config/Api";
 import URL_PATH from '../config/UrlPath';
+import Loading from './Loading';
 
 
 function FormLogin() {
@@ -20,6 +21,7 @@ function FormLogin() {
   const [success,setSuccess] = useState(false);
   const [unSuccess,setUnSuccess] = useState(false);
   const [loading,setLoading] = useState(false);
+  const [dataUser,setDataUser] = useState();
   const [formData,setFormData] = useState({
     email:'',
     password:'',
@@ -41,13 +43,9 @@ function FormLogin() {
       const response = await axios.post(API_URL.concat('/login'),formData);
       const data = await response.data;
       if(response.status === 200){
-        console.log(response);
-        localStorage.setItem('userName',data[1]);
+        setDataUser(data);
+        console.log(data);
         setSuccess(true);
-      }else{
-        console.log('ao ma');
-        setLoading(false);
-        setUnSuccess(true);
       }
     } catch (error) {
       setLoading(false);
@@ -75,12 +73,17 @@ function FormLogin() {
   };
 
   const handleLoginGoogle = () =>{
-    localStorage.setItem('userName','Google');
-    setSuccess(true);setUnSuccess(false);
+    sessionStorage.setItem('userInfo',JSON.stringify([{
+      'id':1,
+      'name':'Google',
+      'email':'asdlknad@gmail.com',
+    }]));
+    setSuccess(true);
+    setUnSuccess(false);
   }
 
   const handleLoginFaceBook = () =>{
-    localStorage.setItem('userName','FB');
+    sessionStorage.setItem('userName','FB');
     setSuccess(true);setUnSuccess(false)
   }
 
@@ -121,8 +124,9 @@ function FormLogin() {
   useEffect(() => {
     if(success && !unSuccess){
       setLoading(true);
-      localStorage.setItem('hasLogin',true);
-      setTimeout(()=> window.location.href = url,1500);
+      sessionStorage.setItem('userInfo', JSON.stringify(dataUser));
+      sessionStorage.setItem('hasLogin',true);
+      setTimeout(()=> history.go(-1),1500);
     }
     if(click >= 8){
       setRandCapcha(Math.floor(10000 - Math.random() * 900000) + 1000000);
@@ -132,8 +136,9 @@ function FormLogin() {
     }
     if(formData.rememberMe){
       localStorage.setItem('email',formData.email);
+      localStorage.setItem('user',formData);
     }
-  },[click,success,formData,unSuccess]);
+  },[click,success,formData,unSuccess,url,dataUser]);
 
   const handleShowPass = () => {
     setShowPass(!showPass);
@@ -146,18 +151,19 @@ function FormLogin() {
         <Form.Group as={Col} md="12" controlId="validationCustomUsername">
           <Form.Label>Tài khoản Email</Form.Label>
           <InputGroup hasValidation>
-            {/* <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text> */}
             <Form.Control
+              className='border rounded-2'
               type="email"
               placeholder="Nhập tài khoản email "
               aria-describedby="inputGroupPrepend"
               name='email'
               value={formData.email}
               onChange={handleChange}
+              autoComplete='email'
               required
             />
             <Form.Control.Feedback type="invalid">
-              {formData.email == ''?'Vui lòng nhập trường này.':'Vui lòng nhập đúng định dạng email.'}
+              {formData.email == '' ? 'Vui lòng nhập trường này.' : 'Vui lòng nhập đúng định dạng email.'}
             </Form.Control.Feedback>
           </InputGroup>
         </Form.Group>
@@ -167,6 +173,7 @@ function FormLogin() {
           <Form.Label>Mật khẩu</Form.Label>
           <InputGroup hasValidation>
             <Form.Control 
+              className='border rounded-2'
               type={showPass ?'text':'password'}
               placeholder="Vui lòng nhập mật khẩu"
               name='password'
@@ -176,14 +183,16 @@ function FormLogin() {
               aria-describedby='validationPassword'
               required
               />
-              <InputGroup.Text className='bg-white' id="validationPassword">
-                 <Button className='btn p-0 border-0 bg-white' type='button' onClick={handleShowPass}>
-                   {showPass?
-                     (<i className="far fa-eye"></i>
-                     ):(<i className="far fa-eye-slash"></i>
-                   )}
-                 </Button>
+              <InputGroup.Text className='bg-white border rounded-2' id="validationPassword">
+                <Button className="btn p-0 border-0 bg-white" type='button' onClick={handleShowPass}>
+                  {showPass?
+                    (<span><i className="far fa-eye"></i></span>
+                    ):(<i className="far fa-eye-slash"></i>
+                  )}
+                </Button>
                </InputGroup.Text>
+              {/**
+             */}
             <Form.Control.Feedback type="invalid">
             Vui lòng nhập trường này.
             </Form.Control.Feedback>
@@ -192,15 +201,14 @@ function FormLogin() {
       </Row>
       
       <Row className='mb-4'>
-        <div className='text-start'>
-          <span className='text-secondary'>Trang web này được bảo vệ bởi reCAPTCHA và Google</span>
-          <a href="https://policies.google.com/privacy">Privacy Policy</a> và
-          <a href="https://policies.google.com/terms">Terms of Service</a> apply.
-          {' '}
+        <div className='text-start mb-4'>
+          <span className='text-secondary text-sm'>Trang web này được bảo vệ bởi reCAPTCHA và Google
+          <a className='ps-1' href="https://policies.google.com/privacy">Privacy Policy</a> và
+          <a className='ps-1' href="https://policies.google.com/terms">Terms of Service</a> apply.</span>
         </div>
         <Form.Group className="mb-0 d-flex justify-content-between" noValidate>
           <Form.Check
-            className="text-dark"
+            className="rounded-3 text-dark"
             label="Nhớ mật khẩu"
             name='rememberMe'
             checked={formData.rememberMe}
@@ -209,13 +217,11 @@ function FormLogin() {
           />
           <Link className='float-end' to={'/quen-mat-khau'}>Quên mật khẩu</Link>
         </Form.Group>
-        <div className='text-center text-sm'>
-          
+        <div className='text-center text-sm'>   
           { success && (<span className={'text-success'}>Đăng nhập thành công</span>)}
           { unSuccess && (<span className={'text-danger'}>Tài khoản chưa được đăng ký, vui lòng thử lại</span>)}
         </div>
       </Row>
-        
       {capcha && (
         <Row className="mb-3">
       <Form.Group as={Col} md="12" >
@@ -242,10 +248,9 @@ function FormLogin() {
         </InputGroup>
       </Form.Group>
     </Row>
-      )}
-      
+      )}  
       <div className='d-flex justify-content-center mb-3'>
-        <Button type="submit" className={`w-50 rounded-3 fw-medium ${loading && 'disabled'}`} >{loading ?(<span>Đang đăng nhập <img src='img/1476.gif' /> </span>):(<span>Đăng nhập</span>)}</Button>
+        <Button type="submit" className={`w-50 rounded-3 fw-medium ${loading && 'disabled'}`} >{loading ?(<span>Đang đăng nhập <Loading width={20} height={20}/> </span>):(<span>Đăng nhập</span>)}</Button>
       </div>
       <Row>
         <Col lg={4} md={3} sm={3}>
@@ -260,12 +265,12 @@ function FormLogin() {
       </Row>
       <Row className='mb-3'>
         <Col className='d-flex justify-content-center' >
-          <Button className='text-start w-50 fw-bold btn-light rounded-2' type='button' onClick={handleLoginGoogle}><i className="fab fa-google"></i> Đăng nhập bằng Google</Button>
+          <Button className='text-start w-75 fw-bold btn-light rounded-2' type='button' onClick={handleLoginGoogle}><i className="fab fa-google"></i> Đăng nhập bằng Google</Button>
         </Col>
       </Row>
       <Row className='mb-3'>
         <Col className='d-flex justify-content-center'>
-          <Button className='text-start w-50 fw-bold btn-light rounded-2' type='button' onClick={handleLoginFaceBook}><i className="fab fa-facebook-square"></i> Đăng nhập bằng Facebook</Button>
+          <Button className='text-start w-75 fw-bold btn-light rounded-2' type='button' onClick={handleLoginFaceBook}><i className="fab fa-facebook-square"></i> Đăng nhập bằng Facebook</Button>
         </Col>
       </Row>
     </Form>

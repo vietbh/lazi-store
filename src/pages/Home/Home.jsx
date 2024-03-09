@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from './styles.module.css';
 import URL_PATH from "../../config/UrlPath";
+import { useDispatch } from "react-redux";
+import cartSlice from "../../state/cartSlice";
 function Home(){
     const [categories,setCategories] = useState([]);
     const [products,setProducts] = useState([]);
+    const hasLogin = sessionStorage.getItem("hasLogin");   
     useEffect(()=>{
         const data = [
             {id:1,name:'Điện thoại'},
@@ -43,10 +46,14 @@ function Home(){
         )
     }
     );
+
+    const dispatch = useDispatch();
+    // const globalstate = useSelector(state=>state.cartState);
+    const {add} = cartSlice.actions;
     const product = products.map(product=>{
         return(
             <div key={product.id} className="col-xl-3 col-lg-4 col-sm-6">
-                <div className={`product text-start bg-light p-3 mb-3 ${styles.borderImageProduct}`}>
+                <div className={`product text-start bg-light mb-3 ${styles.borderProduct} ${styles.paddingImageProduct}`}>
                     <div className="position-relative mb-3">
                     {product.status == 'Sale' && <div className="badge text-white bg-danger">{product.status}</div>}
                     {product.status == 'Mới' && <div className="badge text-white bg-danger">{product.status}</div>}
@@ -57,14 +64,15 @@ function Home(){
                     <div className="product-overlay">
                         <ul className="mb-0 list-inline">
                         <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
-                        <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="cart.html"><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li>
+                        {!hasLogin ? <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href={"dang-nhap"}><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li> : <li className="list-inline-item m-0 p-0">
+                        <button className="btn btn-sm btn-dark" onClick={()=>{dispatch(add({...product,quantity:1}));}}><i className="fa fa-cart-plus"></i> Thêm vào giỏ </button></li>}
                         <li className="list-inline-item me-0"><a className="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i className="fas fa-expand"></i></a></li>
                         </ul>
                     </div>
                     </div>
-                    <h6> <Link className="reset-anchor"  to={`/${URL_PATH}/cua-hang/${product.id}`}>{product.type}</Link></h6>
-                    <h6> <Link className="reset-anchor"  to={`/${URL_PATH}/cua-hang/${product.id}`}>{product.name}</Link></h6>
-                    <p className="mb-1 small text-black">${product.price}</p>
+                    <h6 className="text-center"> <Link className="reset-anchor"  to={`/${URL_PATH}/cua-hang/${product.id}`}>{product.type}</Link></h6>
+                    <h6 className="text-center"> <Link className="reset-anchor"  to={`/${URL_PATH}/cua-hang/${product.id}`}>{product.name}</Link></h6>
+                    <p className="text-center mb-1 small text-black">${product.price}</p>
                 </div>
             </div>  
         )

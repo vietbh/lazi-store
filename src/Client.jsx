@@ -15,10 +15,13 @@ import DetailBlog from "./pages/Blog/DetailBlog";
 import Contact from "./pages/FAQ/Contact";
 import URL_PATH from "./config/UrlPath";
 import AuthRoute from "./Auth/AuthRoute";
+import DetailUser from "./pages/User/DetailUser";
+import OrderUser from "./pages/User/OrderUser";
 'use client'
 
  function Client(){
    const isAuthenticated = localStorage.getItem('hasLogin') === 'true';
+  //  const slug = useParams()['slug'];
     return(
         <div className="page-holder">
           <Header />
@@ -26,17 +29,20 @@ import AuthRoute from "./Auth/AuthRoute";
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path={URL_PATH} element={<Home />} />
-              <Route path={URL_PATH.concat("/lien-he")} element={<Contact />} />
-              <Route path={URL_PATH.concat("/cua-hang")} element={<Product />} />
-              <Route path={URL_PATH.concat("/bai-viet")} element={<Blog />} />
-              <Route path={URL_PATH.concat("/gio-hang")} element={<Cart />} />
-              <Route path={URL_PATH.concat("/cua-hang/:slugSanPham")} element={<DetailProduct />} />
-              <Route path={URL_PATH.concat("/tien-hanh-dat-hang")} element={<Checkout />} />
-              <Route path={URL_PATH.concat("/bai-viet/:slugBaiViet")} element={<DetailBlog />} />
+              <Route path={URL_PATH.concat("/lien-he.html")} element={<Contact />} />
+              <Route path={URL_PATH.concat("/cua-hang.html")} element={<Product />} />
+              <Route path={URL_PATH.concat("/tin-tuc.html")} element={<Blog />} />
+              <Route path={URL_PATH.concat("/cua-hang/:slug.html")} element={<DetailProduct />} />
+              <Route path={URL_PATH.concat("/tin-tuc/:slug")} element={<DetailBlog />} />
+              <Route path={URL_PATH.concat("/tin-tuc/:danh-muc/:slug")} element={<DetailBlog />} />
               <Route path="*" element={<Page403 />} />
-              <Route path={URL_PATH.concat("/dang-nhap")} element={<AuthRoute element={Login} isAuthenticated={!isAuthenticated} redirectPath={URL_PATH} />}/>
-              <Route path={URL_PATH.concat("/dang-ky")} element={<AuthRoute element={Register} isAuthenticated={!isAuthenticated} redirectPath={URL_PATH} />}/>
-              <Route path={URL_PATH.concat("/quen-mat-khau")} element={<AuthRoute element={ForgetPassword} isAuthenticated={!isAuthenticated} redirectPath={URL_PATH} />}/>
+              <Route path={URL_PATH.concat("/tien-hanh-dat-hang.html")} element={<AuthRoute element={Checkout} isAuthenticated={!isAuthenticated} redirectPath={URL_PATH} />}/>
+              <Route path={URL_PATH.concat("/gio-hang.html")} element={<AuthRoute element={Cart} isAuthenticated={!isAuthenticated} redirectPath={URL_PATH} />}/>
+              <Route path={URL_PATH.concat("/lich-su-dat-hang.html")} element={<AuthRoute element={OrderUser} isAuthenticated={!isAuthenticated} redirectPath={URL_PATH} />}/>
+              <Route path={URL_PATH.concat("/thong-tin-khach-hang.html")} element={<AuthRoute element={DetailUser} isAuthenticated={!isAuthenticated} redirectPath={URL_PATH} />}/>
+              <Route path={URL_PATH.concat("/dang-nhap.html")} element={<AuthRoute element={Login} isAuthenticated={!isAuthenticated} redirectPath={URL_PATH} />}/>
+              <Route path={URL_PATH.concat("/dang-ky.html")} element={<AuthRoute element={Register} isAuthenticated={!isAuthenticated} redirectPath={URL_PATH} />}/>
+              <Route path={URL_PATH.concat("/quen-mat-khau.html")} element={<AuthRoute element={ForgetPassword} isAuthenticated={!isAuthenticated} redirectPath={URL_PATH} />}/>
             </Routes>
           </div>
           <Footer />

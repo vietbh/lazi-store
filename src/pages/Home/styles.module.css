@@ -20,6 +20,12 @@
 .heightImageProduct{
     height: 100%;
 }
+.borderProduct{
+    border-radius: 30px;
+}
 .borderImageProduct{
-    border-radius: 20px;
+    border-radius: 18px;
+}
+.paddingImageProduct{
+    padding:12px
 }
