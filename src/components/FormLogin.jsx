@@ -215,7 +215,7 @@ function FormLogin() {
             onChange={handleChange}
             noValidate
           />
-          <Link className='float-end' to={'/quen-mat-khau'}>Quên mật khẩu</Link>
+          <Link className='float-end' to={'/lazi-store/quen-mat-khau'}>Quên mật khẩu</Link>
         </Form.Group>
         <div className='text-center text-sm'>   
           { success && (<span className={'text-success'}>Đăng nhập thành công</span>)}
