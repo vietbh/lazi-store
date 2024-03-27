@@ -2,6 +2,8 @@ import { Link, useParams } from "react-router-dom";
 import FormSearch from "../components/FormSearch";
 import URL_PATH from '../config/UrlPath';
 import { useEffect, useState } from "react";
+import {menuLefts,menuListLogin,menuRights,loginSettings} from '../config/Menu';
+
 function Header() {
   const param = useParams();
   const [dataUsers, setDataUsers] = useState([]);
@@ -14,31 +16,10 @@ function Header() {
     alert('Đăng xuất thành công');
     sessionStorage.removeItem('hasLogin');
     sessionStorage.removeItem('userInfo');
-    if(localStorage.getItem('hasLogin') && localStorage.getItem('userInfo')){
-      localStorage.removeItem('hasLogin');
-      localStorage.removeItem('userInfo');
-    }
+    localStorage.removeItem('userInfo');
+    history.go(0);
   };
-  const menuLefts = [
-    {id:1, name:'Trang chủ',link:'/'},
-    {id:2, name:'Danh mục',link:'/cua-hang.html'},
-    {id:3, name:'Tin tức',link:'/tin-tuc.html'},
-  ];
-  const menuListLogin = [
-    {id:1,name:'Đăng nhập',link:'/dang-nhap.html', show:true},
-    {id:2,name:'Đăng ký',link:'/dang-ky.html', show:false},
-  ];
-  const menuRights = [
-    {id:1, name:'Giỏ hàng',link:'/gio-hang.html',icon:'fas fa-dolly-flatbed me-1 text-gray'},
-    // {id:2, name:'Thông báo',link:'/thong-bao.html',icon:'far fa-heart me-1 text-gray'},
-  ];
-  const loginSettings = [
-    {id:1, name:'Thông tin khách hàng', link:'/thong-tin-khach-hang.html'},
-    {id:2, name:'Lịch sử đặt hàng', link:'/lich-su.html'},
-    {id:3, name:'Quá trình giao hàng', link:'/gia-hang.html'},
-    {id:4, name:'Mã giảm giá', link:'/ma-giam-gia.html'},
-    {id:5, name:'Đăng xuất', link:'/',logout:true},
-  ];
+ 
   const userInfos = sessionStorage.getItem("userInfo");
   const dataParse = JSON.parse(userInfos);
 
@@ -76,12 +57,12 @@ function Header() {
     }
     return(
       <li className="nav-item" key={menu.name}>
-        <Link
-          className={`nav-link ${param['*'] === URL_PATH.concat(menu.link) ? "active" : ''}`}
-          to={URL_PATH.concat(menu.link)}
-        >
+      {menu.href ? <a className={`nav-link`} href={menu.link} >{menu.name}</a>
+       :<Link className={`nav-link 
+          ${param['*'] === URL_PATH.concat(menu.link) ? "active" : ''}`} to={URL_PATH.concat(menu.link)}>
           {menu.name}
         </Link>
+      }
       </li>
     );
   });

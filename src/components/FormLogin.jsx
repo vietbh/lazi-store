@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import API_URL from "../../src/config/Api";
 import URL_PATH from '../config/UrlPath';
 import Loading from './Loading';
+import HTML_DOT from '../config/PageHtml';
 
 
 function FormLogin() {
@@ -153,7 +154,7 @@ function FormLogin() {
           <InputGroup hasValidation>
             <Form.Control
               className='border rounded-2'
-              type="email"
+              type="text"
               placeholder="Nhập tài khoản email "
               aria-describedby="inputGroupPrepend"
               name='email'
@@ -215,7 +216,7 @@ function FormLogin() {
             onChange={handleChange}
             noValidate
           />
-          <Link className='float-end' to={'/quen-mat-khau'}>Quên mật khẩu</Link>
+          <Link className='float-end' to={'/'+URL_PATH+'/quen-mat-khau'+HTML_DOT}>Quên mật khẩu</Link>
         </Form.Group>
         <div className='text-center text-sm'>   
           { success && (<span className={'text-success'}>Đăng nhập thành công</span>)}

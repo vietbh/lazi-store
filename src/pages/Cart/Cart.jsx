@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import cartSlice from "../../state/cartSlice";
 import URL_PATH from '../../config/UrlPath';
-import { NumericFormat } from 'react-number-format';
 import { useEffect, useState } from 'react';
 // import { Button, Modal } from 'bootstrap';
 
@@ -20,30 +19,26 @@ function Cart(){
      }, 0);
      let countCart = globalstate.length;    
      const [itemsCarts,setItemsCarts] = useState([]); 
- 
-  
-  // Lưu sản phẩm vào localStorage khi có phần tử mới được thêm vào giỏ hàng
-  useEffect(() => {
-    if(globalstate > 0){
-        localStorage.setItem('itemsCarts', JSON.stringify(globalstate));
-    }
-  }, [globalstate]);
 
   // Lấy sản phẩm từ localStorage và cập nhật state
   useEffect(() => {
-    const cacheItemsCart = JSON.parse(localStorage.getItem('itemsCarts'));
-    if (cacheItemsCart) {
-        console.log(cacheItemsCart);
-      dispatch(cartSlice.actions.setItems(cacheItemsCart));
-      setItemsCarts(cacheItemsCart);
+    const cacheItemsGlobal = async()=>{
+        if(globalstate.length > 0){
+            localStorage.setItem('itemsCarts', JSON.stringify(globalstate));
+        }
+        const cacheItemsCart = JSON.parse(localStorage.getItem('itemsCarts'));
+        if (cacheItemsCart) {
+            setItemsCarts(cacheItemsCart);
+        }
     }
-  }, [dispatch]);
+    cacheItemsGlobal()
+  }, []);
 
   // Xóa sản phẩm và cập nhật globalstate
   const handleRemoveItem = (item) => {
-    dispatch(cartSlice.actions.remove(item));
+    dispatch(remove(item));
   };
-
+    console.log(itemsCarts);
 
     const itemCart = itemsCarts.map((item) => {
         const price = item.variations.map((variation,index) => {
