@@ -1,4 +1,4 @@
-import FormForgetPassword from '../../components/FormForgetPassword';
+import FormForgetPassword from '@/components/FormForgetPassword';
 import { Link } from 'react-router-dom';
 
 const ForgetPassword = () => {
@@ -17,8 +17,8 @@ const ForgetPassword = () => {
                                     <FormForgetPassword />
                                 </div>
                                 <div className="card-footer bg-white">
-                                    <p className='m-0'>Bạn có tài khoản.Hãy đăng nhập <Link to={`/dang-nhap`}>ở đây</Link></p>
-                                    <p>Bạn chưa có tài khoản.Hãy đăng ký <Link to={`/dang-ky`}>ở đây</Link></p>
+                                    <p className='m-0'>Bạn có tài khoản.Hãy <Link to={`/dang-nhap.html`}>đăng nhập ở đây</Link></p>
+                                    <p>Bạn chưa có tài khoản.Hãy <Link to={`/dang-ky.html`}>đăng ký ở đây</Link></p>
                                 </div>
                             </div>
                     </div>

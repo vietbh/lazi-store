@@ -1,7 +1,6 @@
 // import { Modal, Button } from 'react-bootstrap';
 import  { useState } from "react";
 import { Dialog } from 'primereact/dialog';
-import { Button } from 'primereact/button';
 
 function MegaMenu(prop) {
   
@@ -29,16 +28,16 @@ function MegaMenu(prop) {
         </tr>
     );
   })
-  const show = (position) => {
-      setPosition(position);
-      setVisible(true);
-  };
+
+  // const show = (position) => {
+  //     setPosition(position);
+  //     setVisible(true);
+  // };
 
   return (
       <div className="card">
-        <Button label="Top" icon="pi pi-arrow-down" onClick={() => show('top')} className="p-button-warning" style={{ minWidth: '10rem' }} />
-        <Dialog className="bg-light"  visible={visible} position={position} style={{ width: '50vw' }}
-         onHide={() => setVisible(false)} draggable={false} resizable={false}>
+        <Dialog className="bg-light" visible={prop.visible} position={position} style={{ width: '50vw' }}
+          onHide={() => setVisible(false)} draggable={false} resizable={false}>
             <div className="card">
                 <div className="card-body">
                     <table className="table table-borderless w-100">

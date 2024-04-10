@@ -1,90 +1,121 @@
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from "react-redux";
-import cartSlice from "../../state/cartSlice";
-import URL_PATH from '../../config/UrlPath';
+import URL_PATH from '@/config/UrlPath';
 import { useEffect, useState } from 'react';
-// import { Button, Modal } from 'bootstrap';
+import * as getCart  from '@/apiServices/getCart';
+import { numberFormat } from '@/components/NumberFormat';
 
 function Cart(){
-     //Sử dụng redux  
-     const dispatch = useDispatch();
-     // Biến lưu trữ thông tin sản phẩm
-     const globalstate = useSelector(state => state.cartState);
-     // Xóa SP trong giỏ,tăng, giảm số lượng sản phẩm 
-     const { remove, increase, decrease } = cartSlice.actions; 
-     // Tổng tiền 
-     const totalCart = globalstate.reduce((previousValue, currentValue) => {
-         // return previousValue+ currentValue.quantity
-         return previousValue + 400 * currentValue.quantity
-     }, 0);
-     let countCart = globalstate.length;    
-     const [itemsCarts,setItemsCarts] = useState([]); 
+    const [itemsCarts,setItemsCarts] = useState([]); 
+    const [loading,setLoading] = useState(true);
+    // Tổng tiền 
+    const totalCart = itemsCarts.reduce((previousValue, currentValue) => {
+          return previousValue + currentValue.product_varia.price_sale * currentValue.quantity_item
+    }, 0);
+    let countCart = 0;
+    let i = 1;
 
-  // Lấy sản phẩm từ localStorage và cập nhật state
-  useEffect(() => {
-    const cacheItemsGlobal = async()=>{
-        if(globalstate.length > 0){
-            localStorage.setItem('itemsCarts', JSON.stringify(globalstate));
+    const fetchGetCartItems = async () => {
+        try {
+            setLoading(true);
+            const res = await getCart.getCartItems();
+            setItemsCarts(res.products);
+            const cacheCartItems = JSON.parse(sessionStorage.getItem('itemsCart'));
+            if(cacheCartItems){
+                setItemsCarts(cacheCartItems.products);
+            }        
+            setLoading(false);
+        } catch(error) {
+            console.error(error);
+            setLoading(true);
         }
-        const cacheItemsCart = JSON.parse(localStorage.getItem('itemsCarts'));
-        if (cacheItemsCart) {
-            setItemsCarts(cacheItemsCart);
+    };
+    const removeCartItem = async (id)=>{
+        try {
+            setLoading(true);
+            const res = await getCart.removeCartItem(id);
+            console.log(res);
+            fetchGetCartItems();
+            setLoading(false);
+        } catch(error) {
+            console.log(error);
+            setLoading(true);
         }
     }
-    cacheItemsGlobal()
-  }, []);
+    const updateCartItem = async (id,type)=>{
+        try {
+            setLoading(true);
+            const res = await getCart.updateCartItem(id,type);
+            console.log(res);            
+            fetchGetCartItems();
+            setLoading(false);
+        } catch(error) {
+            console.log(error);
+            setLoading(true);
+        }
+    }
 
-  // Xóa sản phẩm và cập nhật globalstate
-  const handleRemoveItem = (item) => {
-    dispatch(remove(item));
-  };
-    console.log(itemsCarts);
+    useEffect(() => {
+        fetchGetCartItems();
+    }, []);
 
+    // Xóa sản phẩm và cập nhật 
+  
+    const handleRemoveItem = (item) => {
+        removeCartItem(item);
+    };
+
+    const handleQuantityChange = (id, value) => {
+        // Kiểm tra nếu value là một số hợp lệ
+        if (!isNaN(value) && value >= 0) {
+          // Thực hiện logic để cập nhật số lượng cho sản phẩm với id tương ứng
+          updateCartItem(id,value)
+        }
+      };
+    const handleQuantityItem = (id,type) => {
+        updateCartItem(id,type)
+        // Thực hiện logic để cập nhật số lượng cho sản phẩm với id tương ứng
+        // ...
+    };
+    
+
+    if(itemsCarts.length > 0){
+        countCart = itemsCarts.length;   
+    }
     const itemCart = itemsCarts.map((item) => {
-        const price = item.variations.map((variation,index) => {
-            if(index == 0 ){
-              return(
-                <div key={variation.id} className="mb-0">
-                    <p className="fw-bold text-secondary p-0 m-0"> {parseInt(variation.price_sale).toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,')}<span className="text-small">đ</span></p>
-                </div>
-              );
-            }
-        });
         return (
-            <tr key={item.id}>
+            <tr key={item.product_varia.id}>
                 <th className="p-3 align-middle border-light">
-                    <p className="mb-0 small">1</p>
+                    <p className="mb-0 small">{i++}</p>
                 </th>
                 <th className="ps-0 py-3 border-light" scope="row">
-                    {item.variations.map((variation,index) => {
-                        if(index == 0 )
-                        return(
-                            <div key={variation.id} className="d-flex align-items-center">
-                                <a className="reset-anchor d-block animsition-link" href="detail.html"><img src={variation.image_url} alt={variation.image_url} width="70"/></a>
-                                <div className="ms-3"><strong className="h6"><a className="reset-anchor animsition-link text-wrap" href={`${item.slug}.html`}>{item.name}</a></strong></div>
-                            </div>
-                        );
-                    })}
+                    <div className="d-flex align-items-center">
+                        <a className="reset-anchor d-block animsition-link" href={'/cua-hang/'+item.product_varia.product.slug+'.html'}><img src={item.product_varia.image_url} alt={item.product_varia.image_url} width="70"/></a>
+                        <div className="ms-3"><strong className="h6"><a className="reset-anchor animsition-link text-wrap" href={`cua-hang/${item.product_varia.product.slug}.html`}>{item.product_varia.product.name}</a></strong></div>
+                    </div>
                 </th>
                 <td className="p-3 align-middle border-light">
-                    {price}
+                    <p className="fw-bold small text-secondary p-0 m-0"> {numberFormat(item.product_varia.price_sale)}<span className="text-small">đ</span></p>
                 </td>
                 <td className="p-3 align-middle border-light">
                     <div className="border d-flex align-items-center justify-content-between px-3"><span className="small text-uppercase text-gray headings-font-family">Số lượng</span>
                     <div className="quantity">
-                        <button className="dec-btn p-0"><i className="fas fa-caret-left"></i></button>
-                        <input className="form-control form-control-sm border-0 shadow-0 p-0" type="text" value={item.quantity} onChange={()=>{}} />
-                        <button className="inc-btn p-0"><i className="fas fa-caret-right"></i></button>
+                        <button className="dec-btn p-0" onClick={() => handleQuantityItem(item.product_varia.id, 'minus')}><i className="fas fa-caret-left"></i></button>
+                        <input
+                        className="form-control form-control-sm border-0 shadow-0 p-0"
+                        type="text"
+                        name="quantity" disabled
+                        value={item.quantity_item}
+                        onChange={(event) => handleQuantityChange(item.product_varia.id, event.target.value)}
+                        />
+                        <button className="inc-btn p-0" onClick={() => handleQuantityItem(item.product_varia.id, 'plus')}><i className="fas fa-caret-right"></i></button>
                     </div>
                     </div>
                 </td>
                 <td className="p-3 align-middle border-light">
-                    <p className="mb-0 small">$250</p>
+                    <p className="mb-0 small">{numberFormat(item.product_varia.price_sale * item.quantity_item)}<span className="text-small">đ</span></p>
                 </td>
                 <td className="p-3 align-middle border-light">
-                    <button className="btn reset-anchor" onClick={()=>{
-                        handleRemoveItem(item);
-                        }}
+                    <button className="btn reset-anchor" onClick={()=>{handleRemoveItem(item.product_varia.id)}}
                     >
                         <i className="fas fa-trash-alt small text-danger"></i>
                     </button>
@@ -132,21 +163,20 @@ function Cart(){
                                 </tr>
                             </thead>
                             <tbody className="border-0">
-                                {countCart === 0 ? (
+                                {!loading && countCart == 0 ? (
                                     <tr>
-                                        <th colSpan={10}><h5 className='text-md text-center'>Không có sản phẩm nào trong giỏ hàng <span><a href={'/'+URL_PATH+'/cua-hang.html'} className='text-decoration-underline'>trở lại mua hàng</a></span></h5></th>
+                                        <th colSpan={10}><h5 className='text-md text-center'>Không có sản phẩm nào trong giỏ hàng <span><a href={'/'} className='text-decoration-underline'>trở lại mua hàng</a></span></h5></th>
                                     </tr>
                                 ): itemCart }
-                        
                             </tbody>
                         </table>
                     </div>
                     {/* <!-- CART NAV--> */}
-                    {countCart > 0 &&(
+                    { countCart > 0 &&(
                         <div className="bg-light px-4 py-3">
                             <div className="row align-items-center text-center">
-                            <div className="col-md-6 mb-3 mb-md-0 text-md-start"><Link className="btn btn-link p-0 text-dark btn-sm" to="/cua-hang"><i className="fas fa-long-arrow-alt-left me-2"> </i>Tiếp tục mua sắm</Link></div>
-                            <div className="col-md-6 text-md-end"><Link className="btn btn-outline-dark btn-sm" to={'/'+URL_PATH+"/tien-hanh-dat-hang.html"}>Tiến hành đặt hàng<i className="fas fa-long-arrow-alt-right ms-2"></i></Link></div>
+                            <div className="col-md-6 mb-3 mb-md-0 text-md-start"><Link className="btn btn-link p-0 text-dark btn-sm" to={"/"+URL_PATH+"/"}><i className="fas fa-long-arrow-alt-left me-2"> </i>Tiếp tục mua sắm</Link></div>
+                            <div className="col-md-6 text-md-end"><Link className="btn btn-outline-dark btn-sm" to={"/tien-hanh-dat-hang.html"}>Tiến hành đặt hàng<i className="fas fa-long-arrow-alt-right ms-2"></i></Link></div>
                             </div>
                         </div>
                     )}
@@ -157,10 +187,10 @@ function Cart(){
                             <div className="card-body">
                             <h5 className="text-uppercase mb-4">Sản phẩm <span>({countCart})</span></h5>
                             <ul className="list-unstyled mb-0">
-                                <li className="d-flex align-items-center justify-content-between"><strong className="text-uppercase small font-weight-bold">Tạm tính</strong><span className="text-muted small">{totalCart}đ</span></li>
+                                <li className="d-flex align-items-center justify-content-between"><strong className="text-uppercase small font-weight-bold">Tạm tính</strong><span className="text-muted small">{numberFormat(totalCart)}đ</span></li>
                                 <li className="border-bottom my-2"></li>
-                                <li className="d-flex align-items-center justify-content-between mb-4"><strong className="text-uppercase small font-weight-bold">Tổng cộng</strong><span>{totalCart}đ</span></li>
-                                {countCart > 0 &&(
+                                <li className="d-flex align-items-center justify-content-between mb-4"><strong className="text-uppercase small font-weight-bold">Tổng cộng</strong><span>{numberFormat(totalCart)}đ</span></li>
+                                { countCart > 0 &&(
                                     <li>
                                     <form action="#">
                                         <div className="input-group mb-0">

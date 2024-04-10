@@ -1,6 +1,6 @@
 const menuLefts = [
   { id: 1, name: 'Trang chủ', link: '/' },
-  { id: 2, name: 'Danh mục', link: '#danh-muc' },
+  { id: 2, name: 'Danh mục', link: '/#danh-muc' },
   { id: 3, name: 'Tin tức', link: 'http://localhost:8000/tin-tuc.html', href: true },
 ];
 
@@ -17,7 +17,7 @@ const menuRights = [
 const loginSettings = [
   { id: 1, name: 'Thông tin khách hàng', link: '/thong-tin-khach-hang.html' },
   { id: 2, name: 'Lịch sử đặt hàng', link: '/lich-su.html' },
-  { id: 3, name: 'Quá trình giao hàng', link: '/gia-hang.html' },
+  { id: 3, name: 'Quá trình giao hàng', link: '/giao-hang.html' },
   { id: 4, name: 'Mã giảm giá', link: '/ma-giam-gia.html' },
   { id: 5, name: 'Đăng xuất', link: '/', logout: true },
 ];

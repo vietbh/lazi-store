@@ -19,7 +19,6 @@ import DetailUser from "./pages/User/DetailUser";
 import OrderUser from "./pages/User/OrderUser";
 import HTML_DOT from "./config/PageHtml";
 import Category from "./pages/Product/Category";
-'use client'
 // <Route path={URL_PATH.concat("/cua-hang").concat(HTML_DOT)} element={<Product />} />
 
  function Client(){
@@ -27,7 +26,7 @@ import Category from "./pages/Product/Category";
   return(
         <div className="page-holder">
           <Header />
-          <div style={{minHeight:'340vh'}}>
+          <div className="container" style={{minHeight:'100vh'}}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path={URL_PATH} element={<Home />} /> 
@@ -37,7 +36,7 @@ import Category from "./pages/Product/Category";
               <Route path={URL_PATH.concat("/danh-muc/:slug").concat(HTML_DOT)} element={<Category />} />
               <Route path={URL_PATH.concat("/gio-hang").concat(HTML_DOT)} element={<Cart />} />
               <Route path={URL_PATH.concat("/tien-hanh-dat-hang").concat(HTML_DOT)} element={<Checkout />} />
-              <Route path={URL_PATH.concat("/lich-su-dat-hang/:userId")} element={<AuthRoute element={OrderUser} isAuthenticated={isAuthenticated} redirectPath={URL_PATH} />}/>
+              <Route path={URL_PATH.concat("/lich-su-dat-hang").concat(HTML_DOT)} element={<AuthRoute element={OrderUser} isAuthenticated={isAuthenticated} redirectPath={URL_PATH} />}/>
               <Route path={URL_PATH.concat("/thong-tin-khach-hang/:userId")} element={<AuthRoute element={DetailUser} isAuthenticated={isAuthenticated} redirectPath={URL_PATH} />}/>
               <Route path="*" element={<Page403 />} />
               <Route path={URL_PATH.concat("/tin-tuc").concat(HTML_DOT)} element={<Blog />} />

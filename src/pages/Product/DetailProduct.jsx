@@ -1,55 +1,81 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styles from "./styles.module.css";
-import { useDispatch } from "react-redux";
-import cartSlice from "../../state/cartSlice";
-import * as detailProduct from '../../apiServices/detailProduct';
+import * as detailProduct from '@/apiServices/detailProduct';
+import { numberFormat } from "@/components/NumberFormat";
+import AlertStatus from "@/components/AlertStatus";
+
 const DetailProduct = () => {
     const slug = useParams()['slug'];
     const path = 'https://vietbh.github.io/lazi-store/';
     const [product,setProduct] = useState([]);
+    const [variations,setVariations] = useState([]);
     const [color,setColor] = useState('');
-    const hasLogin = sessionStorage.getItem("hasLogin");   
-    const dispatch = useDispatch();
-    const {add} = cartSlice.actions;
-    
+    const [success,setSuccess] = useState(false);
+    const [error,setError] = useState(false);
+    // const hasLogin = sessionStorage.getItem("hasLogin");   
     useEffect(()=>{
-        const timeOut = setTimeout(()=>{
-            const fetchData = async () =>{
-                const result = await detailProduct.detailProduct(slug);
-                setProduct(result);
-            }
+        const fetchData = async () =>{
+            const result = await detailProduct.detailProduct(slug);
+            sessionStorage.setItem('product',JSON.stringify(result.product))
+            sessionStorage.setItem('variations',JSON.stringify(result.variation))
+            setProduct(result.product);
+            setVariations(result.variation);
+            const colorDefault = result.variation.at(0)
+            setColor(colorDefault.color_type);
+        }
+        const cacheProduct = JSON.parse(sessionStorage.getItem('product'));
+        const cacheVariations = JSON.parse(sessionStorage.getItem('variations'));
+        if(cacheProduct && cacheVariations){
+            setProduct(cacheProduct);
+            setVariations(cacheVariations);
+        }
+        if(product.length == 0 && variations.length == 0){
             fetchData();
-        },1000)
-        return ()=>{clearTimeout(timeOut)}
-    },[]);   
-    
+        }
+    },[]);
 
+    const addProduct = async(e)=>{
+        try {
+            const res = await detailProduct.addProduct(e);
+            console.log(res);
+            if(res == 200)setSuccess(true);
+            if(res == 401)setError(true);
+            const timeout = setTimeout(()=>{setSuccess(false),setError(false)},5000);
+            return ()=>clearTimeout(timeout);
+        } catch(error) {
+            setSuccess(false);
+            setError(true);
+        }
+        
+    }
+
+    const handleAddItem = (e)=>{
+        addProduct(e);
+    }
+    
     return (
         <section className="py-5">
-            <div className="container" >
+            <div className="container">
+                {success && !error && <AlertStatus title={'Đã thêm sản phẩm vào giỏ'}/>}
+                {!success && error && <AlertStatus type={"warning"} title={"Vui lòng đăng nhập"}/>}
                 <div className="row mb-5">
                     <div className="col-lg-7">
                     {/* <!-- PRODUCT SLIDER--> */}
                         <div className="row m-sm-0">
-                            <div className="col-sm-2 p-sm-0 order-2 order-sm-1 mt-2 mt-sm-0 px-xl-2">
-                                <div className="swiper product-slider-thumbs">
-                                    <div className="swiper-wrapper d-inline">
-                                        <div className="swiper-slide h-auto swiper-thumb-item mb-3"><img className="w-100" src={`${path}img/product-detail-1.jpg`} alt="..." /></div>
-                                        <div className="swiper-slide h-auto swiper-thumb-item mb-3"><img className="w-100" src={`${path}img/product-detail-2.jpg`} alt="..." /></div>
-                                        <div className="swiper-slide h-auto swiper-thumb-item mb-3"><img className="w-100" src={`${path}img/product-detail-3.jpg`} alt="..." /></div>
-                                        <div className="swiper-slide h-auto swiper-thumb-item mb-3"><img className="w-100" src={`${path}img/product-detail-4.jpg`} alt="..." /></div>
-                                    </div>
-                                </div>
-                            </div>
                             <div className="col-sm-10 order-1 order-sm-2">
                                 <div className="swiper product-slider">
-                                    <div className="swiper-wrapper">
-                                    <div className="swiper-slide h-auto"><a className="glightbox product-view" href={`${path}img/product-detail-1.jpg`} data-gallery="gallery2" data-glightbox="Product item 1"><img className="img-fluid" src={`${path}img/product-detail-1.jpg`} alt="..." /></a></div>
-                                    <div className="swiper-slide h-auto"><a className="glightbox product-view" href={`${path}img/product-detail-2.jpg`} data-gallery="gallery2" data-glightbox="Product item 2"><img className="img-fluid" src={`${path}img/product-detail-2.jpg`} alt="..." /></a></div>
-                                    <div className="swiper-slide h-auto"><a className="glightbox product-view" href={`${path}img/product-detail-3.jpg`} data-gallery="gallery2" data-glightbox="Product item 3"><img className="img-fluid" src={`${path}img/product-detail-3.jpg`} alt="..." /></a></div>
-                                    <div className="swiper-slide h-auto"><a className="glightbox product-view" href={`${path}img/product-detail-4.jpg`} data-gallery="gallery2" data-glightbox="Product item 4"><img className="img-fluid" src={`${path}img/product-detail-4.jpg`} alt="..." /></a></div>
-                                </div>
+                                {variations.map((variation) => {
+                                    if(variation.color_type == color){
+                                        return(
+                                            <div key={variation.id} className=" h-auto">
+                                                <a className="glightbox product-view" href={variation.image_url} data-gallery="gallery1" data-glightbox={`Product item ${variation.id}`} >
+                                                    <img className="img-fluid w-100" src={variation.image_url} alt="..." />
+                                                </a>
+                                            </div>
+                                        )
+                                    }
+                                })}
                                 </div>
                             </div>
                         </div>
@@ -58,19 +84,17 @@ const DetailProduct = () => {
                     <div  className="col-lg-5" id='san-pham'>
                         <h3 className="mb-4">{product.name}</h3>
                         <h6 className="text-secondary ">Chọn màu để xem giá</h6>
-                        <div className="d-flex justify-content-start mb-4 mt-1">
-                        {/* 
-                    */}
-                        {product.variations && product.variations.map((variation,index) => {
+                        <div className="row d-flex justify-content-start mb-4 mt-1">
+                        {variations.map((variation,index) => {
                             if(index == 0 && color == '') setColor(variation.color_type);
                             if(variation.color_type == color){
                                 return(
-                                    <div key={variation.id} className="me-3">
-                                        <div className="card col-lg-12 col-sm-12 border border-4 border-danger rounded-3">
-                                            <div className="card-body col-lg-12 px-2 py-1 border border-danger rounded-3">
+                                    <div key={variation.id} className="col-lg-4 mb-3">
+                                        <div className="card border border-4 border-danger rounded-3">
+                                            <div className="card-body px-2 py-1 border border-danger rounded-3">
                                                 <button className={`btn-hover-none p-0 text-start ${styles.buttonColor}`} type="button" >
                                                     <p className="fw-bolder text-secondary p-0 m-0">{variation.color_type}</p>
-                                                    <p className="fw-normal text-secondary p-0 m-0"> {parseInt(variation.price_sale).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}<span className="text-small">đ</span></p>
+                                                    <p className="fw-normal text-secondary p-0 m-0"> {numberFormat(variation.price_sale)}<span className="text-small">đ</span></p>
                                                 </button>
                                             </div>
                                         </div>
@@ -78,12 +102,12 @@ const DetailProduct = () => {
                                 );
                             }else{
                                 return(
-                                    <div key={variation.id} className="me-3">
-                                        <div className="card col-lg-12 col-sm-12 border border-4 border-secondary rounded-3">
-                                            <div className="card-body col-lg-12 px-2 py-1 border border-secondary rounded-3">
+                                    <div key={variation.id} className="col-lg-4 mb-3">
+                                        <div className="card border border-4 border-secondary rounded-3">
+                                            <div className="card-body px-2 py-1 border border-secondary rounded-3">
                                                 <button className={`btn-hover-none p-0 text-start ${styles.buttonColor}`} onClick={()=>setColor(variation.color_type)}>
                                                     <p className="fw-bolder text-secondary p-0 m-0">{variation.color_type}</p>
-                                                    <p className="fw-normal text-secondary p-0 m-0"> {parseInt(variation.price_sale).toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,')}<span className="text-small">đ</span></p>
+                                                    <p className="fw-normal text-secondary p-0 m-0"> {numberFormat(variation.price_sale)}<span className="text-small">đ</span></p>
                                                 </button>
                                             </div>
                                         </div>
@@ -92,41 +116,30 @@ const DetailProduct = () => {
                             }
                         })}
                         </div>
-                        {/**
-                        <div className="text-sm mb-4" dangerouslySetInnerHTML={{ __html: product.description }} />
-                        */}
                         <div className="row align-items-stretch mb-4">
-                            <div className="col-sm-5 col-lg-5 pr-sm-0 mb-4">
-                                <div className="border d-flex align-items-center justify-content-between py-1 px-3 bg-white border-white"><span className="small text-uppercase text-gray mr-4 no-select">Số lượng</span>
-                                    <div className="quantity">
-                                        <button className="dec-btn p-0"><i className="fas fa-caret-left"></i></button>
-                                        <input className="form-control border-0 shadow-0 p-0" type="text" value="1" onChange={()=>{}}/>
-                                        <button className="inc-btn p-0"><i className="fas fa-caret-right"></i></button>
-                                    </div>
-                                </div>
-                            </div>
                             {/* 
                             */}
-                            {product.variations && product.variations.map((variation,index) => {
+                            {variations.map((variation,index) => {
                                 if(index == 0 && color == '') setColor(variation.color_type);
                                 if(variation.color_type == color){
                                     return (
                                         <div key={variation.id} className="row">
                                             <div className="col-sm-7 col-lg-9 pl-sm-0 mb-4 p-0">
-                                                {!hasLogin && (
-                                                    <button className="btn btn-danger btn-block w-100 py-3 fs-5 fw-bold rounded-3 text-uppercase" 
-                                                    onClick={()=>{dispatch(add({...variation,quantity:1}));}}>Mua ngay</button>
-                                                )}
+                                                {/*!hasLogin && ()*/}
+                                                <button className="btn btn-danger btn-block w-100 py-3 fs-5 fw-bold rounded-3 text-uppercase" 
+                                                onClick={()=>{handleAddItem(variation)}} disabled={success || error && true}>Mua ngay</button>
                                             </div>
                                             <div className="col-sm-5 col-lg-3 pl-sm-0 mb-4 ">
-                                                <button className="btn btn-outline-danger btn-block w-100 p-1 fs-6 rounded-3 "  onClick={()=>{dispatch(add({...variation,quantity:1}));}}>
-                                                    <svg width="37px" height="37px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ff0000">
-                                                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                                                        <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
-                                                        <g id="SVGRepo_iconCarrier">
-                                                            <path d="M21 5L19 12H7.37671M20 16H8L6 3H3M11.5 7L13.5 9M13.5 9L15.5 7M13.5 9V3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="#ff0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> 
-                                                        </g>
-                                                    </svg>                                          
+                                                <button className="btn btn-outline-danger btn-block w-100 p-1 fs-6 rounded-3 "  onClick={()=>{handleAddItem(variation)}}>
+                                                    <span>
+                                                        <svg width="37px" height="37px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ff0000">
+                                                                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                                                                <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+                                                                <g id="SVGRepo_iconCarrier">
+                                                                    <path d="M21 5L19 12H7.37671M20 16H8L6 3H3M11.5 7L13.5 9M13.5 9L15.5 7M13.5 9V3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="#ff0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> 
+                                                                </g>
+                                                        </svg>                                          
+                                                    </span>    
                                                     <p className="mb-0 pb-0" style={{fontSize:'10px'}}>Thêm vào giỏ</p>
                                                 </button>
                                             </div>
@@ -134,29 +147,31 @@ const DetailProduct = () => {
                                     );
                                 }
                             })}
-                            <div className="row pe-4 mb-4">
-                                <div className="card col-lg-12">
+                            <div className="row pe-4 mb-4 mt-4">
+                                <div className="card">
                                     <div className="card-body">
-                                        <h5 className="card-title">Special title treatment</h5>
-                                        <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                        <a href="#" className="btn btn-primary">Go somewhere</a>
+                                        <h5 className="card-title text-center">Thông số kĩ thuật</h5>
+                                        <table className="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td scope="row">1</td>
+                                                    <td>@mdo</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
-                            <div className="row pe-4 mb-4">
-                                <div className="card col-lg-12">
+                            <div className="row pe-4 mb-4 mt-4">
+                                <div className="card">
                                     <div className="card-body">
-                                        <h5 className="card-title">Special title treatment</h5>
-                                        <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                        <a href="#" className="btn btn-primary">Go somewhere</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row pe-4 mb-4">
-                                <div className="card col-lg-12">
-                                    <div className="card-body">
-                                        <h5 className="card-title">Special title treatment</h5>
-                                        <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                        <h5 className="card-title text-center">Tin tức liên quan đến sản phẩm</h5>
+                                        content
                                     </div>
                                 </div>
                             </div>
@@ -173,9 +188,12 @@ const DetailProduct = () => {
                         <div className="tab-content mb-5" id="myTabContent">
                             <div className="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
                                 <div className="p-4 p-lg-12 bg-white">
-                                    <div className="text-sm mb-0" dangerouslySetInnerHTML={{ __html: product.description }} />
+                                    <div className="row">
+                                        <div className={`text-md mb-0`} dangerouslySetInnerHTML={{ __html: product.description }} />
+                                    </div>
                                 </div>
                             </div>
+                            {/**Binh luan */}
                             <div className="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
                                 <div className="p-4 p-lg-5 bg-white">
                                     <div className="row">
@@ -200,14 +218,12 @@ const DetailProduct = () => {
                                     </div>
                                 </div>
                             </div>
+                            {/**end Binh luan */}
                         </div>
-                    </div>
-                    <div className="col-lg-5 col-sm-12">
-                        <h3>Tin tức liên quan đến sản phẩm</h3>
                     </div>
                 </div>
                 {/* <!-- RELATED PRODUCTS--> */}
-                <h2 className="h5 text-uppercase mb-4">Related products</h2>
+                <h2 className="h5 text-uppercase mb-4">Sản phẩm liên quan</h2>
                 <div className="row">
                     {/* <!-- PRODUCT--> */}
                     <div className="col-lg-3 col-sm-6">
@@ -215,9 +231,7 @@ const DetailProduct = () => {
                         <div className="d-block mb-3 position-relative"><a className="d-block" href="detail.html"><img className="img-fluid w-100" src={`${path}img/product-1.jpg`} alt="..." /></a>
                         <div className="product-overlay">
                             <ul className="mb-0 list-inline">
-                            <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-outline-dark" href="#!"><i className="far fa-heart"></i></a></li>
-                            <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="#!">Add to cart</a></li>
-                            <li className="list-inline-item mr-0"><a className="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i className="fas fa-expand"></i></a></li>
+                                <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href="#!">Add to cart</a></li>
                             </ul>
                         </div>
                         </div>
