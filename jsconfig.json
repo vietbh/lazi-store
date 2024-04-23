@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "baseUrl": "/lazi-store/",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
+      "@pages/*": ["./src/components/pages/*"],
+      "@assets/*": ["src/assets/*"],
+      "@forms/*": ["src/forms/*"],
+      "@providers/*": ["src/providers/*"],
+      "@utils/*": ["src/utils/*"]
+    }
+  }
+}

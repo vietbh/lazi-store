@@ -17,32 +17,33 @@ import URL_PATH from "./config/UrlPath";
 import AuthRoute from "./Auth/AuthRoute";
 import DetailUser from "./pages/User/DetailUser";
 import OrderUser from "./pages/User/OrderUser";
-'use client'
+import HTML_DOT from "./config/PageHtml";
+import Category from "./pages/Product/Category";
+// <Route path={URL_PATH.concat("/cua-hang").concat(HTML_DOT)} element={<Product />} />
 
  function Client(){
-   const isAuthenticated = localStorage.getItem('hasLogin') === 'true';
-  //  const slug = useParams()['slug'];
-    return(
+  const isAuthenticated = !!sessionStorage.getItem('hasLogin');
+  return(
         <div className="page-holder">
           <Header />
-          <div style={{minHeight:550}}>
+          <div className="container" style={{minHeight:'100vh'}}>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path={URL_PATH} element={<Home />} />
-              <Route path={URL_PATH.concat("/lien-he.html")} element={<Contact />} />
-              <Route path={URL_PATH.concat("/cua-hang.html")} element={<Product />} />
-              <Route path={URL_PATH.concat("/tin-tuc.html")} element={<Blog />} />
-              <Route path={URL_PATH.concat("/cua-hang/:slug.html")} element={<DetailProduct />} />
-              <Route path={URL_PATH.concat("/tin-tuc/:slug")} element={<DetailBlog />} />
-              <Route path={URL_PATH.concat("/tin-tuc/:danh-muc/:slug")} element={<DetailBlog />} />
+              <Route path={URL_PATH} element={<Home />} /> 
+              <Route path={URL_PATH.concat("/lien-he").concat(HTML_DOT)} element={<Contact />} />
+              <Route path={URL_PATH.concat("/cua-hang/:slug").concat(HTML_DOT)} element={<DetailProduct />} />
+              <Route path={URL_PATH.concat("/tim-kiem/:slug").concat(HTML_DOT)} element={<Product />} />
+              <Route path={URL_PATH.concat("/danh-muc/:slug").concat(HTML_DOT)} element={<Category />} />
+              <Route path={URL_PATH.concat("/gio-hang").concat(HTML_DOT)} element={<Cart />} />
+              <Route path={URL_PATH.concat("/tien-hanh-dat-hang").concat(HTML_DOT)} element={<Checkout />} />
+              <Route path={URL_PATH.concat("/lich-su-dat-hang").concat(HTML_DOT)} element={<AuthRoute element={OrderUser} isAuthenticated={isAuthenticated} redirectPath={URL_PATH} />}/>
+              <Route path={URL_PATH.concat("/thong-tin-khach-hang/:userId")} element={<AuthRoute element={DetailUser} isAuthenticated={isAuthenticated} redirectPath={URL_PATH} />}/>
               <Route path="*" element={<Page403 />} />
-              <Route path={URL_PATH.concat("/tien-hanh-dat-hang.html")} element={<AuthRoute element={Checkout} isAuthenticated={!isAuthenticated} redirectPath={URL_PATH} />}/>
-              <Route path={URL_PATH.concat("/gio-hang.html")} element={<AuthRoute element={Cart} isAuthenticated={!isAuthenticated} redirectPath={URL_PATH} />}/>
-              <Route path={URL_PATH.concat("/lich-su-dat-hang.html")} element={<AuthRoute element={OrderUser} isAuthenticated={!isAuthenticated} redirectPath={URL_PATH} />}/>
-              <Route path={URL_PATH.concat("/thong-tin-khach-hang.html")} element={<AuthRoute element={DetailUser} isAuthenticated={!isAuthenticated} redirectPath={URL_PATH} />}/>
-              <Route path={URL_PATH.concat("/dang-nhap.html")} element={<AuthRoute element={Login} isAuthenticated={!isAuthenticated} redirectPath={URL_PATH} />}/>
-              <Route path={URL_PATH.concat("/dang-ky.html")} element={<AuthRoute element={Register} isAuthenticated={!isAuthenticated} redirectPath={URL_PATH} />}/>
-              <Route path={URL_PATH.concat("/quen-mat-khau.html")} element={<AuthRoute element={ForgetPassword} isAuthenticated={!isAuthenticated} redirectPath={URL_PATH} />}/>
+              <Route path={URL_PATH.concat("/tin-tuc").concat(HTML_DOT)} element={<Blog />} />
+              <Route path={URL_PATH.concat("/tin-tuc/:slug").concat(HTML_DOT)} element={<DetailBlog />} />
+              <Route path={URL_PATH.concat("/dang-nhap").concat(HTML_DOT)} element={<AuthRoute element={Login} isAuthenticated={!isAuthenticated} redirectPath={URL_PATH} />}/>
+              <Route path={URL_PATH.concat("/dang-ky").concat(HTML_DOT)} element={<AuthRoute element={Register} isAuthenticated={!isAuthenticated} redirectPath={URL_PATH} />}/>
+              <Route path={URL_PATH.concat("/quen-mat-khau").concat(HTML_DOT)} element={<AuthRoute element={ForgetPassword} isAuthenticated={!isAuthenticated} redirectPath={URL_PATH} />}/>
             </Routes>
           </div>
           <Footer />

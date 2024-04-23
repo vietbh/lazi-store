@@ -48,12 +48,11 @@ function FormRegister() {
         message.email = '';
       }
     } catch (error) {
-      // console.log(error.response.data.errors.name[0]);
+      setUnSuccess(true);
+      setLoading(false);
       const data = error.response.data.errors;
       message.name = data.name[0];
       message.email = data.email[0];
-      setUnSuccess(true);
-      setLoading(false);
 
     }
   }

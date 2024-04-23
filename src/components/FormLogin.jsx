@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -6,9 +5,9 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import { Link } from 'react-router-dom';
-import API_URL from "../../src/config/Api";
-import URL_PATH from '../config/UrlPath';
 import Loading from './Loading';
+import HTML_DOT from '../config/PageHtml';
+import * as loginUser from '@/apiServices/auth/loginUser';
 
 
 function FormLogin() {
@@ -21,14 +20,12 @@ function FormLogin() {
   const [success,setSuccess] = useState(false);
   const [unSuccess,setUnSuccess] = useState(false);
   const [loading,setLoading] = useState(false);
-  const [dataUser,setDataUser] = useState();
   const [formData,setFormData] = useState({
     email:'',
     password:'',
     rememberMe:false,
     capcha:''
   });
-  const url = '/'+URL_PATH+'/';
   const handleChange = (e) =>{
     const { name, value,checked } = e.target;
     setFormData((prevFormData) => ({
@@ -38,20 +35,23 @@ function FormLogin() {
   }
 
    // Api login 
-   const fetchLogin = async () => {
+  const handleLoginApi = async(formData)=>{
     try {
-      const response = await axios.post(API_URL.concat('/login'),formData);
-      const data = await response.data;
-      if(response.status === 200){
-        setDataUser(data);
-        console.log(data);
+      setLoading(true)
+      const result = await loginUser.fetchPostLogin(formData);
+      if(result){
+        sessionStorage.setItem('userInfo', JSON.stringify(result.user));
         setSuccess(true);
+        setLoading(false);
+      }else{
+        setLoading(false);
+        setUnSuccess(true);
       }
-    } catch (error) {
+    } catch(error) {
       setLoading(false);
       setUnSuccess(true);
+      console.log(error);
     }
-
   }
 
   const checkCapcha = () =>{
@@ -63,10 +63,10 @@ function FormLogin() {
         setClick(4);
         return false;
       }else{
-        fetchLogin();
+        handleLoginApi();
         setSuccess(true);
         setCapcha(false);
-        setTimeout(()=> window.location.href = url,1500);
+        setTimeout(()=> location.href = '/',1500);
       }
     }
     return true;
@@ -114,7 +114,7 @@ function FormLogin() {
     setLoading(true);
     setUnSuccess(false);
     if(!checkCapcha()) return;
-    fetchLogin();
+    handleLoginApi(formData);
     if(!success) return ;
     setUnSuccess(false);
     setSuccess(true);
@@ -124,9 +124,9 @@ function FormLogin() {
   useEffect(() => {
     if(success && !unSuccess){
       setLoading(true);
-      sessionStorage.setItem('userInfo', JSON.stringify(dataUser));
       sessionStorage.setItem('hasLogin',true);
-      setTimeout(()=> history.go(-1),1500);
+      setTimeout(()=> location.href ='/',1500);
+      setLoading(false);
     }
     if(click >= 8){
       setRandCapcha(Math.floor(10000 - Math.random() * 900000) + 1000000);
@@ -135,10 +135,9 @@ function FormLogin() {
       return ;
     }
     if(formData.rememberMe){
-      localStorage.setItem('email',formData.email);
-      localStorage.setItem('user',formData);
+      localStorage.setItem('remember_token',formData.email);
     }
-  },[click,success,formData,unSuccess,url,dataUser]);
+  },[click,success,formData,unSuccess]);
 
   const handleShowPass = () => {
     setShowPass(!showPass);
@@ -153,7 +152,7 @@ function FormLogin() {
           <InputGroup hasValidation>
             <Form.Control
               className='border rounded-2'
-              type="email"
+              type="text"
               placeholder="Nhập tài khoản email "
               aria-describedby="inputGroupPrepend"
               name='email'
@@ -215,7 +214,7 @@ function FormLogin() {
             onChange={handleChange}
             noValidate
           />
-          <Link className='float-end' to={'/quen-mat-khau'}>Quên mật khẩu</Link>
+          <Link className='float-end' to={'/quen-mat-khau'+HTML_DOT}>Quên mật khẩu</Link>
         </Form.Group>
         <div className='text-center text-sm'>   
           { success && (<span className={'text-success'}>Đăng nhập thành công</span>)}
