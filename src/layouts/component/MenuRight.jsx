@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import {menuRights} from '@/config/Menu';
+import * as getCart from '@/apiServices/getCart';
 
 
 function MenuRight(param,title){
   const [countCart, setCountCart] = useState(0);
   useEffect(() => {   
-      const cacheCountCart = JSON.parse(sessionStorage.getItem('countCart'));
-      const handleCountCart = ()=>{
-        if (cacheCountCart && countCart != cacheCountCart) {
-          setCountCart(cacheCountCart)
-        }
-      } 
+    const cacheCart = JSON.parse(sessionStorage.getItem('countCart'));
+    const handleCountCart = async ()=>{
+      const result = await getCart.getCartItems();
+      setCountCart(result.products.length);
+    } 
+    if(cacheCart && cacheCart !== countCart){
+      setCountCart(cacheCart)
       handleCountCart();
-      const interval = setInterval(handleCountCart, 1500);
-      return () => {
-        clearInterval(interval);
-      };
+    }
+    handleCountCart();
   }, [countCart]);
     
   const menuRight = menuRights.map((menu) => {

@@ -4,6 +4,7 @@ import URL_PATH from '@/config/UrlPath';
 import {menuLefts,menuListLogin,loginSettings} from '@/config/Menu';
 import UserInFo from "./component/UserInFo";
 import MenuRight from "./component/MenuRight";
+import { useEffect, useState } from "react";
 
 function Header() {
   const param = useParams();
@@ -11,8 +12,7 @@ function Header() {
   const hasLogin = sessionStorage.getItem("hasLogin");
   const title = function(value){
     document.title = value;
-  } 
-  
+  }  
   const handleLogout = () => {
     alert('Đăng xuất thành công');
     sessionStorage.removeItem('hasLogin');

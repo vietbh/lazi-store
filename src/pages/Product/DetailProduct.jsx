@@ -13,6 +13,7 @@ const DetailProduct = () => {
     const [color,setColor] = useState('');
     const [success,setSuccess] = useState(false);
     const [error,setError] = useState(false);
+    const [showDescrip,setShowDescrip] = useState(false);
     // const hasLogin = sessionStorage.getItem("hasLogin");   
     useEffect(()=>{
         const fetchData = async () =>{
@@ -33,6 +34,7 @@ const DetailProduct = () => {
         if(product.length == 0 && variations.length == 0){
             fetchData();
         }
+
     },[]);
 
     const addProduct = async(e)=>{
@@ -187,9 +189,14 @@ const DetailProduct = () => {
                         </ul>
                         <div className="tab-content mb-5" id="myTabContent">
                             <div className="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
-                                <div className="p-4 p-lg-12 bg-white">
-                                    <div className="row">
-                                        <div className={`text-md mb-0`} dangerouslySetInnerHTML={{ __html: product.description }} />
+                                <div className="p-1 p-lg-12 bg-white">
+                                    <div className={`${showDescrip ? styles.showDescription : styles.hiddenDescription} mb-3 mt-4`}>
+                                        <div className="mt-2"
+                                        dangerouslySetInnerHTML={{ __html: product.description }} />
+                                    </div>
+                                    <div className="d-flex justify-content-center">
+                                        <button
+                                        className="btn btn-dark rounded-pill fw-bold w-25 py-2" onClick={()=>setShowDescrip(!showDescrip)}> {showDescrip ? 'Đóng lại' : 'Xem thêm'}</button>
                                     </div>
                                 </div>
                             </div>
@@ -199,21 +206,17 @@ const DetailProduct = () => {
                                     <div className="row">
                                     <div className="col-lg-12">
                                         <div className="d-flex mb-5">
-                                            <div className="flex-shrink-0"><img className="rounded-circle" src={`${path}img/customer-1.png`} alt="" width="50"/></div>
+                                            <div className="flex-shrink-0 w-25"><img className="rounded-2 w-50" src={`${path}img/customer-1.png`} alt=""/></div>
                                             <div className="ms-3 flex-shrink-1">
                                                 <h6 className="mb-0 text-uppercase">Jason Doe</h6>
                                                 <p className="small text-muted mb-0 text-uppercase">20 May 2020</p>
                                                 <p className="text-sm mb-0 text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                            </div>
-                                        </div>
-                                        <div className="d-flex">
-                                            <div className="flex-shrink-0"><img className="rounded-circle" src={`${path}img/customer-2.png`} alt="" width="50"/></div>
-                                            <div className="ms-3 flex-shrink-1">
-                                                <h6 className="mb-0 text-uppercase">Jane Doe</h6>
-                                                <p className="small text-muted mb-0 text-uppercase">20 May 2020</p>
+                                                <p className="text-sm mb-0 text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                                <p className="text-sm mb-0 text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                                                 <p className="text-sm mb-0 text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                                             </div>
                                         </div>
+                                    
                                     </div>
                                     </div>
                                 </div>

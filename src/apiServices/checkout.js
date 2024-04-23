@@ -11,7 +11,7 @@ const checkoutOrder = async (formData) =>{
     try {
         const res = await api.post('/thanh-toan',{data:formData,user});
         if(res.status == 200)
-        return res;
+        return res.data;
     } catch(error) {
         console.log(error);
         return {errors:error}

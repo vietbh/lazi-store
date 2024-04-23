@@ -54,9 +54,9 @@ function CarouselCard({
                         <p className="fw-bold m-1 text-danger">{numberFormat(product.price_sale)}<span className="text-small">đ</span></p>
                         <p className="m-1 text-secondary text-decoration-line-through text-truncate" style={{fontSize:'13px'}}>{numberFormat(product.price)}<span className="text-small">đ</span></p>
                     </div>
-                    <div className="d-flex align-items-center justify-content-around ">
-                        <h6 className="mb-0 fs-6 me-5 ">5<span className="text-warning"><i className="far fa-star"></i></span></h6>
-                        <h6 className="mb-0 fs-6 ms-3 fw-normal"><i className="far fa-heart"></i></h6>
+                    <div className="d-flex align-items-center justify-content-end ">
+                        <h6 className="mb-0 fs-6 me-5 d-none"><span className="text-warning">5<i className="far fa-star"></i></span></h6>
+                        <h6 className="mb-0 fs-6 me-5 fw-normal"><i className="far fa-heart text-danger"></i></h6>
                     </div>
                 </div>
             </React.Fragment>

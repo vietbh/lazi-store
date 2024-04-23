@@ -17,7 +17,7 @@ const UserInFo = () => {
             id="pagesDropdown" href="#" data-bs-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false"
             >
-                {dataUser.image_url ? <img className="rounded-circle" src={dataUser.image_url} width={50} /> : <i className="fas fa-user me-1 text-gray fw-normal"></i>} 
+                {dataUser.image_url ? <img className="rounded-circle me-1" src={dataUser.image_url} style={{width:'28px'}} /> : <i className="fas fa-user me-1 text-gray fw-normal"></i>} 
                 <span>{dataUser.name}</span>
             </Link>
         </React.Fragment>

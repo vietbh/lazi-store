@@ -29,6 +29,7 @@ const handleCheckoutOrder = async () =>{
   try {
     setProcess(true);
     const result = await checkout.checkoutOrder(formData);
+    console.log(result);
     if(result.status == 200){
       const timeout = setTimeout(()=>setSuccess(true),5000)
       return ()=>clearTimeout(timeout);  
@@ -47,8 +48,8 @@ const handleSubmit = (event) => {
   }
   setValidated(true);
   handleCheckoutOrder();
-  setTimeout(() => {setSuccess(false),location.href = "/lich-su-dat-hang.html"},6000);
-  setTimeout(() => setProcess(false),8500);
+  // setTimeout(() => {setSuccess(false),location.href = "/lich-su-dat-hang.html"},6000);
+  // setTimeout(() => setProcess(false),8500);
 };
 
   return (
