@@ -12,49 +12,6 @@ import ProductAudio from "./component/ProductAudio";
 
 function Home(){
     const [categories,setCategories] = useState([]);
-<<<<<<< HEAD
-    const [products,setProducts] = useState([]);
-    const hasLogin = sessionStorage.getItem("hasLogin");   
-    useEffect(()=>{
-        const data = [
-            {id:1,name:'Điện thoại'},
-            {id:2,name:'Máy tính'},
-            {id:3,name:'Đồng hồ'},
-            {id:4,name:'Tai nghe không dây'},
-            {id:9,name:'Tai nghe có dây'},
-            {id:5,name:'Ốp lưng'},
-            {id:6,name:'Kính VR'},
-            {id:7,name:'Loa không dây'},
-            {id:8,name:'Loa có dây'},
-            {id:10,name:'Sạc dự phòng'},
-        ];    
-        const dataProducts = [
-            {id:1,name:'Điện thoại',img:'iphone-14-pro_2__5.jpg',status:'Sale',price:'1500',price_sale:'',type:'iPhone 15 pro max'},
-            {id:2,name:'Apple watch 6', img:'Apple_Watch_black.jpg',status:'Mới',price:'600',price_sale:'',type:'Apple watch'},
-            {id:3,name:'Apple watch 7',img:'Apple_Watch_Series_7.jpg',status:'Hết hàng',price:'800',price_sale:'',type:'Apple watch'},
-            {id:4,name:'Apple watch black',img:'Apple_Watch_black.jpg',status:'Bán chạy',price:'400',price_sale:'',type:'Apple watch '},
-            {id:5,name:'iPhone 14',img:'iphone-14-plus.jpg',status:'',price:'1000',price_sale:'',type:'iPhone'},
-            {id:6,name:'iPhone 14 pro',img:'iphone-14-pro_2__5.jpg',status:'',price:'1200',price_sale:'',type:'iPhone'},
-            {id:7,name:'iPhone 13',img:'iphone-13.jpg',status:'',price:'2600',price_sale:'',type:'iPhone'},
-            {id:8,name:'iPhone 15 pro max',img:'iphone-15-pro-max_1.jpg',status:'',price:'4600',price_sale:'',type:'iPhone'},
-        ];    
-        if(categories.length == 0 ) setCategories(data);
-        if(products.length == 0 ) setProducts(dataProducts);
-    },[categories,products]);    
-    const category = categories.map(category=>{
-        return(
-            <div key={category.id} className="col-sm-12 col-xl-2 mb-4 " style={{width:262,minHeight:75,maxHeight:80}}>
-            <a href="##">
-                <button className="text-start rounded-3 btn btn-light w-100 h-100 " >
-                    <p className="m-1 overflow-hidden">{category.name}</p>
-                </button>
-            </a>
-            </div>   
-        )
-    }
-    );
-=======
->>>>>>> 229aabae9747e26af8eaa162adc71929492b0369
 
     const [loading,setLoading] = useState(true);
     // const [show,setShow] = useState(false);
