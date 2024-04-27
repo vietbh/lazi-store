@@ -1,6 +1,10 @@
 .linkStyle{
     background: url(https://vietbh.github.io/lazi-store/img/product-5.jpg);
 }
+
+/* .imageProduct{
+    object-fit: fill;
+} */
 .borderImageProduct{
     border-radius: 20px;
 }
@@ -41,3 +45,23 @@
     border-radius: 4px;
     cursor: pointer;
 }
+.descriptionImage img{
+    margin-left: auto;
+    margin-right: auto;
+    width: auto;
+}
+.hiddenDescription{
+    height: 55vh;
+    opacity: 0.6;
+    overflow: hidden;
+}
+.showDescription{
+    height: 150vh;
+    opacity: 1;
+    overflow-y: scroll;
+}
+.descriptionImage::-webkit-scrollbar {
+    display:none;
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+

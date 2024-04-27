@@ -1,161 +1,80 @@
 
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import API_URL from "../../config/Api";
 import styles from "./styles.module.css";
 import Loading from "../../components/Loading";
+import * as getProducts from '../../apiServices/getProducts'; // Đường dẫn đến file chứa hàm fetchProducts
+
 
 function Product() {
     const [products,setProducts] = useState([]);
-    // const [modal,setModal] = useState([]);
-    const [categories,setCategories] = useState([]);
     const [loading,setLoading] = useState(false); 
     const hasLogin = sessionStorage.getItem("hasLogin");   
-    
-    const fetchDataCategory = async() => {
-      try {
+  
+    useEffect(()=>{
+      const fetchApi = async () =>{
         setLoading(true);
-        const response = await axios.get(API_URL.concat('/danh-muc-san-pham'));
-        const data = await response.data;
-        if(response.status == 200){
-          setLoading(false);
-          // Lưu trữ dữ liệu sản phẩm trong bộ nhớ session của trình duyệt
-          sessionStorage.setItem('categories', JSON.stringify(data));
-        }
-      }catch(error) {
-        setLoading(true);
-        console.log(error);
-      }
-    }
-    const fetchData = async() => {
-      try {
-          setLoading(true);
-          const response = await axios.get(API_URL.concat('/san-pham'));
-          const data = await response.data;         
-          if(response.status == 200){
-            setLoading(false);
-            // Lưu trữ dữ liệu sản phẩm trong bộ nhớ session của trình duyệt
-            sessionStorage.setItem('products', JSON.stringify(data));
-            setProducts(data);
-          }
-        }catch(error) {
-          setLoading(true);
-          console.log(error);
-      }
-    }
-    useEffect(() => {
-      const data = [
-        {id:999,name:'Điện thoại',slug:'dien-thoai'},
-        {id:998,name:'Máy tính',slug:'may-tinh'},
-        {id:997,name:'Đồng hồ thông minh',slug:'dong-ho-thong-min'},
-        {id:996,name:'Tai nghe không dây',slug:'tai-nghe-khong-day'},
-        {id:995,name:'Tai nghe có dây',slug:'tai-nghe-co-day'},
-        {id:994,name:'Ốp lưng',slug:'op-lung'},
-        {id:993,name:'Kính VR',slug:'kinh-vr'},
-        {id:992,name:'Loa không dây',slug:'loa-khong-day'},
-        {id:991,name:'Loa có dây',slug:'loa-co-day'},
-        {id:990,name:'Sạc dự phòng',slug:'sac-du-phong'},
-      ];  
-      if(sessionStorage.getItem('categories')) {
-        let cachedCategories = JSON.parse(sessionStorage.getItem('categories'));    
-        if(cachedCategories.length < 4  && data != []){
-          cachedCategories = [...cachedCategories,...data];
-          setCategories(cachedCategories);
-        }else if(cachedCategories.length === 0 && data != []){
-          setCategories(data);
-        }else{
-          setCategories(cachedCategories);
-        }
-        if(categories.length !== cachedCategories.length){
-            fetchDataCategory();
-        }
-        const interval = setInterval(()=>{
-          if(categories.length !== cachedCategories.length){
-            fetchDataCategory();
-            clearInterval(interval);
-          }
-        },0);
+        const result = await getProducts.fetchData();
+        setProducts(result); 
+        sessionStorage.setItem('products', JSON.stringify(products)); // Lưu dữ liệu vào session storage
         setLoading(false);
-      }else{
-        fetchDataCategory();
       }
-      if(sessionStorage.getItem('products')) {
-        // Lấy dữ liệu từ bộ nhớ session
-        const cachedProducts = JSON.parse(sessionStorage.getItem('products'));
-        if(cachedProducts.length > 0 && products.length == 0){
-          setProducts(cachedProducts);
-        }
-        if(products.length !== cachedProducts.length){
-          fetchData();
-        }
-        setLoading(false);
-      }else{
-        setLoading(true);
-        fetchData();
-      }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [products.length, categories.length]);
-    useEffect(() => {
-      // Đặt điều kiện để chỉ gọi fetchData khi loading là true
-      if (loading) {
-          fetchData();
-          fetchDataCategory();
-      }
-    }, [loading]);
-    const category = categories.map((category)=>{
-      return(
-        <div key={category.id} className="col-sm-12 col-xl-1 mb-2" style={{width:260,minHeight:52,maxHeight:60}}>
-          <a href={category.slug}>
-            <button className="text-start rounded-3 btn btn-light w-100 h-100" >
-                <p className="m-1 overflow-hidden">{category.name}</p>
-            </button>
-          </a>
-        </div>   
-      );
-    }
-    );
+      fetchApi()
+    },[])
 
+    // useEffect(() => {
+    //   // Đặt điều kiện để chỉ gọi fetchData khi loading là true
+    //   if (loading) {
+    //       // fetchProducts();
+    //       // fetchDataCategory();
+    //   }
+    // }, [loading]);
+
+    // const category = categories.map((category)=>{
+    //   return(
+    //     <div key={category.id} className="col-sm-12 col-xl-1 mb-2" style={{width:260,minHeight:52,maxHeight:60}}>
+    //       <a href={'danh-muc/'+category.slug+HTML_DOT}>
+    //         <button className="text-start rounded-3 btn btn-light w-100 h-100" >
+    //             <p className="m-1 overflow-hidden">{category.name}</p>
+    //         </button>
+    //       </a>
+    //     </div>   
+    //   );
+    // });
+    console.log(products);
     const product = products.map((product) => {
-      const price = product.variations.map((variation,index) => {
-        if(index == 0 ){  
-          return(
-            <div key={variation.id} className="text-danger text-center">
-              <p className="fw-bold m-1">{parseInt(variation.price_sale).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}<span className="text-small">đ</span></p>
-              <p className="m-1 text-secondary fw-bold text-decoration-line-through">{parseInt(variation.price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}<span className="text-small">đ</span></p>
-            </div>
-          );
-        }
-      });
-      const image = product.variations.map((variation,index) => {
-        if(index == 0 ){  
-          return(
-            <img key={variation.id} className={`img-fluid ${styles.borderImageProduct}`} loading="lazy" src={variation.image_url} data-src={variation.image_url} alt={variation.image_url}/>
-          );
-        }
-      });
       return (
-        <div key={product.id} className={`col-lg-4 col-sm-6`}>
-          <div className={`product text-start bg-light  mb-3 ${styles.borderProduct} ${styles.paddingImageProduct}`}>
+        <div key={product.id} className={`col-lg-3 col-sm-6 mb-3`}>
+          <div className={`product text-start bg-light mb-3 ${styles.borderProduct} ${styles.paddingImageProduct}`}>
             <div className="position-relative mb-3">
-              <div className="badge text-white bg-danger">Hot</div>
-              <a className="d-block" to={product.slug}>{image}</a>
+              {product.product.product_type == 'hot' && <div className="badge text-white bg-danger">Hot</div>}
+              <a className="d-block" to={product.product.slug}><img className={`img-fluid ${styles.borderImageProduct}`} loading="lazy" src={product.image_url} data-src={product.image_url} alt={product.image_url}/></a>
               <div className="product-overlay">
                   <ul className="mb-0 list-inline">
                     {!hasLogin ? <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href={"dang-nhap.html"}><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li>
-                    : <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href={"cua-hang/"+product.slug+'.html'}><i className="fa fa-cart-plus"></i> Thêm vào giỏ </a></li>}
+                    : <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href={"cua-hang/"+product.product.slug+'.html'}><i className="fa fa-cart-plus"></i> Thêm vào giỏ </a></li>}
                   </ul>
               </div>
             </div>
-            <h6 className="text-center"> <Link className="reset-anchor" to={product.slug+'.html'}>Iphone</Link></h6>
-            <h6 className="text-center"> <Link className="reset-anchor text-center" to={product.slug+'.html'}>{product.name}</Link></h6>
-            {price}
+            {/**
+            <h6 className=""> <Link className="reset-anchor" to={product.slug+'.html'}>Iphone</Link></h6>
+             */}
+            <h6 className="mb-4 mt-2 fs-6 text-break fw-bolder text-truncate"><a className="reset-anchor text-center" href={"cua-hang/"+product.product.slug+'.html'}>{product.product.name}</a></h6>
+            <div className="d-flex align-items-center">
+              <p className="fw-bold m-1 text-danger">{parseInt(product.price_sale).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}<span className="text-small">đ</span></p>
+              <p className="m-1 text-secondary text-decoration-line-through" style={{fontSize:'13px'}}>{parseInt(product.price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}<span className="text-small">đ</span></p>
+            </div>
+            <div className="d-flex align-items-center justify-content-around ">
+              <h6 className="mb-0 fs-6 me-5 ">5<span className="text-warning">sao</span></h6>
+              <h6 className="mb-0 fs-6 ms-3 fw-normal"> Yêu thích</h6>
+            </div>
           </div>
         </div>
       );
-    });  
+    });
+
     return (
-        <section >
+        <section>
+        
           <div className="container">   
             {/* <!-- HERO SECTION-->*/}
             <section className="py-5 bg-light">
@@ -182,7 +101,7 @@ function Product() {
               </header>
               {loading && <div className="col-lg-12 col-sm-12"><Loading className={'d-flex justify-content-center'} width={50}  /></div> }  
               <div className="row gy-2">
-                  {category}
+                {/*categoey */}
               </div>
             </section>
             <section className="pt-4">
@@ -268,10 +187,11 @@ function Product() {
                       <h2 className="h5 text-uppercase mb-4">Danh sách sản phẩm</h2>
                   </header>
                   {loading && <div className="col-lg-12 col-sm-12"><Loading className={'d-flex justify-content-center'}/></div> }  
-                  <div className="col-lg-9 order-1 order-lg-2 mb-5 mb-lg-0">
+                  <div className="col-lg-12 order-1 order-lg-2 mb-5 mb-lg-0">
                     <div className="row">
                       {/*<!-- PRODUCT-->*/}
                       {product}
+                      {/*product*/}
                     </div>
                     {/*<!-- PAGINATION-->*/}
                     {/*{!loading &&(
