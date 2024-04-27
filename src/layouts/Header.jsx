@@ -4,12 +4,12 @@ import URL_PATH from '@/config/UrlPath';
 import {menuLefts,menuListLogin,loginSettings} from '@/config/Menu';
 import UserInFo from "./component/UserInFo";
 import MenuRight from "./component/MenuRight";
-import React, { useState } from "react";
-import ModalChangePass from "../components/ModalChangePass";
+// import React, { useState } from "react";
+// import ModalChangePass from "../components/ModalChangePass";
 function Header() {
   const param = useParams();
-  const [modalShow, setModalShow] = useState(false);
-  const [dataUsers, setDataUsers] = useState([]);
+  // const [modalShow, setModalShow] = useState(false);
+  // const [dataUsers, setDataUsers] = useState([]);
   const hasLogin = sessionStorage.getItem("hasLogin");
   const title = function (value) {
     document.title = value;
@@ -181,7 +181,9 @@ function Header() {
           </nav>
         </div>
       </header>
+      {/*
       <ModalChangePass show={modalShow} onHide={() => setModalShow(false)} user={dataUsers}/>
+     */}
     </section>
   );
 }
