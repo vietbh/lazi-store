@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import BreadcrumbCustom from "@/components/BreadcrumbCustom";
-import data from "../../config/CategoryData";
 
 const DetailUser = () => {
     const [dataUser, setDataUser] = useState([]);
