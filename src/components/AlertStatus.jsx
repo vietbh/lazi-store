@@ -1,3 +1,4 @@
+import { checkPropTypes } from 'prop-types';
 import { useEffect } from 'react';
 import Swal from 'sweetalert2';
 
@@ -6,13 +7,13 @@ const AlertStatus = ({ type,title }) => {
     const Toast = Swal.mixin({
       toast: true,
       position: 'top-end',
-      showConfirmButton: false,
-      timer: 3000,
+      padding:"0.5rem 1rem",
+      heightAuto:true,
+      timer: 2000,
       timerProgressBar: true,
-    //   didOpen: (toast) => {
-    //     toast.addEventListener('mouseenter', Swal.stopTimer);
-    //     toast.addEventListener('mouseleave', Swal.resumeTimer);
-    //   }
+      showConfirmButton: false,
+      showCloseButton: true,
+      allowEscapeKey:true,
     });
 
     Toast.fire({
@@ -23,6 +24,9 @@ const AlertStatus = ({ type,title }) => {
 
   return null;
 };
-
+AlertStatus.propTypes = {
+  type: checkPropTypes.string,
+  title: checkPropTypes.string,
+}
 
 export default AlertStatus;

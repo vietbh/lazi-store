@@ -22,10 +22,8 @@ function ProductLaptop() {
             <div key={product.id} className={`col-lg-3 col-sm-6`}>
             <div className={`product text-start bg-light  mb-3 ${styles.borderProduct} ${styles.paddingImageProduct}`}>
               <div className="position-relative mb-3">
-                {!!product.product.product_type_hot  &&(
-                  <div className="badge text-white bg-danger">Hot</div>
-                ) }
-                <a className="d-block" to={"/cua-hang/"+product.product.slug}><img className={`img-fluid ${styles.borderImageProduct}`} loading="lazy" src={product.image_url} data-src={product.image_url} alt={product.image_url}/></a>
+                <a href={"/cua-hang/"+product.product.slug+'.html'}><img className={`img-fluid ${styles.borderImageProduct}`} 
+                loading="lazy" src={product.image_url} data-src={product.image_url} alt={product.image_url}/></a>
                 {/*
                 <div className="product-overlay">
                     <ul className="mb-0 list-inline">
