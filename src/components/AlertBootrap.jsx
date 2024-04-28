@@ -15,7 +15,7 @@ function AlertBootrap({title='',type=''}) {
         <div className='container-fluid position-relative'>
             <div className='position-fixed end-0 me-1' style={{top:"6.5rem"}}>
                 {show && (
-                    <Alert className='opacity-75 btn-sm' variant={type} onClose={() => setShow(false)} dismissible>
+                    <Alert className={` border-${type} opacity-75 btn-sm`} variant={type} onClose={() => setShow(false)} dismissible>
                         <p className='fw-bold mb-0'>{title}</p>
                     </Alert>
                 )}

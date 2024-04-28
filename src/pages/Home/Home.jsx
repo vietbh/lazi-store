@@ -58,10 +58,10 @@ function Home(){
             <div key={category.id} className={`mb-1`} target="_self" href={"danh-muc/"+category.slug+HTML_DOT}
                 // onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}
             >
-                <div className="text-start row border rounded-3 p-1">
+                <div className="text-start row border-0 rounded-3 p-1">
                     <div className="col-sm-6 text-start p-1">
                         <a href={"danh-muc/"+category.slug+HTML_DOT} target="_self" >
-                            <span className="text-dark fw-medium">{category.name}</span>
+                            <span className="text-dark">{category.name}</span>
                         </a>
                     </div>
                     <div className="col-sm-6 text-end p-0">
@@ -80,9 +80,13 @@ function Home(){
         {/* <!-- HERO SECTION-->*/}
             <div className="container">
                 <div className="row">
-                    <div className="col-md-2 col-lg-3" id="danh-muc">
+                    <div className="col-md-2 col-lg-3" id="list">
                         <section>
-                            {mainCategory}
+                            <div className="card">
+                                <div className="card-body py-1">
+                                    {mainCategory}
+                                </div>
+                            </div>
                             {/*
                             <MegaMenu key={value.id} id={value.id} name={value.name}/>
                             */}
@@ -103,7 +107,7 @@ function Home(){
                 
                 <section className="pt-5">
                     <header className="text-center">
-                        <p className="small text-muted small text-uppercase mb-1">Dưới đây là danh mục sản phẩm của chúng tôi</p>
+                        <p className="small text-muted small text-uppercase mb-2">Dưới đây là danh mục sản phẩm của chúng tôi</p>
                         <h2 className="text-uppercase mb-1">Tìm hiểu danh mục sau đây</h2>
                     </header>
                 </section>

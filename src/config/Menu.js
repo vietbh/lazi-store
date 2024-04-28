@@ -1,8 +1,8 @@
 const menuLefts = [
-  { id: 1, name: 'Trang chủ', link: '/' },
-  { id: 2, name: 'Danh mục', link: '/#danh-muc' },
-  { id: 3, name: 'Tin tức', link: 'http://localhost:8000/tin-tuc.html', href: true },
-  { id: 4, name: 'Liên hệ', link: '/lien-he.html' },
+  { id: 1, name: 'Trang chủ', link: '/', icon: 'fas fa-home me-1 text-gray'},
+  { id: 2, name: 'Danh mục', link: '/danh-muc#list', icon: 'fas fa-list-alt me-1 text-gray'},
+  { id: 3, name: 'Tin tức', link: 'http://localhost:8000/tin-tuc.html', href: true, icon: 'fas fa-newspaper me-1 text-gray'},
+  { id: 4, name: 'Liên hệ', link: '/lien-he.html', icon: 'fas fa- me-1 text-gray'},
 ];
 
 const menuListLogin = [
@@ -17,8 +17,8 @@ const menuRights = [
 
 const loginSettings = [
   { id: 1, name: 'Thông tin khách hàng', link: '/thong-tin-khach-hang.html' },
-  { id: 2, name: 'Lịch sử đặt hàng', link: '/lich-su.html' },
-  { id: 3, name: 'Quá trình giao hàng', link: '/giao-hang.html' },
+  // { id: 2, name: 'Lịch sử đặt hàng', link: '/lich-su.html' },
+  // { id: 3, name: 'Quá trình giao hàng', link: '/giao-hang.html' },
   { id: 4, name: 'Mã giảm giá', link: '/ma-giam-gia.html' },
   { id: 5, name: 'Đăng xuất', link: '/', logout: true },
 ];

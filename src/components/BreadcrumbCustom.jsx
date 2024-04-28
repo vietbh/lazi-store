@@ -2,7 +2,7 @@ import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import PropTypes from 'prop-types';
 
 function BreadcrumbCustom({
-    item={},
+    item=[],
     itemActive="",
 }) {
   return (
@@ -16,7 +16,7 @@ function BreadcrumbCustom({
   );
 }
 BreadcrumbCustom.propTypes = {
-    item: PropTypes.object,
+    item: PropTypes.array,
     itemActive: PropTypes.string,
 }
 export default BreadcrumbCustom;

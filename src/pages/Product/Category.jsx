@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styles from "./styles.module.css";
 import HTML_DOT from "../../config/PageHtml";
-import URL_PATH from "../../config/UrlPath";
+// import URL_PATH from "../../config/UrlPath";
 import { Spinner } from "react-bootstrap/esm";
 import * as getCategory from "../../apiServices/getCategory";
 import { numberFormat } from "../../components/NumberFormat";
@@ -17,18 +17,23 @@ function Category() {
   const [loading,setLoading] = useState(false); 
   const [page,setPage] = useState(2);
   const [item,setItem] = useState();
-  const hasLogin = sessionStorage.getItem("hasLogin");   
+  // const hasLogin = sessionStorage.getItem("hasLogin");   
   
   useEffect(() => {
     const fetchDataCategory = async () => {
-      setLoading(true);
-      const result = await getCategory.fetchSingleCategory(slug);
-      setCategory(result.category);
-      setSubcategories(result.subcategories);
-      setPaginate(result.products)
-      setProducts(result.products.data)
-      setItem(result.products.total - result.products.to)
-      setLoading(false);
+      try {
+        setLoading(true);
+        const result = await getCategory.fetchSingleCategory(slug);
+        await setCategory(result.category);
+        await setSubcategories(result.subcategories);
+        await setPaginate(result.products)
+        await setProducts(result.products.data)
+        await setItem(result.products.total - result.products.to)
+        await setLoading(false);
+      } catch(error) {
+        console.log(error);
+        setLoading(false);
+      }
     };
   
     if (category.length == 0 && !loading) {
@@ -60,17 +65,17 @@ function Category() {
             {product.product.product_type_new &&(
               <div className="badge text-white bg-warning">New</div>
             ) }
-            <a className="d-block" href={"/cua-hang/"+product.product.slug+'.html'}><img className={`img-fluid ${styles.borderImageProduct} ${styles.imageProduct} `} loading="lazy" src={product.image_url} data-src={product.image_url} alt={product.image_url}/></a>
+            <a className="d-block" href={"/chi-tiet-san-pham/"+product.product.slug+'.html'}><img className={`${styles.borderImageProduct} ${styles.imageProduct}`} width={270} height={225} loading="lazy" src={product.image_url} data-src={product.image_url} alt={product.image_url}/></a>
             {/*
             <div className="product-overlay">
                 <ul className="mb-0 list-inline">
                   {!hasLogin ? <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href={"dang-nhap.html"}><i className="fa fa-cart-plus"></i> Thêm vào giỏ</a></li>
-                  : <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href={"/"+URL_PATH+"/cua-hang/"+product.product.slug+'.html'}><i className="fa fa-cart-plus"></i> Thêm vào giỏ </a></li>}
+                  : <li className="list-inline-item m-0 p-0"><a className="btn btn-sm btn-dark" href={"/"+URL_PATH+"/chi-tiet-san-pham/"+product.product.slug+'.html'}><i className="fa fa-cart-plus"></i> Thêm vào giỏ </a></li>}
                 </ul>
             </div>
            */}
           </div>
-          <h6 className="mb-4 mt-2 fs-6 text-break fw-bolder text-truncate"><a className="reset-anchor text-center" href={"/cua-hang/"+product.product.slug+'.html'}>{product.product.name}</a></h6>
+          <h6 className="mb-4 mt-2 fs-6 text-break fw-bolder text-truncate"><a className="reset-anchor text-center" href={"/chi-tiet-san-pham/"+product.product.slug+'.html'}>{product.product.name}</a></h6>
           <div key={product.id} className="d-flex align-items-center mb-1">
             <p className="fw-bold m-1 text-danger" style={{fontSize:'14px'}}>{numberFormat(product.price_sale)}<span className="text-small">đ</span></p>
             <p className="fw-bold m-1 text-secondary text-truncate" style={{fontSize:'12px'}}>{numberFormat(product.price)}<span className="text-small">đ</span></p>
@@ -99,11 +104,11 @@ function Category() {
       const loadMoreProduct = result.products.data;
       console.log(result.products);
       if(loadMoreProduct.length > 0){
-        setPage((prevPage) => prevPage + 1);
-        setProducts([...products,...loadMoreProduct]);   
-        setItem(result.products.total - result.products.to)
+        await setPage((prevPage) => prevPage + 1);
+        await setProducts([...products,...loadMoreProduct]);   
+        await setItem(result.products.total - result.products.to)
       }
-      setLoading(false)
+      await setLoading(false)
     } catch(error) {
       console.log(error);
     }
@@ -229,7 +234,7 @@ function Category() {
                 <div className="col-lg-12 order-1 order-lg-2 mb-5 mb-lg-0">
                   <div className="row mb-4">
                     {/*<!-- PRODUCT-->*/}
-                    {product}
+                    {product.length == 0 && item == 0 ? (<h4 className="text-center text-secondary">Sản phẩm đang được cập nhật</h4>) : product }
                   </div>
                   {/*<!-- PAGINATION-->*/}
                   {item != 0 && loadMoreButton}

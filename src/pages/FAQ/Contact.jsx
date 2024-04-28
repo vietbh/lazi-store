@@ -1,5 +1,5 @@
 import React from "react";
-import BreadcrumbCustom from "../../components/BreadCrumb";
+import BreadcrumbCustom from "@/components/BreadcrumbCustom";
 
 const Contact = () => {
     return (

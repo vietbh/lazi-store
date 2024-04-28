@@ -1,71 +1,32 @@
-import { Link, useParams } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import FormSearch from "../components/FormSearch";
 import URL_PATH from '@/config/UrlPath';
-import {menuLefts,menuListLogin,loginSettings} from '@/config/Menu';
-import UserInFo from "./component/UserInFo";
+import {menuListLogin} from '@/config/Menu';
+import UserInfo from "./component/UserInfo";
 import MenuRight from "./component/MenuRight";
+import MenuLeft from "./component/MenuLeft";
 // import React, { useState } from "react";
 // import ModalChangePass from "../components/ModalChangePass";
 function Header() {
-  const param = useParams();
+  // const param = useParams();
   // const [modalShow, setModalShow] = useState(false);
   // const [dataUsers, setDataUsers] = useState([]);
   const hasLogin = sessionStorage.getItem("hasLogin");
-  const title = function (value) {
-    document.title = value;
-  }  
-  const handleLogout = () => {
-    alert('Đăng xuất thành công');
-    sessionStorage.removeItem('hasLogin');
-    sessionStorage.removeItem('userInfo');
-    localStorage.removeItem('userInfo');
-    // history.go(0);
-    location.href='/';
-  };
  
   const menuLogin = menuListLogin.map((menu) => {
-    if (param["*"] === URL_PATH.concat(menu.link)) title(menu.name);
     if (menu.show)
       return (
         <li className="nav-item" key={menu.name}>
-          <Link
-            className={`nav-link ${
-              param["*"] === URL_PATH.concat(menu.link) ? "active" : ""
-            }`}
+          <NavLink
+            className={`nav-link fs-6`}
+            style={{fontFamily:"Arial"}}
             to={URL_PATH.concat(menu.link)}
           >
             <i className="fas fa-user me-1 text-gray fw-normal"></i>
             {menu.name}
-          </Link>
+          </NavLink>
         </li>
       );
-  });
-  const setting = loginSettings.map((setting) => {
-    return (
-      <Link
-        key={setting.id}
-        className="dropdown-item border-0 transition-link"
-        to={URL_PATH.concat(setting.link)}
-        onClick={setting.logout ? handleLogout : ""}
-      >
-        {setting.name}
-      </Link>
-    );
-  });
-  const menuLeft = menuLefts.map((menu) => {
-    if (param["*"] === URL_PATH.concat(menu.link)) {
-      title(menu.name);
-    }
-    return (
-      <li className="nav-item" key={menu.name}>
-        <Link
-          className={`nav-link ${param['*'] === URL_PATH.concat(menu.link) ? "active" : ''}`}
-          to={URL_PATH.concat(menu.link)}
-        >
-          {menu.name}
-        </Link>
-      </li>
-    );
   });
 
   return (
@@ -111,71 +72,62 @@ function Header() {
           </nav>
         </div>
       </header>
-
+      
       <header 
       className="header bg-white">
-        <div className="container px-lg-3">
+        <nav 
+        className="navbar navbar-expand-lg navbar-light px-lg-0 mt-3" style={{height:"8vh"}}>
+          <div className="container-fluid">
+            <a className="navbar-brand" href={"/"}>
+              <span className="text-uppercase" style={{fontSize:"50px", fontFamily:"Audiowide, sans-serif, bold"}}>
+                Lazi Store
+              </span>
+            </a>  
+          </div>
+        </nav>
+        <hr/>
+      </header>
+      
+      <header 
+      className="header bg-white">
+        <div className="container px-lg-3 d-flex justify-content-around">
           <nav 
-          className="navbar navbar-expand-lg navbar-light py-3 px-lg-0 mt-3">
-            <div className="container-fluid">
-              <a className="navbar-brand" href={"/"}>
-                <span className="fw-semibold text-uppercase" style={{fontSize:"45px",fontFamily:"Brolink"}}>
-                  Lazi Store
-                </span>
-              </a>  
-            </div>
-          </nav>
-          <hr/>
-          <nav 
-          className="navbar navbar-expand-lg navbar-light py-3 px-lg-0">
+          className="navbar navbar-expand-lg navbar-light pt-0 py-3 px-lg-0">
             <div
               className="collapse navbar-collapse"
               id="navbarSupportedContent"
             >
-              <ul className="navbar-nav me-auto">
-            
-                {menuLeft}
+              <ul className="navbar-nav me-auto ">
+                <MenuLeft/>
                 <li className="nav-item dropdown">
                   <div>
                     <a
-                      className="nav-link "
+                      className="nav-link fs-6"
+                      style={{fontFamily:"Arial"}}
                       id="pagesDropdownSearch"
                       href="#"
                       data-bs-toggle="dropdown"
                       aria-haspopup="false"
                       aria-expanded="true"
                     >
-                      <i className="fas fa-search"></i>
-                      {" Tìm kiếm"}
+                      <i className="fas fa-search text-secondary me-1"></i>
+                      {"Tìm kiếm"}
                     </a>
                     <div
-                      className="dropdown-menu mt-3 shadow-sm"
+                      className="dropdown-menu shadow-sm"
                       aria-labelledby="pagesDropdownSearch"
                     >
                       <div
                         className="dropdown-item border-0 px-2"
-                        style={{ width: 280 }}
+                        style={{ width: 380 }}
                       >
                         <FormSearch />
                       </div>
                     </div>
                   </div>
                 </li>
-                {/*
-                 */}
-              </ul>
-              <ul className="navbar-nav ms-auto">
-                {hasLogin && <MenuRight param={param} title={title}/>}
-                {hasLogin ? (
-                  <li className="nav-item dropdown me-3">
-                    <UserInFo/>
-                    <div className="dropdown-menu mt-3 shadow-sm w-25" aria-labelledby="pagesDropdown">
-                      {setting}
-                    </div>
-                  </li>
-                ) : (
-                  menuLogin
-                )}
+                {hasLogin && <MenuRight/>}
+                {hasLogin ? (<li className="nav-item dropdown me-3"><UserInfo/></li>) : (menuLogin)}
               </ul>
             </div>
           </nav>

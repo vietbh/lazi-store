@@ -68,7 +68,7 @@ function ProductHot() {
         <React.Fragment>
             {productsHot.length >= 4 && (
                 <section className="py-5">
-                    <header className=" py-4">
+                    <header className="py-4">
                         <div className="mb-2">
                             <p className="small text-muted small text-uppercase mb-1">Sản phẩm thuộc</p>
                             <h2 className="text-uppercase mb-4">Top sản phẩm hot</h2>
