@@ -45,11 +45,10 @@
     border-radius: 4px;
     cursor: pointer;
 }
-img{
-    /* display: block; */
+.descriptionImage img{
     margin-left: auto;
     margin-right: auto;
-    width: 100%;
+    width: auto;
 }
 .hiddenDescription{
     height: 55vh;
@@ -61,11 +60,8 @@ img{
     opacity: 1;
     overflow-y: scroll;
 }
-::-webkit-scrollbar {
-    width: 0;  /* Remove scrollbar space */
+.descriptionImage::-webkit-scrollbar {
+    display:none;
     background: transparent;  /* Optional: just make scrollbar invisible */
 }
-/* Optional: show position indicator in red */
-::-webkit-scrollbar-thumb {
-    background: #FF0000;
-}
+

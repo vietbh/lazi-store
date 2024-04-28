@@ -89,7 +89,7 @@ function Cart(){
                 </th>
                 <th className="ps-0 py-3 border-light" scope="row">
                     <div className="d-flex align-items-center">
-                        <a className="reset-anchor d-block animsition-link" href={'/cua-hang/'+item.product_varia.product.slug+'.html'}><img src={item.product_varia.image_url} alt={item.product_varia.image_url} width="70"/></a>
+                        <a className="reset-anchor d-block animsition-link" href={'/chi-tiet-san-pham/'+item.product_varia.product.slug+'.html'}><img src={item.product_varia.image_url} alt={item.product_varia.image_url} width="70"/></a>
                         <div className="ms-3"><strong className="h6"><a className="reset-anchor animsition-link text-wrap" href={`cua-hang/${item.product_varia.product.slug}.html`}>{item.product_varia.product.name}</a></strong></div>
                     </div>
                 </th>
