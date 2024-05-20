@@ -1,7 +1,7 @@
 const menuLefts = [
   { id: 1, name: 'Trang chủ', link: '/', icon: 'fas fa-home me-1 text-gray'},
   { id: 2, name: 'Danh mục', link: '/danh-muc#list', icon: 'fas fa-list-alt me-1 text-gray'},
-  { id: 3, name: 'Tin tức', link: 'http://localhost:8000/tin-tuc.html', href: true, icon: 'fas fa-newspaper me-1 text-gray'},
+  { id: 3, name: 'Tin tức', link: 'http://localhost:8000/blog', href: true, icon: 'fas fa-newspaper me-1 text-gray'},
   { id: 4, name: 'Liên hệ', link: '/lien-he.html', icon: 'fas fa- me-1 text-gray'},
 ];
 

@@ -4,7 +4,7 @@ import { numberFormat } from './NumberFormat';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function CarouselCard({
+function CarouselCardCustom({
     products = [],
     className='',
     Title=()=>{}}) {
@@ -30,21 +30,27 @@ function CarouselCard({
             numScroll: 1
         }
     ];
+    
     const productTemplate = (product) => {
         return (
             <React.Fragment>
-                <div className={`ms-2 product text-start bg-light mb-3 ${styles.borderProduct} ${styles.paddingImageProduct}`} style={{width:"283px"}}>
+                <div className={`ms-2 product text-start bg-light mb-3 ${styles.borderProduct} ${styles.paddingImageProduct}`} style={{width:"19vw"}}>
                     <div className="position-relative mb-3">
-                        { product.product.product_type_hot != null && product.product.product_type_hot == 1 && (
+                        { product.product_type_hot && (
                             <div className="badge text-white bg-danger">Hot</div>
                         )}
-                        <a href={"/chi-tiet-san-pham/"+product.product.slug+'.html'}><img className={`img-fluid ${styles.borderImageProduct}`} 
-                          loading="lazy" src={product.image_url} data-src={product.image_url} alt={product.image_url}/></a>
+                        { product.product_type_new && (
+                            <div className="badge text-white bg-success mt-2">New</div>
+                        )}
+                        <a href={"/chi-tiet-san-pham/"+product.slug+'.html'}><img className={` ${styles.borderImageProduct}`} 
+                          loading="lazy" src={product.image_url} width={275} height={250} data-src={product.image_url} alt={product.image_url}/></a>
                     </div>
-                    <h6 className="mb-4 mt-2 fs-6 text-break fw-bolder text-truncate"><a className="reset-anchor text-center" href={"/chi-tiet-san-pham/"+product.product.slug+'.html'}>{product.product.name}</a></h6>
+                    <h6 className="mb-4 mt-2 fs-6 text-break fw-bolder text-truncate"><a className="reset-anchor text-center" href={"/chi-tiet-san-pham/"+product.slug+'.html'}>{product.name} ({product.color_type})</a></h6>
                     <div className="d-flex align-items-center">
-                        <p className="fw-bold m-1 text-danger">{numberFormat(product.price_sale)}<span className="text-small">đ</span></p>
-                        <p className="m-1 text-secondary text-decoration-line-through text-truncate" style={{fontSize:'13px'}}>{numberFormat(product.price)}<span className="text-small">đ</span></p>
+                        <p className="fw-bold m-1 text-danger">{numberFormat(product.price_sale != 0 ? product.price_sale : product.price)}<span className="text-small">đ</span></p>
+                        {product.price_sale != 0 && (
+                            <p className="m-1 text-secondary text-decoration-line-through text-truncate" style={{fontSize:'13px'}}>{numberFormat(product.price)}<span className="text-small">đ</span></p>
+                        )}
                     </div>
                     {/**
                     <div className="d-flex align-items-center justify-content-end ">
@@ -70,10 +76,10 @@ function CarouselCard({
         
     )
 }
-CarouselCard.propTypes = {
+CarouselCardCustom.propTypes = {
     products: PropTypes.array,
     className: PropTypes.string,
     Title:PropTypes.func
 };
 
-export default CarouselCard;
+export default CarouselCardCustom;

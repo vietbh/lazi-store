@@ -27,7 +27,7 @@ import Category from "./pages/Product/Category";
           <Route path={URL_PATH.concat("/danh-muc")} element={<Home />} /> 
           <Route path={URL_PATH.concat("/lien-he").concat(HTML_DOT)} element={<Contact />} />
           <Route path={URL_PATH.concat("/chi-tiet-san-pham/:slug").concat(HTML_DOT)} element={<DetailProduct />} />
-          <Route path={URL_PATH.concat("/tim-kiem/:slug").concat(HTML_DOT)} element={<Product />} />
+          <Route path={URL_PATH.concat("/tim-kiem/").concat(":slug")} element={<Product />} />
           <Route path={URL_PATH.concat("/danh-muc/:slug").concat(HTML_DOT)} element={<Category />} />
           <Route path={URL_PATH.concat("/gio-hang").concat(HTML_DOT)} element={<Cart />} />
           <Route path={URL_PATH.concat("/lien-he").concat(HTML_DOT)} element={<Contact />} />

@@ -18,7 +18,7 @@ function Cart(){
         try {
             setLoading(true);
             const res = await getCart.getCartItems();
-            setItemsCarts(res.products);
+            await setItemsCarts(res.products);
             const cacheCartItems = JSON.parse(sessionStorage.getItem('itemsCart'));
             if(cacheCartItems){
                 setItemsCarts(cacheCartItems.products);
@@ -190,16 +190,6 @@ function Cart(){
                                 <li className="d-flex align-items-center justify-content-between"><strong className="text-uppercase small font-weight-bold">Tạm tính</strong><span className="text-muted small">{numberFormat(totalCart)}đ</span></li>
                                 <li className="border-bottom my-2"></li>
                                 <li className="d-flex align-items-center justify-content-between mb-4"><strong className="text-uppercase small font-weight-bold">Tổng cộng</strong><span>{numberFormat(totalCart)}đ</span></li>
-                                { countCart > 0 &&(
-                                    <li>
-                                    <form action="#">
-                                        <div className="input-group mb-0">
-                                        <input className="form-control" type="text" placeholder="Nhập coupon để được giảm giá " onChange={()=>{}}/>
-                                        <button className="btn btn-dark btn-sm w-100" type="submit"> <i className="fas fa-gift me-2"></i>Sử dụng coupon</button>
-                                        </div>
-                                    </form>
-                                    </li>
-                                )}
                             </ul>
                             </div>
                         </div>

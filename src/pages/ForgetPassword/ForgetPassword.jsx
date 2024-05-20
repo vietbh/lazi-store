@@ -2,7 +2,6 @@ import FormForgetPassword from '@/components/FormForgetPassword';
 import { Link } from 'react-router-dom';
 
 const ForgetPassword = () => {
-    console.log(111);
     return (
         <section>
             <div className="container my-4">

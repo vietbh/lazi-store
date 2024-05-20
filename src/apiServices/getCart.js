@@ -9,7 +9,7 @@ const getCartItems = async ()=>{
     }
   
     try {
-      const response = await api.get('gio-hang/'.concat(user.cart_id));
+      const response = await api.post('gio-hang/'.concat(user.cart_id));
   
       if (response.status === 200) {
         console.log('Sản phẩm đã được load thành công.');

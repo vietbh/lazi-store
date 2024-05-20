@@ -1,15 +1,15 @@
 import api from '../config/axios'; // Đường dẫn đến file chứa cấu hình API
 
-// export const fetchData = async () =>{
-//   try {
-//     const response = await api.get('/san-pham');
-//     if (response.status === 200) {
-//       return response.data;
-//     }
-//   } catch (error) {
-//     console.log(error); 
-//   }
-// };
+export const fetchSearchData = async (search) =>{
+  try {
+    const response = await api.get(('/search?search=').concat(search));
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log(error); 
+  }
+};
 
 export const fetchHotProduct = async () =>{
   try {

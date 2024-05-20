@@ -5,17 +5,13 @@ import * as getCart from '@/apiServices/getCart';
 
 
 function MenuRight(){
-  const [countCart, setCountCart] = useState(0);
+  const [countCart, setCountCart] = useState();
   useEffect(() => {   
-    const cacheCart = JSON.parse(sessionStorage.getItem('countCart'));
     const handleCountCart = async ()=>{
       const result = await getCart.getCartItems();
-      setCountCart(result.products.length);
+      await setCountCart(result.products.length);
     } 
-    if(cacheCart && cacheCart !== countCart){
-      setCountCart(cacheCart)
-      handleCountCart();
-    }
+    
     handleCountCart();
   }, [countCart]);
     

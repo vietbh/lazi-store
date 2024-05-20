@@ -7,11 +7,11 @@ import Row from "react-bootstrap/Row";
 import API_URL from "../config/Api";
 import axios from "axios";
 import { Alert } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 function FormForgetPassword() {
   const [validated, setValidated] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [formData, setFormData] = useState({
@@ -32,32 +32,35 @@ function FormForgetPassword() {
     setValidated(true);
     handleForgotPass();
   };
+  const handleSubmitChangePass = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setValidated(true);
+    handleForgotPass();
+  };
   const handleForgotPass = async () => {
     try {
-      const url = success ? API_URL.concat("/dat-lai-mat-khau") : API_URL.concat("/quen-mat-khau");
-      const response = await axios.post(
-        url,
-        formData
-      );
+      const url = API_URL.concat("/quen-mat-khau");
+      const response = await axios.post(url,formData);
       if (response.status == 200) {
         setSuccess(true);
         if(success){
-          alert('Đổi mật khẩu thành công');
+          // alert('Đổi mật khẩu thành công');
           // navigate("/dang-nhap.html")
         }
       }
     } catch (error) {
-      setError(error?.response?.data?.message);
+      await setError(error?.response?.data?.message);
       setValidated(false);
     }
   };
   return (
     <React.Fragment>
-      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+      <Form noValidate validated={validated} onSubmit={handleSubmit} hidden={(success && !error) && true}>
       {(success && !error) && (<Alert variant={'success'}>Vui lòng kiểm tra email</Alert>)}
       {error && (<Alert variant={'danger'}> {error}</Alert>)}
         <Row className="mb-3 d-flex justify-content-center">
-          <Form.Group as={Col} md="8" controlId="validationCustomUsername">
+          <Form.Group as={Col} md="8" controlId="verifyEmail" >
             <Form.Label>
               Email <span className="text-danger">*</span>
             </Form.Label>
@@ -78,58 +81,68 @@ function FormForgetPassword() {
             </InputGroup>
           </Form.Group>
         </Row>
-        {success && (
-          <div>
-            <Row className="mb-3 d-flex justify-content-center">
-              <Form.Group as={Col} md="8" controlId="validationCustomUsername">
-                <Form.Label>
-                  Code <span className="text-danger">*</span>
-                </Form.Label>
-                <InputGroup>
-                  {/* <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text> */}
-                  <Form.Control
-                    type="text"
-                    placeholder="Nhập mã code"
-                    aria-describedby="inputGroupPrepend"
-                    name="code"
-                    required
-                    onChange={handleChange}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Vui lòng nhập code
-                  </Form.Control.Feedback>
-                </InputGroup>
-              </Form.Group>
-            </Row>
-            <Row className="mb-3 d-flex justify-content-center">
-              <Form.Group as={Col} md="8" controlId="validationCustomUsername">
-                <Form.Label>
-                  Mật khẩu mới <span className="text-danger">*</span>
-                </Form.Label>
-                <InputGroup>
-                  {/* <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text> */}
-                  <Form.Control
-                    type="password"
-                    placeholder="Nhập mật khẩu mới"
-                    aria-describedby="inputGroupPrepend"
-                    name="password"
-                    required
-                    onChange={handleChange}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Vui lòng nhập code
-                  </Form.Control.Feedback>
-                </InputGroup>
-              </Form.Group>
-            </Row>
-          </div>
-        )}
-        <div className="d-flex justify-content-center ">
+        <div className="d-flex justify-content-center">
           <Button type="submit" className="w-50 rounded-3 fw-medium mt-4">
             Lấy lại mật khẩu
           </Button>
         </div>
       </Form>
+      
+      {success && (
+        <Form noValidate validated={validated} onSubmit={handleSubmitChangePass}>
+          {success && (
+            <div>
+              <Row className="mb-3 d-flex justify-content-center">
+                <Form.Group as={Col} md="8" controlId="verifyCode">
+                  <Form.Label>
+                    Code <span className="text-danger">*</span>
+                  </Form.Label>
+                  <InputGroup>
+                    {/* <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text> */}
+                    <Form.Control
+                      type="number"
+                      placeholder="Nhập mã code"
+                      aria-describedby="inputGroupPrepend"
+                      name="code"
+                      required
+                      onChange={handleChange}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Vui lòng nhập code
+                    </Form.Control.Feedback>
+                  </InputGroup>
+                </Form.Group>
+              </Row>
+              <Row className="mb-3 d-flex justify-content-center">
+                <Form.Group as={Col} md="8" controlId="passChange">
+                  <Form.Label>
+                    Mật khẩu mới <span className="text-danger">*</span>
+                  </Form.Label>
+                  <InputGroup>
+                    {/* <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text> */}
+                    <Form.Control
+                      type="password"
+                      placeholder="Nhập mật khẩu mới"
+                      aria-describedby="inputGroupPrepend"
+                      name="password"
+                      required
+                      onChange={handleChange}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Vui lòng nhập code
+                    </Form.Control.Feedback>
+                  </InputGroup>
+                </Form.Group>
+              </Row>
+            </div>
+          )}
+          <div className="d-flex justify-content-center">
+            <Button type="submit" className="w-50 rounded-3 fw-medium mt-4">
+              Lấy lại mật khẩu
+            </Button>
+          </div>
+        </Form>
+      )}
     </React.Fragment>
   );
 }

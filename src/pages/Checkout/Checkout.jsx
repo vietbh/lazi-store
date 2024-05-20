@@ -3,21 +3,40 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import FormCheckout from '@/components/FormCheckout';
 import { numberFormat } from '@/components/NumberFormat';
+import * as getCart from '@/apiServices/getCart';
 
 const Checkout = () => {
     const [cartItems,setCartItems] = useState([]);
     useEffect(()=>{
-        const cacheCartItems = JSON.parse(sessionStorage.getItem('itemsCart'));
-        if(cacheCartItems){
-            setCartItems(cacheCartItems.products);
-        }
+        const fetchGetCartItems = async () => {
+            try {
+                // setLoading(true);
+                const res = await getCart.getCartItems();
+                await setCartItems(res.products);
+                // const cacheCartItems = JSON.parse(sessionStorage.getItem('itemsCart'));
+                // if(cacheCartItems){
+                //     setCartItems(cacheCartItems.products);
+                // }        
+                // setLoading(false);
+            } catch(error) {
+                console.error(error);
+                // setLoading(true);
+            }
+        };
+
+        fetchGetCartItems();
+        // const cacheCartItems = JSON.parse(sessionStorage.getItem('itemsCart'));
+        // if(cacheCartItems){
+        //     setCartItems(cacheCartItems.products);
+        // }
     },[])
-    
+
+
     const orderInfo = cartItems.map((item) => {
         return(
             <div key={item.product_varia.id}>
                 <li  className="d-flex align-items-center justify-content-between">
-                    <strong className="small fw-bold text-truncate">{item.product_varia.product.name}</strong>
+                    <strong className="small fw-bold text-truncate">({item.quantity_item}){item.product_varia.product.name}</strong>
                     <span className="text-muted small">{numberFormat(item.product_varia.price_sale)}đ</span></li>
                 <li className="border-bottom my-2"></li>
             </div>
@@ -36,11 +55,11 @@ const Checkout = () => {
                     </div>
                     <div className="col-lg-6 text-lg-end">
                         <nav aria-label="breadcrumb">
-                        <ol className="breadcrumb justify-content-lg-end mb-0 px-0 bg-light">
-                            <li className="breadcrumb-item"><Link className="text-dark" to="/">Trang chủ</Link></li>
-                            <li className="breadcrumb-item"><Link className="text-dark" to="/gio-hang.html">Giỏ hàng</Link></li>
-                            <li className="breadcrumb-item active" aria-current="page">Thanh toán</li>
-                        </ol>
+                            <ol className="breadcrumb justify-content-lg-end mb-0 px-0 bg-light">
+                                <li className="breadcrumb-item"><Link className="text-dark" to="/">Trang chủ</Link></li>
+                                <li className="breadcrumb-item"><Link className="text-dark" to="/gio-hang.html">Giỏ hàng</Link></li>
+                                <li className="breadcrumb-item active" aria-current="page">Thanh toán</li>
+                            </ol>
                         </nav>
                     </div>
                     </div>
@@ -50,49 +69,28 @@ const Checkout = () => {
                 {/* <!-- BILLING ADDRESS--> */}
                 <h2 className="h5 text-uppercase mb-4">Thông tin giao hàng</h2>
                 <div className="row">
-                    <div className="col-lg-8">
-                    <FormCheckout />
-                    {/**
-                    <form action="#">
-                        <div className="row gy-3">
-                        <div className="col-lg-6">
-                            <label className="form-label text-sm text-uppercase" htmlFor="fullName">Họ và Tên </label>
-                            <input className="form-control form-control-lg" autoComplete='fullName' type="text" id="fullName" name='fullName' placeholder="Enter your last name" />
-                        </div>
-                        <div className="col-lg-6">
-                            <label className="form-label text-sm text-uppercase" htmlFor="email">Địa chỉ Email </label>
-                            <input className="form-control form-control-lg" autoComplete='email' type="email" id="email" name='email' placeholder="e.g. Jason@example.com" />
-                        </div>
-                        <div className="col-lg-6">
-                            <label className="form-label text-sm text-uppercase" htmlFor="phoneNumber">Số điện thoại </label>
-                            <input className="form-control form-control-lg" autoComplete='phoneNumber' type="tel" id="phoneNumber" name='phoneNumber'  placeholder="e.g. +02 245354745" />
-                        </div>
-                        <div className="col-lg-6">
-                            <label className="form-label text-sm text-uppercase" htmlFor="city">Thành phố </label>
-                            <input className="form-control form-control-lg" type="text" id="city" />
-                        </div>
-                        <div className="col-lg-12">
-                            <label className="form-label text-sm text-uppercase" htmlFor="address">Địa chỉ giao hàng </label>
-                            <input className="form-control form-control-lg" type="text" id="address" placeholder="Mời nhập chi tiết thông tin địa chỉ" />
-                        </div>
-                        <div className="col-lg-12">
-                            <label className="form-label text-sm text-uppercase" htmlFor="note">Ghi chú</label>
-                            <textarea className="form-control form-control-lg" type="text" id="note" placeholder="Ghi chú" ></textarea>
-                        </div>
-                        <div className="col-lg-12 form-group">
-                            <button className="btn btn-dark" type="submit">Tiến hành thanh toán</button>
-                        </div>
-                        </div>
-                    </form>
-                    */}
+                    <div className="col-lg-7">
+                        <FormCheckout />
                     </div>
                     {/* <!-- ORDER SUMMARY--> */}
-                    <div className="col-lg-4">
+                    <div className="col-lg-5">
                         <div className="card border-0 rounded-0 p-lg-4 bg-light">
                             <div className="card-body">
-                                <h5 className="text-uppercase mb-4">Đơn hàng gồm<span>({cartItems.length}) </span></h5>
+                                <h5 className="text-uppercase mb-4">Đơn hàng gồm<span>({cartItems.reduce((previousValue, currentValue) => {return previousValue += currentValue.quantity_item}, 0)}) </span></h5>
                                 <ul className="list-unstyled mb-0">
                                     {orderInfo}
+                                    {/**
+                                    <li className="d-flex align-items-center justify-content-between mb-4"><strong className="text-uppercase small font-weight-bold">Tổng cộng</strong><span>{numberFormat(totalCart)}đ</span></li>
+                                     */}
+                                     
+                                    <li>
+                                    <form action="#">
+                                        <div className="input-group mb-0">
+                                        <input className="form-control" type="text" placeholder="Nhập coupon để được giảm giá " onChange={()=>{}}/>
+                                        <button className="btn btn-dark btn-sm w-100" type="submit"> <i className="fas fa-gift me-2"></i>Sử dụng coupon</button>
+                                        </div>
+                                    </form>
+                                    </li>
                                 </ul>
                             </div>
                         </div>

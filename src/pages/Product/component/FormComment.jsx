@@ -5,17 +5,39 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
+import * as detailProduct from '@/apiServices/detailProduct';
 
-function FormComment() {
+function FormComment(product) {
   const [validated, setValidated] = useState(false);
+  const [formData,setFormData] = useState({
+    comment:''
+  });
+
+  const handleChange = (e) =>{
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  }
+  console.log(product);
+  const postComment = async()=>{
+    try {
+      const result = await detailProduct.callComment(product,formData.comment);
+      console.log(result);
+    } catch(error) {
+      console.log(error);
+    }
+  }
 
   const handleSubmit = (event) => {
+    event.preventDefault();
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault();
       event.stopPropagation();
     }
-
+    console.log(formData);
+    postComment()
     setValidated(true);
   };
 
@@ -35,6 +57,8 @@ function FormComment() {
                       <InputGroup hasValidation>
                           <Form.Control
                           as="textarea" rows={3}
+                          name="comment"
+                          onChange={handleChange}
                           placeholder="Hãy sử dụng ngôn ngữ lịch sự để bình luận"
                           aria-describedby="inputGroupPrepend"
                           required

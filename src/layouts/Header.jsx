@@ -5,8 +5,7 @@ import {menuListLogin} from '@/config/Menu';
 import UserInfo from "./component/UserInfo";
 import MenuRight from "./component/MenuRight";
 import MenuLeft from "./component/MenuLeft";
-// import React, { useState } from "react";
-// import ModalChangePass from "../components/ModalChangePass";
+
 function Header() {
   // const param = useParams();
   // const [modalShow, setModalShow] = useState(false);
@@ -73,16 +72,22 @@ function Header() {
         </div>
       </header>
       
-      <header 
-      className="header bg-white">
+      <header className="header bg-white">
         <nav 
-        className="navbar navbar-expand-lg navbar-light px-lg-0 mt-3" style={{height:"8vh"}}>
-          <div className="container-fluid">
-            <a className="navbar-brand" href={"/"}>
-              <span className="text-uppercase" style={{fontSize:"50px", fontFamily:"Audiowide, sans-serif, bold"}}>
-                Lazi Store
-              </span>
-            </a>  
+        className="navbar navbar-expand-lg navbar-light px-lg-0 mt-3" style={{height:"6.5vh"}}>
+          <div className="container">
+            <div className="row ps-3 w-100">
+              <div className="col-lg-5 col-md-6 col-sm-12">
+                <a className="m-auto" href={"/"}>
+                  <span 
+                  className="text-uppercase text-nowrap" style={{fontSize:"33.8px", lineHeight:"4.5vh" ,fontFamily:"Audiowide, sans-serif, bold"}}>Lazi Store</span>
+                  <p className="m-0" style={{fontSize:"12px",fontFamily:"Roboto, sans-serif, bold"}}>Cửa hàng thiết bị công nghệ & phụ kiện</p>
+                </a>  
+              </div>
+              <div className="col-lg-7 col-md-6 col-sm-12 my-auto">
+                <FormSearch />
+              </div>
+            </div>
           </div>
         </nav>
         <hr/>
@@ -90,42 +95,16 @@ function Header() {
       
       <header 
       className="header bg-white">
-        <div className="container px-lg-3 d-flex justify-content-around">
+        <div className="container px-lg-3 d-flex justify-content-evenly">
           <nav 
           className="navbar navbar-expand-lg navbar-light pt-0 py-3 px-lg-0">
             <div
               className="collapse navbar-collapse"
               id="navbarSupportedContent"
             >
-              <ul className="navbar-nav me-auto ">
+              <ul className="navbar-nav me-auto">
                 <MenuLeft/>
-                <li className="nav-item dropdown">
-                  <div>
-                    <a
-                      className="nav-link fs-6"
-                      style={{fontFamily:"Arial"}}
-                      id="pagesDropdownSearch"
-                      href="#"
-                      data-bs-toggle="dropdown"
-                      aria-haspopup="false"
-                      aria-expanded="true"
-                    >
-                      <i className="fas fa-search text-secondary me-1"></i>
-                      {"Tìm kiếm"}
-                    </a>
-                    <div
-                      className="dropdown-menu shadow-sm"
-                      aria-labelledby="pagesDropdownSearch"
-                    >
-                      <div
-                        className="dropdown-item border-0 px-2"
-                        style={{ width: 380 }}
-                      >
-                        <FormSearch />
-                      </div>
-                    </div>
-                  </div>
-                </li>
+               
                 {hasLogin && <MenuRight/>}
                 {hasLogin ? (<li className="nav-item dropdown me-3"><UserInfo/></li>) : (menuLogin)}
               </ul>

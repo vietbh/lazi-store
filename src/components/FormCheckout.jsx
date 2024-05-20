@@ -6,6 +6,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import * as checkout from '../apiServices/checkout';
 import AlertStatus  from './AlertStatus';
+import { loginSettings } from '../config/Menu';
 
 
 function FormCheckout() {
@@ -16,7 +17,8 @@ function FormCheckout() {
     full_name:'',
     address:'',
     phone_number:'',
-    note:''
+    note:'',
+    payment_method:'',
 })
 const handleChange = (e) =>{
     const { name, value } = e.target;
@@ -48,8 +50,8 @@ const handleSubmit = (event) => {
   }
   setValidated(true);
   handleCheckoutOrder();
-  // setTimeout(() => {setSuccess(false),location.href = "/lich-su-dat-hang.html"},6000);
-  // setTimeout(() => setProcess(false),8500);
+  setTimeout(() => {setSuccess(false),location.href = loginSettings.at(0).link},6000);
+  setTimeout(() => setProcess(false),8500);
 };
 
   return (
@@ -89,7 +91,8 @@ const handleSubmit = (event) => {
             </InputGroup>
           </Form.Group>
         </Row>
-        <Row className="mb-3">
+        <Row 
+        className="mb-3">
           <Form.Group as={Col} md="12" className='mb-4' controlId="validationCustom03">
             <Form.Label>Địa chỉ</Form.Label>
             <Form.Control as="textarea" 
@@ -114,6 +117,37 @@ const handleSubmit = (event) => {
               aria-label="Nhập ghi chú" 
               placeholder={'Nhập ghi chú'}/>
           </Form.Group>
+        </Row>
+        <Row 
+        className='mb-3 d-flex'>
+          <h5>Hình thức thanh toán</h5>
+          <Form.Group as={Col} className='mb-4' controlId="payment_method_vnpay">
+            <Form.Check
+              required
+              type="radio"
+              name="payment_method"
+              value={formData.full_name}
+              onChange={handleChange}
+              autoComplete='full_name'
+              checked
+            />
+            <Form.Label className='form-label text-sm'>VnPay</Form.Label>
+            <Form.Control.Feedback type="invalid">Vui lòng nhập họ và tên</Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group as={Col} className='mb-4' controlId="payment_method_momo">
+            <Form.Check
+              required
+              type="radio"
+              name="payment_method"
+              value={formData.full_name}
+              onChange={handleChange}
+              autoComplete='full_name'
+              
+            />
+            <Form.Label className='form-label text-sm'>Momo</Form.Label>
+            <Form.Control.Feedback type="invalid">Vui lòng nhập họ và tên</Form.Control.Feedback>
+          </Form.Group>
+         
         </Row>
         <Button type="submit" className='rounded-1'>Thanh toán</Button>
       </Form>
