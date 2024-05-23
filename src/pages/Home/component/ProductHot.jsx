@@ -11,6 +11,7 @@ function ProductHot() {
         const fetchData = async () =>{
             try {
                 const productHot = await getProducts.fetchHotProduct();
+                console.log(productHot);
                 setProductsHot(productHot);
             } catch(error) {
                 console.log(error);        

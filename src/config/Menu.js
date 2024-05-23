@@ -9,8 +9,9 @@ const menuListLogin = [
   { id: 2, name: 'Đăng ký', link: '/dang-ky.html', show: false },
 ];
 
+
 const menuRights = [
-  { id: 1, name: 'Giỏ hàng', link: '/gio-hang.html', icon: 'fas fa-dolly-flatbed me-1 text-gray' },
+  { id: 1, name: 'Giỏ hàng', link: '/cart', icon: 'fas fa-dolly-flatbed me-1 text-gray' },
   // { id: 2, name: 'Thông báo', link: '/thong-bao.html', icon: 'far fa-heart me-1 text-gray' },
 ];
 
@@ -19,6 +20,7 @@ const loginSettings = [
   { id: 2, name: 'Lịch sử đặt hàng', link: '/lich-su.html' },
   { id: 3, name: 'Quá trình giao hàng', link: '/giao-hang.html' },
   { id: 4, name: 'Mã giảm giá', link: '/ma-giam-gia.html' },
+  { id: 6, name: 'Đổi mật khẩu', link: '/forget-password' },
   { id: 5, name: 'Đăng xuất', link: '/', logout: true },
 ];
 

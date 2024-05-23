@@ -17,8 +17,8 @@ const ForgetPassword = () => {
                                     <FormForgetPassword />
                                 </div>
                                 <div className="card-footer bg-white">
-                                    <p className='m-0'>Bạn có tài khoản.Hãy <Link to={`/dang-nhap.html`}>đăng nhập ở đây</Link></p>
-                                    <p>Bạn chưa có tài khoản.Hãy <Link to={`/dang-ky.html`}>đăng ký ở đây</Link></p>
+                                    <p className='m-0'>Bạn có tài khoản.Hãy <Link to={`/login`}>đăng nhập ở đây</Link></p>
+                                    <p>Bạn chưa có tài khoản.Hãy <Link to={`/signup`}>đăng ký ở đây</Link></p>
                                 </div>
                             </div>
                     </div>

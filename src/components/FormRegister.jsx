@@ -37,7 +37,9 @@ function FormRegister() {
   const handleData = async () => {
     try {
       setLoading(true);
-      const response = await axios.post(API_URL.concat("/dang-ky"),formData);
+      const response = await axios.post(API_URL.concat("/signup"),formData, {
+        withCredentials: false,
+      });
       const data = await response.data;
       if(response.status === 200){
         setDataUser(data);
@@ -237,7 +239,7 @@ function FormRegister() {
         </Form.Group>
         <div className='text-center text-sm'>
           { success && (<span className={'text-success'}>Đăng ký thành công</span>)}
-          { unSuccess && (<span className={'text-danger'}> {message.error ? message.error : 'Đăng ký chưa thành công, vui lòng thử lại.'}</span>)}
+          { unSuccess && (<span className={'text-danger'}> {message.error ? 'Đăng ký chưa thành công, vui lòng thử lại.':  message.error}</span>)}
         </div>
       </Row>
       {capcha && (

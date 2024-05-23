@@ -28,9 +28,10 @@ function MenuRight(param,title){
         <Link className={`nav-link ${param['*'] == menu.link ? "active" : "" }`}
           to={menu.link}
         >
-          {" "}
-          <i className={menu.icon}></i>
-          <span>{menu.name} <small className="text-gray fw-normal">({countCart >= 99 ? '(+99)' : countCart})</small></span>
+          
+        <i className={menu.icon}></i>
+        <span>{menu.name} </span>
+        {/*<small className="text-gray fw-normal">({countCart >= 99 ? '(+99)' : countCart})</small> */}
         </Link>
       </li>
     );

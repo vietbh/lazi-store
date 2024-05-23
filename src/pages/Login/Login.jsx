@@ -1,9 +1,13 @@
 import FormLogin from "@/components/FormLogin";
 import styles from "./styles.module.css";
+import { useNavigate } from "react-router-dom";
 
 
-function Login(){
-    return(
+function Login() {
+
+    const navigate = useNavigate();
+
+    return (
         <section >
             <div className={`container my-4 ${styles.widthForm}`} >
                 <div className={`row d-flex justify-content-center`}>
@@ -13,8 +17,8 @@ function Login(){
                                 <div className="card-title">
                                     <h2 className=" fw-bold fs-3 text-center my-2">ĐĂNG NHẬP</h2>
                                 </div>
-                                <FormLogin/>
-                                <p>Bạn chưa có tài khoản.Hãy đăng ký<a className="ps-1" href={'/dang-ky.html'}>ở đây</a></p>
+                                <FormLogin />
+                                <p style={{ cursor: 'pointer' }}>Bạn chưa có tài khoản. <span onClick={() => navigate('/signup')}>Đăng ký ngay</span> </p>
                             </div>
                         </div>
                     </div>

@@ -1,8 +1,11 @@
-import FormRegister from "@/components/FormRegister";
+import { useNavigate } from "react-router-dom";
+import FormRegister from "../../components/FormRegister";
 import styles from "./styles.module.css";
 
 
 function Register(){
+    const navigate = useNavigate();
+
     return(
         <section>
            <div className={`container my-4 ${styles.widthForm}`}>
@@ -14,7 +17,7 @@ function Register(){
                                         <h2 className="fw-bold fs-3 text-center my-2">ĐĂNG KÝ</h2>
                                     </div>
                                     <FormRegister />
-                                    <p>Bạn đã có tài khoản.Hãy đăng nhập <a href={'/dang-nhap.html'}>ở đây</a></p>
+                                <p style={{ cursor: 'pointer' }}>Bạn đã có tài khoản.Hãy đăng nhập <span onClick={() => navigate('/login')}>ở đây</span></p>
                                </div>
                            </div>
                    </div>
